@@ -33,7 +33,7 @@ def DeterminacyPSC : Prop :=
 
 /-- NEMS + ER ⇒ determinacy-PSC. -/
 theorem nems_er_implies_detpsc
-    (h : ∀ (dep : F.ExternalDependency)
+    (_h : ∀ (dep : F.ExternalDependency)
            (IsInternal : (F.enlarge dep).Selector → Prop),
            NEMS (F.enlarge dep) IsInternal) :
     F.DeterminacyPSC :=

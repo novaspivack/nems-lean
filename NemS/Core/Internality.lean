@@ -59,7 +59,7 @@ theorem nems_computability (h : NEMS F IsComputabilityInternal) :
 /-- Definability-internal selectors admit a quotient section
 (the first half of computability-internality). -/
 theorem definability_implies_quotient_section
-    (S : Selector F) (hD : IsDefinabilityInternal S) :
+    (S : Selector F) (_hD : IsDefinabilityInternal S) :
     ∃ q : Quotient (obsEqSetoid F) → F.Model,
       ∀ M : F.Model, S.sel M = q (toWorldType F M) := by
   refine ⟨Quotient.lift S.sel (fun M N h => S.cong h), ?_⟩

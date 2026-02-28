@@ -1,12 +1,14 @@
-# nems-lean v1.0.0 — Artifact Manifest
+# nems-lean v2.0.0 — Artifact Manifest
 
-**Release:** v1.0.0  
+**Release:** v2.0.0  
 **Date:** February 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8041 jobs, 0 errors, zero `sorry`
+**Build result:** 8051 jobs, 0 errors, zero `sorry`, **zero custom axioms**
 
 ## Verified theorems
+
+### Core (v1.0.0)
 
 | File | Theorem | Statement |
 |------|---------|-----------|
@@ -22,6 +24,33 @@
 | `NemS/Core/Internality.lean` | `nems_definability` | NEMS under definability-internality |
 | `NemS/Core/Internality.lean` | `nems_computability` | NEMS under computability-internality |
 | `NemS/Core/Internality.lean` | `definability_implies_quotient_section` | Definability ⇒ quotient section exists |
+
+### Diagonal Barrier (v2.0.0)
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `NemS/Diagonal/HaltingReduction.lean` | `asr_rt_computable_implies_halting_computable` | ASR + computable RT ⇒ computable halting |
+| `NemS/Diagonal/HaltingReduction.lean` | `asr_rt_not_computable` | **ASR ⇒ RT not computable (diagonal barrier, Thm 5.9)** |
+| `NemS/Diagonal/Barrier.lean` | `no_total_effective_rt_decider` | ASR ⇒ ¬ ComputablePred RT |
+| `NemS/Diagonal/Instantiation.lean` | `halting_framework_rt_not_computable` | Concrete instantiation recovers halting undecidability |
+
+### MFRR Bridge (v2.0.0)
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `NemS/MFRR/ChoicePoints.lean` | `recordDivergentChoice_implies_not_obsCategorical` | Record-divergent choice ⇒ non-categoricity |
+| `NemS/MFRR/ChoicePoints.lean` | `recordDivergentChoice_witness` | Extract disagreeing models from choice data |
+| `NemS/MFRR/PSCBundle.lean` | `PSCBundle.cat_or_internal` | PSC ⇒ categorical ∨ internal selector |
+| `NemS/MFRR/PTSelector.lean` | `nems_noncat_forces_PT` | NEMS + non-categorical ⇒ PT exists |
+| `NemS/MFRR/PTSelector.lean` | `nems_cat_or_PT` | NEMS ⇒ categorical ∨ PT exists |
+| `NemS/MFRR/DiagonalBarrier.lean` | `diagonal_barrier_rt` | **Diagonal-capable ⇒ RT not computable (zero axioms)** |
+| `NemS/MFRR/DiagonalBarrier.lean` | `nems_noncat_forces_internal_and_diagonal_barrier` | NEMS + non-cat + diagonal ⇒ selector + undecidable RT |
+| `NemS/MFRR/BridgeToNEMS.lean` | `PSC_and_choice_force_PT` | **PSC + record-divergent choice ⇒ PT exists** |
+| `NemS/MFRR/BridgeToNEMS.lean` | `PSC_choice_diagonal_forces_constrained_selection` | **PSC + choice + diagonal ⇒ selector + undecidable RT** |
+| `NemS/MFRR/BridgeToNEMS.lean` | `PSC_classification` | PSC + diagonal ⇒ categorical ∨ (selector ∧ undecidable RT) |
+| `NemS/MFRR/BridgeToNEMS.lean` | `no_external_law` | PSC ⇒ ¬ NeedsExternalSelection |
+| `NemS/MFRR/ToyMFRR.lean` | `bool_PT_exists` | Bool framework: PT extracted via bridge theorem |
+| `NemS/MFRR/ToyMFRR.lean` | `bool_has_divergent_choice` | Bool framework has record-divergent choice |
 
 ## Key source files (SHA-256)
 
@@ -42,6 +71,16 @@ NemS/Reduction/ER.lean
 NemS/Visibility/Recordability.lean
 NemS/Visibility/SelfEncoding.lean
 NemS/Visibility/SemanticExternality.lean
+NemS/Diagonal/ASR.lean
+NemS/Diagonal/HaltingReduction.lean
+NemS/Diagonal/Barrier.lean
+NemS/Diagonal/Instantiation.lean
+NemS/MFRR/ChoicePoints.lean
+NemS/MFRR/PSCBundle.lean
+NemS/MFRR/PTSelector.lean
+NemS/MFRR/DiagonalBarrier.lean
+NemS/MFRR/BridgeToNEMS.lean
+NemS/MFRR/ToyMFRR.lean
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
@@ -51,21 +90,35 @@ lean-toolchain
 ## Reproduction
 
 ```bash
-# From a clean checkout of this repository at tag v1.0.0:
+# From a clean checkout of this repository at tag v2.0.0:
 lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (8041 jobs).`
+Expected output: `Build completed successfully (8051 jobs).`
 
 ## What is axiomatized vs. proved
 
-- **Axiomatized:** `Framework` (Model, Rec, Truth); `IsInternal` predicate (abstract)
+### Core
+- **Axiomatized:** `Framework` (Model, Rec, Truth); `IsInternal` predicate (abstract parameter)
 - **Proved:** all implication structure (Trichotomy, ER, determinacy-PSC, semantic visibility, audit equivalence)
 - **Two instantiations provided:** definability-style and computability-style internality
+
+### Diagonal Barrier
+- **Axiomatized:** nothing (zero custom axioms)
+- **Proved:** ASR ⇒ record-truth not computable, via reduction to Mathlib's `ComputablePred.halting_problem`
+- **Concrete instantiation:** halting framework demonstrates ASR is satisfiable
+
+### MFRR Bridge
+- **Axiomatized:** nothing (zero custom axioms)
+- **Proved:** choice points ⇒ non-categoricity; PSC + choice ⇒ PT exists; PSC + choice + diagonal ⇒ constrained selection; PSC classification; no external law
+- **Toy instantiation:** Bool framework with record-divergent choice, PSC bundle, and PT extraction
+
+### Summary: the entire library has **zero custom axioms** beyond Lean's kernel axioms.
 
 ## Companion papers
 
 This artifact formalizes the core spine of:
 - *Semantic Closure Under No External Model Selection* (NEMS Theorem paper)
 - *The NEMS Framework* (overview document)
+- *From NEMS to MFRR: A Machine-Checked Bridge* (Paper 21)
