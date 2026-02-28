@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: NemS.Prelude
-// Imports: public import Init public import Mathlib.Data.Setoid.Basic public import Mathlib.Data.Setoid.Partition public import Mathlib.Logic.Equiv.Basic public import Mathlib.Logic.Function.Basic
+// Imports: public import Init public import Mathlib
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -14,10 +14,7 @@
 extern "C" {
 #endif
 lean_object* initialize_Init(uint8_t builtin);
-lean_object* initialize_mathlib_Mathlib_Data_Setoid_Basic(uint8_t builtin);
-lean_object* initialize_mathlib_Mathlib_Data_Setoid_Partition(uint8_t builtin);
-lean_object* initialize_mathlib_Mathlib_Logic_Equiv_Basic(uint8_t builtin);
-lean_object* initialize_mathlib_Mathlib_Logic_Function_Basic(uint8_t builtin);
+lean_object* initialize_mathlib_Mathlib(uint8_t builtin);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_nems_NemS_Prelude(uint8_t builtin) {
 lean_object * res;
@@ -26,16 +23,7 @@ _G_initialized = true;
 res = initialize_Init(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_mathlib_Mathlib_Data_Setoid_Basic(builtin);
-if (lean_io_result_is_error(res)) return res;
-lean_dec_ref(res);
-res = initialize_mathlib_Mathlib_Data_Setoid_Partition(builtin);
-if (lean_io_result_is_error(res)) return res;
-lean_dec_ref(res);
-res = initialize_mathlib_Mathlib_Logic_Equiv_Basic(builtin);
-if (lean_io_result_is_error(res)) return res;
-lean_dec_ref(res);
-res = initialize_mathlib_Mathlib_Logic_Function_Basic(builtin);
+res = initialize_mathlib_Mathlib(builtin);
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));

@@ -1,7 +1,4 @@
-import Mathlib.Data.Setoid.Basic
-import Mathlib.Data.Setoid.Partition
-import Mathlib.Logic.Equiv.Basic
-import Mathlib.Logic.Function.Basic
+import Mathlib
 
 /-!
 # NemS.Prelude

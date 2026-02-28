@@ -1,12 +1,12 @@
 {"synthetic": false,
  "schemaVersion": "2025-09-10",
  "outputs":
- {"o": ["68c630c7644cf3d0.olean"],
-  "i": "cb3b4ae2aa10bcc6.ilean",
+ {"o": ["ba1e6d0369d23a1a.olean"],
+  "i": "e035900de2bb1010.ilean",
   "c": "05a64c0bf4325cd7.c"},
  "log":
  [{"message":
-   ".> LEAN_PATH=/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/Cli/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/batteries/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/Qq/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/aesop/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/importGraph/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/plausible/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/mathlib/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/lib/lean /Users/nova/.elan/toolchains/leanprover--lean4---v4.28.0/bin/lean /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/NemS/Core/Trichotomy.lean -o /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/lib/lean/NemS/Core/Trichotomy.olean -i /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/lib/lean/NemS/Core/Trichotomy.ilean -c /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/ir/NemS/Core/Trichotomy.c --setup /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/ir/NemS/Core/Trichotomy.setup.json --json",
+   ".> LEAN_PATH=/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/Cli/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/batteries/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/Qq/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/aesop/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/importGraph/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/plausible/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/packages/mathlib/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/build/lib/lean /Users/nova/.elan/toolchains/leanprover--lean4---v4.28.0/bin/lean /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/NemS/Core/Trichotomy.lean -o /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/build/lib/lean/NemS/Core/Trichotomy.olean -i /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/build/lib/lean/NemS/Core/Trichotomy.ilean -c /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/build/ir/NemS/Core/Trichotomy.c --setup /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/.lake/build/ir/NemS/Core/Trichotomy.setup.json --json",
    "level": "trace"}],
  "inputs":
  [["NemS.Core.Trichotomy:deps",
@@ -14,10 +14,10 @@
      [["nems/NemS:extraDep", [["@nems:extraDep", "00000000000006bb"]]],
       ["imports",
        [["NemS.Core.Categoricity transitive imports (legacy)",
-         "2418bc3e4014ce61"],
-        ["NemS.Core.Categoricity:importAllArts", "21bda76f66101a93"],
-        ["NemS.Core.Selectors transitive imports (legacy)", "2418bc3e4014ce61"],
-        ["NemS.Core.Selectors:importAllArts", "e9ce635629d25670"]]]]],
+         "c1a6fedc1585e1f1"],
+        ["NemS.Core.Categoricity:importAllArts", "655ec8ec5e1cdae4"],
+        ["NemS.Core.Selectors transitive imports (legacy)", "c1a6fedc1585e1f1"],
+        ["NemS.Core.Selectors:importAllArts", "4f731cf8485de9b3"]]]]],
     ["libs",
      [["import dynlibs", "00000000000006bb"],
       ["package external libraries", "00000000000006bb"],
@@ -25,8 +25,8 @@
       ["module plugins", "00000000000006bb"]]]]],
   ["Lean 4.28.0, commit 7e01a1bf5c70fc6167d49c345d3bf80596e9a79b",
    "a96bc04a2e5e9630"],
-  ["/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/NemS/Core/Trichotomy.lean",
+  ["/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/Optimizer new tests/si_optimizer_data/Physics_Papers/14-18_NEMS_PAPERS/nems-lean/NemS/Core/Trichotomy.lean",
    "af2d3753f0a7b178"],
   ["options", "00000000000006bb"],
   ["Module.leanArgs: #[]", "00000000000006bb"]],
- "depHash": "42e04732ced8c361"}
+ "depHash": "f6bd90f8d187b6f5"}
