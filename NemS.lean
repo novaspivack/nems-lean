@@ -23,6 +23,7 @@ import NemS.Core.ObsEq
 import NemS.Core.Categoricity
 import NemS.Core.Selectors
 import NemS.Core.Trichotomy
+import NemS.Core.Internality
 
 -- Reduction
 import NemS.Reduction.Externality
