@@ -4,7 +4,7 @@
 **Date:** February 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8051 jobs, 0 errors, zero `sorry`, **zero custom axioms**
+**Build result:** 8052 jobs, 0 errors, zero `sorry`, **zero custom axioms**
 
 ## Verified theorems
 
@@ -49,6 +49,8 @@
 | `NemS/MFRR/BridgeToNEMS.lean` | `PSC_choice_diagonal_forces_constrained_selection` | **PSC + choice + diagonal ⇒ selector + undecidable RT** |
 | `NemS/MFRR/BridgeToNEMS.lean` | `PSC_classification` | PSC + diagonal ⇒ categorical ∨ (selector ∧ undecidable RT) |
 | `NemS/MFRR/BridgeToNEMS.lean` | `no_external_law` | PSC ⇒ ¬ NeedsExternalSelection |
+| `NemS/MFRR/PTNonEffective.lean` | `pt_not_total_effective_on_RT` | **Diagonal-capable ⇒ PT not total-effective on RT** |
+| `NemS/MFRR/PTNonEffective.lean` | `pt_exists_and_not_effective` | NEMS + non-cat + diagonal ⇒ ∃ PT, ¬ effective |
 | `NemS/MFRR/ToyMFRR.lean` | `bool_PT_exists` | Bool framework: PT extracted via bridge theorem |
 | `NemS/MFRR/ToyMFRR.lean` | `bool_has_divergent_choice` | Bool framework has record-divergent choice |
 
@@ -80,6 +82,7 @@ NemS/MFRR/PSCBundle.lean
 NemS/MFRR/PTSelector.lean
 NemS/MFRR/DiagonalBarrier.lean
 NemS/MFRR/BridgeToNEMS.lean
+NemS/MFRR/PTNonEffective.lean
 NemS/MFRR/ToyMFRR.lean
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
@@ -95,7 +98,7 @@ lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (8051 jobs).`
+Expected output: `Build completed successfully (8052 jobs).`
 
 ## What is axiomatized vs. proved
 
