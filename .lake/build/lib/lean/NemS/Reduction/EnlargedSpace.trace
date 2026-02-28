@@ -1,0 +1,33 @@
+{"synthetic": false,
+ "schemaVersion": "2025-09-10",
+ "outputs":
+ {"o": ["644b7c16733bd090.olean"],
+  "i": "863d4978cce9eda4.ilean",
+  "c": "817953cf970c10f2.c"},
+ "log":
+ [{"message":
+   ".> LEAN_PATH=/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/Cli/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/batteries/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/Qq/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/aesop/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/importGraph/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/plausible/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/packages/mathlib/.lake/build/lib/lean:/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/lib/lean /Users/nova/.elan/toolchains/leanprover--lean4---v4.28.0/bin/lean /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/NemS/Reduction/EnlargedSpace.lean -o /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/lib/lean/NemS/Reduction/EnlargedSpace.olean -i /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/lib/lean/NemS/Reduction/EnlargedSpace.ilean -c /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/ir/NemS/Reduction/EnlargedSpace.c --setup /Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/.lake/build/ir/NemS/Reduction/EnlargedSpace.setup.json --json",
+   "level": "trace"}],
+ "inputs":
+ [["NemS.Reduction.EnlargedSpace:deps",
+   [["deps",
+     [["nems/NemS:extraDep", [["@nems:extraDep", "00000000000006bb"]]],
+      ["imports",
+       [["NemS.Reduction.Externality transitive imports (legacy)",
+         "822b0df7651e03c4"],
+        ["NemS.Reduction.Externality:importAllArts", "61036ab7f7fa5b7b"],
+        ["NemS.Core.Categoricity transitive imports (legacy)",
+         "2418bc3e4014ce61"],
+        ["NemS.Core.Categoricity:importAllArts", "21bda76f66101a93"]]]]],
+    ["libs",
+     [["import dynlibs", "00000000000006bb"],
+      ["package external libraries", "00000000000006bb"],
+      ["module dynlibs", "00000000000006bb"],
+      ["module plugins", "00000000000006bb"]]]]],
+  ["Lean 4.28.0, commit 7e01a1bf5c70fc6167d49c345d3bf80596e9a79b",
+   "a96bc04a2e5e9630"],
+  ["/Users/nova/My Drive (nova@novaspivack.com)/Works in Progress/Python/Particle Derivations/nems-lean/NemS/Reduction/EnlargedSpace.lean",
+   "7734b54107605c66"],
+  ["options", "00000000000006bb"],
+  ["Module.leanArgs: #[]", "00000000000006bb"]],
+ "depHash": "ff3f53c3ffd34f10"}
