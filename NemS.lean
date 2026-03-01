@@ -49,6 +49,14 @@ import NemS.Physical.ASRFromUCT
 import NemS.Physical.Instantiation
 import NemS.Physical.DeterminismNoGo
 
+-- Quantum: Born rule from PSC
+import NemS.Quantum.MatrixBasics
+import NemS.Quantum.Effects
+import NemS.Quantum.POVM
+import NemS.Quantum.Measures
+import NemS.Quantum.BuschGleason
+import NemS.Quantum.BornFromPSC
+
 -- Examples
 import NemS.Examples.Toy
 
