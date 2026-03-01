@@ -43,10 +43,11 @@ import NemS.Diagonal.HaltingReduction
 import NemS.Diagonal.Barrier
 import NemS.Diagonal.Instantiation
 
--- Physical universal computation → ASR
+-- Physical universal computation → ASR → determinism no-go
 import NemS.Physical.UniversalComputation
 import NemS.Physical.ASRFromUCT
 import NemS.Physical.Instantiation
+import NemS.Physical.DeterminismNoGo
 
 -- Examples
 import NemS.Examples.Toy
