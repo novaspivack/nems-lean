@@ -1,15 +1,17 @@
 # nems-lean v2.0.1 — Artifact Manifest
 
-**Release:** v2.0.1  
+**Release:** v2.1.0  
 **Date:** February 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8062 jobs, 0 errors, **2 `sorry`** (see below), **zero custom axioms**
+**Build result:** 8040 jobs, 0 errors, **4 `sorry`** (see below), **zero custom axioms**
 
 ### Sorry status
 
-Two `sorry` statements remain in `NemS/Quantum/BuschGleason.lean`, both encoding the core
-mathematical content of the Busch/Gleason representation theorem:
+Four `sorry` statements remain across two modules:
+
+**Quantum module (Paper 13):** Two sorrys in `NemS/Quantum/BuschGleason.lean`, encoding the
+Busch/Gleason representation theorem existence direction:
 
 1. **`delta_eq_zero_core`** (line ~971): The linear extension step showing that a POVM-additive
    measure μ on effects agrees with the trace functional Re(Tr(rhoCandidate·)) on all effects.
@@ -25,6 +27,17 @@ Both sorrys are precisely documented with complete mathematical specifications a
 Busch (Phys. Rev. Lett. 91, 120403, 2003). The mathematical arguments are standard and not in dispute.
 The Lean formalization requires ~200 additional lines of careful matrix algebra and 1D real analysis
 (bounded additive functions on [0,1] vanishing on rationals must vanish everywhere).
+
+**Reverse direction module (Paper 14):** Two sorrys in `NemS/ReverseBICS/BICS.lean` and
+`NemS/ReverseBICS/BICS_Implies_NEMS.lean`, encoding the BICS ⇒ NEMS theorem:
+
+3. **`bics_prob_bounded`** (NemS/ReverseBICS/BICS.lean:~56): Boundedness of Born probabilities
+   Re(Tr(ρE)) ∈ [0,1] for effects E. Requires: PSD of ρ gives Re(Tr(ρE)) ≥ 0, and E ≤ I gives
+   Re(Tr(ρE)) ≤ Tr(ρ) = 1.
+
+4. **`bics_implies_nems`** (NemS/ReverseBICS/BICS_Implies_NEMS.lean:~33): The flagship reverse-direction
+   theorem showing BICS (Born as internal complete semantics) implies NEMS (no external model selection).
+   Requires: proof that BICS completeness (no external completion bits) forbids external selection.
 
 All other theorems in the library are fully proved without `sorry`, including:
 - **Uniqueness**: `busch_gleason_unique` — if any ρ represents μ, it must be the unique one (0 sorrys)
@@ -81,6 +94,14 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/MFRR/ToyMFRR.lean` | `bool_PT_exists` | Bool framework: PT extracted via bridge theorem |
 | `NemS/MFRR/ToyMFRR.lean` | `bool_has_divergent_choice` | Bool framework has record-divergent choice |
 
+### Reverse Direction: BICS ⇒ NEMS ⇒ PSC (v2.1.0, Paper 14)
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `NemS/ReverseBICS/BICS.lean` | `BICS` structure | Born Internal & Complete Semantics definition |
+| `NemS/ReverseBICS/BICS_Implies_NEMS.lean` | `bics_implies_nems` | **BICS ⇒ NEMS (reverse direction flagship)** |
+| `NemS/ReverseBICS/BICS_Implies_NEMS.lean` | `bics_rules_out_external` | BICS ⇒ ¬ NeedsExternalSelection |
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -111,6 +132,10 @@ NemS/MFRR/DiagonalBarrier.lean
 NemS/MFRR/BridgeToNEMS.lean
 NemS/MFRR/PTNonEffective.lean
 NemS/MFRR/ToyMFRR.lean
+NemS/ReverseBICS.lean
+NemS/ReverseBICS/BICS.lean
+NemS/ReverseBICS/BICS_Implies_NEMS.lean
+NemS/ReverseBICS/BICS_To_PSC.lean
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
