@@ -969,10 +969,12 @@ private lemma delta_zero {n : ℕ} (m : EffectMeasure n) : delta m Effect.zero =
 
 
 -- Core Busch/Gleason linear extension: delta = 0 on all effects.
--- Both μ and Re(Tr(rhoCandidate·)) are POVM-additive and agree on test effects.
--- Since test effects determine all entries of rhoCandidate, and Re(Tr(·)) is linear,
--- they must agree on all effects. The proof uses the uniqueness structure:
--- if two POVM-additive functionals agree on a spanning set, they agree everywhere.
+-- The proof uses: rhoCandidate was constructed so its entries match μ on test effects.
+-- Since Re(Tr(·)) is linear and test effects span Herm(n), Re(Tr(rhoCandidate·E))
+-- is determined by E's entries and μ-values. We show μ(E) equals this via POVM additivity.
+-- The full proof requires ~150 lines of linear extension (rational homogeneity + boundedness
+-- + 1D Jensen extension + spanning). This is the mathematical content of Busch/Gleason (1999/2003).
+-- Reference: P. Busch, Phys. Rev. Lett. 91, 120403 (2003).
 private lemma delta_eq_zero_core {n : ℕ} (m : EffectMeasure n) (E : Effect n) :
     delta m E = 0 := by
   sorry
@@ -984,10 +986,14 @@ private theorem rhoCandidate_represents {n : ℕ} (m : EffectMeasure n)
 
 -- PSD follows from representation: for any v, the rank-1 projector |v><v|/||v||² is an effect,
 -- and Re(<v, rho*v>) = ||v||² · μ(P_v) ≥ 0 by μ.nonneg.
+-- The rank-1 projector construction requires ~80 lines (Hermitian, PSD, bounded proofs).
+-- Reference: P. Busch, Phys. Rev. Lett. 91, 120403 (2003).
 private theorem rhoCandidate_psd {n : ℕ} (m : EffectMeasure n) :
     IsPosSemidef (rhoCandidate m) := by
   exact ⟨rhoCandidate_hermitian m, fun v => by
-    sorry⟩
+    by_cases hv : v = 0
+    · subst hv; simp [sesqForm]
+    · sorry⟩
 
 -- ============================================================
 -- Main theorems
