@@ -16,13 +16,13 @@ for a unique density operator ρ.
 Full proof using three families of test effects (diagonal, real off-diagonal,
 imaginary off-diagonal), extracting each matrix entry of ρ from the trace.
 
-**Existence** (`busch_gleason`): 1 sorry (line ~310) — the Busch/Gleason
-representation theorem. The proof requires: (1) extending μ to a bounded linear
-functional on Herm(n) via POVM decomposition, (2) Hilbert–Schmidt Riesz
-representation on the finite-dimensional real inner product space Herm(n).
-This is the mathematical content of Gleason (1957) / Busch (1999).
+**Existence** (`busch_gleason`): 2 remaining sorrys (`rhoCandidate_psd`,
+`rhoCandidate_represents`) — both are the same core linear-extension step:
+extend POVM additivity to a real-linear functional on Herm(n), then conclude
+global representation and positivity via finite-dimensional Hilbert–Schmidt/Riesz.
+This is the mathematical content of Gleason (1957) / Busch (1999/2003).
 
-All supporting infrastructure is fully proved with zero sorrys.
+All test-effect extraction and delta/POVM-additivity infrastructure is fully proved.
 -/
 
 namespace NemS
@@ -473,6 +473,29 @@ private noncomputable def imagTestEff {n : ℕ} (i j : Fin n) (hij : i ≠ j) : 
     · intro v
       exact Q_bounded_psd i j hij v
 
+private lemma realTestEff_symm {n : ℕ} (i j : Fin n) (hij : i ≠ j) (hji : j ≠ i) :
+    (realTestEff i j hij).op = (realTestEff j i hji).op := by
+  ext a b
+  simp [realTestEff, Matrix.add_apply, Matrix.single_apply, smul_eq_mul, add_assoc, add_left_comm, add_comm]
+
+private lemma imagTestEff_pair_sum {n : ℕ} (i j : Fin n) (hij : i ≠ j) (hji : j ≠ i) :
+    (imagTestEff i j hij).op + (imagTestEff j i hji).op = (diagEffect i).op + (diagEffect j).op := by
+  ext a b
+  simp only [imagTestEff, diagEffect, Matrix.smul_apply, Matrix.add_apply, Matrix.single_apply, smul_eq_mul]
+  ring
+
+private lemma realTestEff_proof_irrel {n : ℕ} (i j : Fin n) (h1 h2 : i ≠ j) :
+    realTestEff i j h1 = realTestEff i j h2 := by
+  simp [realTestEff]
+
+private lemma imagTestEff_proof_irrel {n : ℕ} (i j : Fin n) (h1 h2 : i ≠ j) :
+    imagTestEff i j h1 = imagTestEff i j h2 := by
+  simp [imagTestEff]
+
+private lemma realTestEff_swap {n : ℕ} (i j : Fin n) (hij : i ≠ j) (hji : j ≠ i) :
+    realTestEff i j hij = realTestEff j i hji := by
+  simp [realTestEff, add_assoc, add_left_comm, add_comm]
+
 -- ============================================================
 -- Trace computations for test effects
 -- ============================================================
@@ -550,6 +573,85 @@ private lemma diagEffects_sum_one (n : ℕ) :
     apply Finset.sum_eq_zero; intro i _
     simp [show ¬(i = a ∧ i = b) from fun h => hab (h.1.symm.trans h.2)]
 
+private lemma isPosSemidef_sum_diag {n : ℕ} (s : Finset (Fin n)) :
+    IsPosSemidef (Finset.sum s (fun k => (diagEffect k).op)) := by
+  refine Finset.induction_on s ?base ?step
+  · simpa using isPosSemidef_zero
+  · intro a s ha hs
+    simpa [Finset.sum_insert ha] using isPosSemidef_add (diagEffect a).psd hs
+
+private lemma diag_pair_complement_eq_sum {n : ℕ} (i j : Fin n) (hij : i ≠ j) :
+    (1 - ((diagEffect i).op + (diagEffect j).op)) =
+      Finset.sum ((Finset.univ.erase i).erase j) (fun k => (diagEffect k).op) := by
+  let f : Fin n → Op n := fun k => (diagEffect k).op
+  have hsumAll : Finset.sum Finset.univ f = 1 := by
+    simpa [f] using diagEffects_sum_one n
+  have hEraseI :
+      Finset.sum (Finset.univ.erase i) f + f i = Finset.sum Finset.univ f := by
+    exact Finset.sum_erase_add (s := Finset.univ) (a := i) (f := f) (Finset.mem_univ i)
+  have hjmem : j ∈ Finset.univ.erase i := by
+    exact Finset.mem_erase.mpr ⟨by intro h; exact hij h.symm, Finset.mem_univ j⟩
+  have hEraseIJ :
+      Finset.sum ((Finset.univ.erase i).erase j) f + f j = Finset.sum (Finset.univ.erase i) f := by
+    exact Finset.sum_erase_add (s := Finset.univ.erase i) (a := j) (f := f) hjmem
+  have hsumPair :
+      Finset.sum ((Finset.univ.erase i).erase j) f + (f i + f j) = 1 := by
+    calc
+      Finset.sum ((Finset.univ.erase i).erase j) f + (f i + f j)
+          = (Finset.sum ((Finset.univ.erase i).erase j) f + f j) + f i := by
+              abel
+      _ = Finset.sum (Finset.univ.erase i) f + f i := by rw [hEraseIJ]
+      _ = Finset.sum Finset.univ f := by rw [hEraseI]
+      _ = 1 := hsumAll
+  have hsumPair' :
+      Finset.sum ((Finset.univ.erase i).erase j) f = 1 - (f i + f j) := by
+    exact (eq_sub_iff_add_eq).2 hsumPair
+  simpa [f, add_comm, add_left_comm, add_assoc] using hsumPair'.symm
+
+private lemma diag_pair_bounded_psd {n : ℕ} (i j : Fin n) (hij : i ≠ j) :
+    IsPosSemidef (1 - ((diagEffect i).op + (diagEffect j).op)) := by
+  rw [diag_pair_complement_eq_sum i j hij]
+  exact isPosSemidef_sum_diag ((Finset.univ.erase i).erase j)
+
+private noncomputable def diagPairComplementEffect {n : ℕ}
+    (i j : Fin n) (hij : i ≠ j) : Effect n where
+  op := 1 - ((diagEffect i).op + (diagEffect j).op)
+  hermitian := by
+    apply Matrix.IsHermitian.sub Matrix.isHermitian_one
+    exact (diagEffect i).hermitian.add (diagEffect j).hermitian
+  psd := diag_pair_bounded_psd i j hij
+  bounded := by
+    have hpsd : IsPosSemidef ((diagEffect i).op + (diagEffect j).op) :=
+      isPosSemidef_add (diagEffect i).psd (diagEffect j).psd
+    simpa [sub_sub_cancel] using hpsd
+
+private lemma μ_imag_pair_sum {n : ℕ} (m : EffectMeasure n)
+    {i j : Fin n} (hij : i ≠ j) :
+    m.μ (imagTestEff i j hij) + m.μ (imagTestEff j i (fun h => hij h.symm)) =
+      m.μ (diagEffect i) + m.μ (diagEffect j) := by
+  let hji : j ≠ i := fun h => hij h.symm
+  let C : Effect n := diagPairComplementEffect i j hij
+  have hsumQ : (∑ t : Fin 3, (![imagTestEff i j hij, imagTestEff j i hji, C] t).op) = 1 := by
+    simp only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.head_fin_const]
+    rw [imagTestEff_pair_sum i j hij hji]
+    show (diagEffect i).op + (diagEffect j).op + (diagPairComplementEffect i j hij).op = 1
+    simp [diagPairComplementEffect]
+  have hsumD : (∑ t : Fin 3, (![diagEffect i, diagEffect j, C] t).op) = 1 := by
+    simp only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.head_fin_const]
+    show (diagEffect i).op + (diagEffect j).op + (diagPairComplementEffect i j hij).op = 1
+    simp [diagPairComplementEffect]
+  have hQ := m.povm_additive (⟨![imagTestEff i j hij, imagTestEff j i hji, C], hsumQ⟩ : POVM n 3)
+  have hD := m.povm_additive (⟨![diagEffect i, diagEffect j, C], hsumD⟩ : POVM n 3)
+  simp only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.head_fin_const] at hQ hD
+  have hQ' : m.μ (imagTestEff i j hij) + m.μ (imagTestEff j i hji) + m.μ C = 1 := by
+    simpa using hQ
+  have hD' : m.μ (diagEffect i) + m.μ (diagEffect j) + m.μ C = 1 := by
+    simpa using hD
+  linarith [hQ', hD']
+
 -- Step 3: Candidate ρ construction
 private noncomputable def rhoCandidate {n : ℕ} (m : EffectMeasure n) : Op n :=
   Matrix.of fun i j =>
@@ -607,36 +709,285 @@ private lemma rhoCandidate_represents_diag {n : ℕ} (m : EffectMeasure n) (k : 
   simp only [rhoCandidate, Matrix.of_apply, dif_pos rfl]
   simp [Complex.ofReal_re]
 
--- Test-effect agreement lemmas (rhoCandidate agrees with μ on D_k, R_ij, Q_ij)
--- are verified by construction but omitted here; the key theorem is rhoCandidate_represents.
+private lemma rhoCandidate_represents_real_lt {n : ℕ} (m : EffectMeasure n)
+    {i j : Fin n} (hij : i < j) :
+    m.μ (realTestEff i j (ne_of_lt hij)) =
+      (opTrace (rhoCandidate m * (realTestEff i j (ne_of_lt hij)).op)).re := by
+  let hne : i ≠ j := ne_of_lt hij
+  have htr := trace_realTestEff (rhoCandidate m) i j hne
+  rw [htr]
+  have hii : ((rhoCandidate m) i i).re = m.μ (diagEffect i) := by
+    simp [rhoCandidate]
+  have hjj : ((rhoCandidate m) j j).re = m.μ (diagEffect j) := by
+    simp [rhoCandidate]
+  have hij_re : ((rhoCandidate m) i j).re =
+      m.μ (realTestEff i j hne) - (m.μ (diagEffect i) + m.μ (diagEffect j)) / 2 := by
+    simp [rhoCandidate, hne, hij, not_lt.mpr (le_of_lt hij)]
+  have hsym : (((rhoCandidate m) j i) + ((rhoCandidate m) i j)).re =
+      2 * ((rhoCandidate m) i j).re := by
+    simpa [add_comm] using hermitian_sym_re (rhoCandidate_hermitian m) i j
+  have hsum :
+      (((rhoCandidate m) i i) + ((rhoCandidate m) j i) + ((rhoCandidate m) i j) + ((rhoCandidate m) j j)).re =
+      m.μ (diagEffect i) +
+        2 * (m.μ (realTestEff i j hne) - (m.μ (diagEffect i) + m.μ (diagEffect j)) / 2) +
+        m.μ (diagEffect j) := by
+    calc
+      (((rhoCandidate m) i i) + ((rhoCandidate m) j i) + ((rhoCandidate m) i j) + ((rhoCandidate m) j j)).re
+          = (((rhoCandidate m) i i).re) + ((((rhoCandidate m) j i) + ((rhoCandidate m) i j)).re) +
+              (((rhoCandidate m) j j).re) := by
+              simp [Complex.add_re, add_assoc, add_left_comm, add_comm]
+      _ = m.μ (diagEffect i) + 2 * ((rhoCandidate m) i j).re + m.μ (diagEffect j) := by
+            rw [hii, hsym, hjj]
+      _ = m.μ (diagEffect i) +
+            2 * (m.μ (realTestEff i j hne) - (m.μ (diagEffect i) + m.μ (diagEffect j)) / 2) +
+            m.μ (diagEffect j) := by rw [hij_re]
+  have hhalf :
+      (((1 / 2 : ℂ) *
+          (((rhoCandidate m) i i) + ((rhoCandidate m) j i) + ((rhoCandidate m) i j) + ((rhoCandidate m) j j))).re)
+      =
+      (1 / 2 : ℝ) *
+        ((((rhoCandidate m) i i) + ((rhoCandidate m) j i) + ((rhoCandidate m) i j) + ((rhoCandidate m) j j)).re) := by
+    simp [Complex.mul_re]
+  rw [hhalf, hsum]
+  ring
 
--- Step 7: ρ represents μ on ALL effects.
--- Key insight: rhoCandidate satisfies Hermitian + Tr=1 + agrees with μ on test effects.
--- By the uniqueness theorem, if ANY density operator represents μ, it must equal rhoCandidate.
--- Therefore rhoCandidate represents μ on all effects IF it is a valid DensityOp.
--- We break the circularity by proving representation directly:
--- Both μ and Re(Tr(ρ·)) are POVM-additive and agree on test effects that span Herm(n).
--- A POVM-additive functional is determined by its values on a spanning set.
+private lemma rhoCandidate_represents_imag_lt {n : ℕ} (m : EffectMeasure n)
+    {i j : Fin n} (hij : i < j) :
+    m.μ (imagTestEff i j (ne_of_lt hij)) =
+      (opTrace (rhoCandidate m * (imagTestEff i j (ne_of_lt hij)).op)).re := by
+  let hne : i ≠ j := ne_of_lt hij
+  have htr := trace_imagTestEff (rhoCandidate m) i j hne
+  rw [htr]
+  have hii : ((rhoCandidate m) i i).re = m.μ (diagEffect i) := by
+    simp [rhoCandidate]
+  have hjj : ((rhoCandidate m) j j).re = m.μ (diagEffect j) := by
+    simp [rhoCandidate]
+  have hij_im : ((rhoCandidate m) i j).im =
+      (m.μ (diagEffect i) + m.μ (diagEffect j)) / 2 - m.μ (imagTestEff i j hne) := by
+    simp [rhoCandidate, hne, hij, not_lt.mpr (le_of_lt hij)]
+  have hanti : (-(Complex.I * ((rhoCandidate m) j i)) + Complex.I * ((rhoCandidate m) i j)).re =
+      -2 * ((rhoCandidate m) i j).im := by
+    simpa using hermitian_antisym_im (rhoCandidate_hermitian m) i j
+  have hsum :
+      (((rhoCandidate m) i i) + (-Complex.I) * ((rhoCandidate m) j i) + Complex.I * ((rhoCandidate m) i j) +
+          ((rhoCandidate m) j j)).re =
+      m.μ (diagEffect i) +
+        (-2 * ((m.μ (diagEffect i) + m.μ (diagEffect j)) / 2 - m.μ (imagTestEff i j hne))) +
+        m.μ (diagEffect j) := by
+    calc
+      (((rhoCandidate m) i i) + (-Complex.I) * ((rhoCandidate m) j i) + Complex.I * ((rhoCandidate m) i j) +
+          ((rhoCandidate m) j j)).re
+          = (((rhoCandidate m) i i).re) +
+            ((-(Complex.I * ((rhoCandidate m) j i)) + Complex.I * ((rhoCandidate m) i j)).re) +
+            (((rhoCandidate m) j j).re) := by
+              simp [Complex.add_re, add_assoc, add_left_comm, add_comm]
+      _ = m.μ (diagEffect i) + (-2 * ((rhoCandidate m) i j).im) + m.μ (diagEffect j) := by
+            rw [hii, hanti, hjj]
+      _ = m.μ (diagEffect i) +
+            (-2 * ((m.μ (diagEffect i) + m.μ (diagEffect j)) / 2 - m.μ (imagTestEff i j hne))) +
+            m.μ (diagEffect j) := by rw [hij_im]
+  have hhalf :
+      (((1 / 2 : ℂ) *
+          (((rhoCandidate m) i i) + (-Complex.I) * ((rhoCandidate m) j i) + Complex.I * ((rhoCandidate m) i j) +
+            ((rhoCandidate m) j j))).re)
+      =
+      (1 / 2 : ℝ) *
+        ((((rhoCandidate m) i i) + (-Complex.I) * ((rhoCandidate m) j i) + Complex.I * ((rhoCandidate m) i j) +
+          ((rhoCandidate m) j j)).re) := by
+    simp [Complex.mul_re]
+  rw [hhalf, hsum]
+  ring
 
--- Step 7+8: PSD and representation.
--- These require the Busch/Gleason linear extension: POVM additivity of μ implies
--- μ is real-linear on Herm(n), hence agrees with Re(Tr(ρ·)) on all effects.
--- PSD then follows from μ.nonneg applied to rank-1 projectors.
--- Reference: P. Busch, Phys. Rev. Lett. 91, 120403 (2003).
+private lemma rhoCandidate_represents_real {n : ℕ} (m : EffectMeasure n)
+    {i j : Fin n} (hij : i ≠ j) :
+    m.μ (realTestEff i j hij) =
+      (opTrace (rhoCandidate m * (realTestEff i j hij).op)).re := by
+  by_cases hlt : i < j
+  · have hltRep := rhoCandidate_represents_real_lt m hlt
+    have hμ :
+        m.μ (realTestEff i j hij) = m.μ (realTestEff i j (ne_of_lt hlt)) := by
+      simpa using congrArg m.μ (realTestEff_proof_irrel i j hij (ne_of_lt hlt))
+    have hop :
+        (realTestEff i j hij).op = (realTestEff i j (ne_of_lt hlt)).op := by
+      simpa using congrArg Effect.op (realTestEff_proof_irrel i j hij (ne_of_lt hlt))
+    calc
+      m.μ (realTestEff i j hij)
+          = m.μ (realTestEff i j (ne_of_lt hlt)) := hμ
+      _ = (opTrace (rhoCandidate m * (realTestEff i j (ne_of_lt hlt)).op)).re := hltRep
+      _ = (opTrace (rhoCandidate m * (realTestEff i j hij).op)).re := by rw [hop]
+  · have hji : j < i := by omega
+    have hji_ne : j ≠ i := ne_of_lt hji
+    have hltRep := rhoCandidate_represents_real_lt m hji
+    have hswap : realTestEff i j hij = realTestEff j i hji_ne := realTestEff_swap i j hij hji_ne
+    have hop :
+        (realTestEff i j hij).op = (realTestEff j i hji_ne).op := by
+      simpa [hswap] using congrArg Effect.op hswap
+    calc
+      m.μ (realTestEff i j hij)
+          = m.μ (realTestEff j i hji_ne) := by rw [hswap]
+      _ = (opTrace (rhoCandidate m * (realTestEff j i hji_ne).op)).re := hltRep
+      _ = (opTrace (rhoCandidate m * (realTestEff i j hij).op)).re := by rw [hop]
 
-private theorem rhoCandidate_psd {n : ℕ} (m : EffectMeasure n) :
-    IsPosSemidef (rhoCandidate m) := by
-  exact ⟨rhoCandidate_hermitian m, fun v => by
-    -- Re(⟨v, ρv⟩) ≥ 0 requires the Busch/Gleason linear extension:
-    -- POVM additivity of μ → μ is linear on Herm(n) → μ(P_v) = Re(Tr(ρ·P_v))
-    -- → Re(⟨v,ρv⟩) = ‖v‖²·μ(P_v) ≥ 0.
-    sorry⟩
+private lemma rhoCandidate_trace_imag_pair_sum {n : ℕ} (m : EffectMeasure n)
+    {i j : Fin n} (hij : i ≠ j) :
+    (opTrace (rhoCandidate m * (imagTestEff i j hij).op)).re +
+      (opTrace (rhoCandidate m * (imagTestEff j i (fun h => hij h.symm)).op)).re
+      =
+    (opTrace (rhoCandidate m * (diagEffect i).op)).re +
+      (opTrace (rhoCandidate m * (diagEffect j).op)).re := by
+  let hji : j ≠ i := fun h => hij h.symm
+  calc
+    (opTrace (rhoCandidate m * (imagTestEff i j hij).op)).re +
+      (opTrace (rhoCandidate m * (imagTestEff j i hji).op)).re
+        = (opTrace (rhoCandidate m * ((imagTestEff i j hij).op + (imagTestEff j i hji).op))).re := by
+            rw [Matrix.mul_add, opTrace_add]
+            simp [Complex.add_re]
+    _ = (opTrace (rhoCandidate m * ((diagEffect i).op + (diagEffect j).op))).re := by
+          rw [imagTestEff_pair_sum i j hij hji]
+    _ = (opTrace (rhoCandidate m * (diagEffect i).op)).re +
+          (opTrace (rhoCandidate m * (diagEffect j).op)).re := by
+          rw [Matrix.mul_add, opTrace_add]
+          simp [Complex.add_re]
+
+private lemma rhoCandidate_represents_imag {n : ℕ} (m : EffectMeasure n)
+    {i j : Fin n} (hij : i ≠ j) :
+    m.μ (imagTestEff i j hij) =
+      (opTrace (rhoCandidate m * (imagTestEff i j hij).op)).re := by
+  by_cases hlt : i < j
+  · have hltRep := rhoCandidate_represents_imag_lt m hlt
+    have hμ :
+        m.μ (imagTestEff i j hij) = m.μ (imagTestEff i j (ne_of_lt hlt)) := by
+      simpa using congrArg m.μ (imagTestEff_proof_irrel i j hij (ne_of_lt hlt))
+    have hop :
+        (imagTestEff i j hij).op = (imagTestEff i j (ne_of_lt hlt)).op := by
+      simpa using congrArg Effect.op (imagTestEff_proof_irrel i j hij (ne_of_lt hlt))
+    calc
+      m.μ (imagTestEff i j hij)
+          = m.μ (imagTestEff i j (ne_of_lt hlt)) := hμ
+      _ = (opTrace (rhoCandidate m * (imagTestEff i j (ne_of_lt hlt)).op)).re := hltRep
+      _ = (opTrace (rhoCandidate m * (imagTestEff i j hij).op)).re := by rw [hop]
+  · have hji : j < i := by omega
+    have hji_ne : j ≠ i := ne_of_lt hji
+    have hμpair := μ_imag_pair_sum m (i := i) (j := j) hij
+    have hTrPair := rhoCandidate_trace_imag_pair_sum m (i := i) (j := j) hij
+    have hDiagI := rhoCandidate_represents_diag m i
+    have hDiagJ := rhoCandidate_represents_diag m j
+    have hjiRep := rhoCandidate_represents_imag_lt m hji
+    linarith [hμpair, hTrPair, hDiagI, hDiagJ, hjiRep]
+
+private noncomputable def delta {n : ℕ} (m : EffectMeasure n) (E : Effect n) : ℝ :=
+  m.μ E - (opTrace (rhoCandidate m * E.op)).re
+
+private noncomputable def effectComplement {n : ℕ} (E : Effect n) : Effect n where
+  op := 1 - E.op
+  hermitian := E.bounded.1
+  psd := E.bounded
+  bounded := by
+    have hpsd : IsPosSemidef (1 - (1 - E.op)) := by
+      simpa [sub_sub_cancel] using E.psd
+    simpa using hpsd
+
+private lemma effectComplement_sum {n : ℕ} (E : Effect n) :
+    E.op + (effectComplement E).op = 1 := by
+  simp [effectComplement]
+
+private lemma delta_diag {n : ℕ} (m : EffectMeasure n) (k : Fin n) :
+    delta m (diagEffect k) = 0 := by
+  unfold delta
+  linarith [rhoCandidate_represents_diag m k]
+
+private lemma delta_real {n : ℕ} (m : EffectMeasure n) {i j : Fin n} (hij : i ≠ j) :
+    delta m (realTestEff i j hij) = 0 := by
+  unfold delta
+  linarith [rhoCandidate_represents_real m hij]
+
+private lemma delta_imag {n : ℕ} (m : EffectMeasure n) {i j : Fin n} (hij : i ≠ j) :
+    delta m (imagTestEff i j hij) = 0 := by
+  unfold delta
+  linarith [rhoCandidate_represents_imag m hij]
+
+private lemma delta_binary_additivity {n : ℕ} (m : EffectMeasure n) (E F : Effect n)
+    (h : IsPosSemidef (1 - (E.op + F.op))) :
+    delta m (Effect.add E F h) = delta m E + delta m F := by
+  unfold delta
+  have hμ := binary_additivity m E F h
+  have htr :
+      (opTrace (rhoCandidate m * (Effect.add E F h).op)).re =
+        (opTrace (rhoCandidate m * E.op)).re + (opTrace (rhoCandidate m * F.op)).re := by
+    change (opTrace (rhoCandidate m * (E.op + F.op))).re =
+      (opTrace (rhoCandidate m * E.op)).re + (opTrace (rhoCandidate m * F.op)).re
+    rw [Matrix.mul_add, opTrace_add]
+    simp [Complex.add_re]
+  linarith [hμ, htr]
+
+private lemma trace_povm_sum_one {n k : ℕ} (m : EffectMeasure n) (P : POVM n k) :
+    ∑ i : Fin k, (opTrace (rhoCandidate m * (P.effects i).op)).re = 1 := by
+  have hlin :
+      opTrace (rhoCandidate m * (∑ i : Fin k, (P.effects i).op)) =
+        ∑ i : Fin k, opTrace (rhoCandidate m * (P.effects i).op) := by
+    change Matrix.trace (rhoCandidate m * (∑ i : Fin k, (P.effects i).op)) =
+      ∑ i : Fin k, Matrix.trace (rhoCandidate m * (P.effects i).op)
+    rw [Matrix.mul_sum, Matrix.trace_sum]
+  have htrace :
+      (opTrace (rhoCandidate m * (∑ i : Fin k, (P.effects i).op))).re = 1 := by
+    rw [P.sum_eq_one, Matrix.mul_one, rhoCandidate_trace_one]
+    norm_num
+  have htrace' :
+      (∑ i : Fin k, opTrace (rhoCandidate m * (P.effects i).op)).re = 1 := by
+    rw [← hlin]
+    exact htrace
+  rw [Complex.re_sum] at htrace'
+  simpa [add_comm, add_left_comm, add_assoc] using htrace'
+
+private lemma delta_povm_sum_zero {n k : ℕ} (m : EffectMeasure n) (P : POVM n k) :
+    ∑ i : Fin k, delta m (P.effects i) = 0 := by
+  unfold delta
+  rw [Finset.sum_sub_distrib]
+  have hμ : (∑ i : Fin k, m.μ (P.effects i)) = 1 := m.povm_additive P
+  have htr : (∑ i : Fin k, (opTrace (rhoCandidate m * (P.effects i).op)).re) = 1 :=
+    trace_povm_sum_one m P
+  linarith [hμ, htr]
+
+private lemma delta_complement {n : ℕ} (m : EffectMeasure n) (E : Effect n) :
+    delta m E + delta m (effectComplement E) = 0 := by
+  have hsum : (∑ i : Fin 2, (![E, effectComplement E] i).op) = 1 := by
+    simp [Fin.sum_univ_two, effectComplement_sum]
+  have hδ := delta_povm_sum_zero m (⟨![E, effectComplement E], hsum⟩ : POVM n 2)
+  simpa [Fin.sum_univ_two] using hδ
+
+private lemma delta_one {n : ℕ} (m : EffectMeasure n) : delta m Effect.one = 0 := by
+  unfold delta
+  change m.μ Effect.one - (opTrace (rhoCandidate m * Effect.one.op)).re = 0
+  rw [m.normalized]
+  simp [Effect.one, rhoCandidate_trace_one]
+
+private lemma delta_zero {n : ℕ} (m : EffectMeasure n) : delta m Effect.zero = 0 := by
+  unfold delta
+  rw [EffectMeasure.μ_zero m]
+  change 0 - (opTrace (rhoCandidate m * Effect.zero.op)).re = 0
+  simp [Effect.zero, opTrace]
+
+
+-- Core Busch/Gleason linear extension: delta = 0 on all effects.
+-- Both μ and Re(Tr(rhoCandidate·)) are POVM-additive and agree on test effects.
+-- Since test effects determine all entries of rhoCandidate, and Re(Tr(·)) is linear,
+-- they must agree on all effects. The proof uses the uniqueness structure:
+-- if two POVM-additive functionals agree on a spanning set, they agree everywhere.
+private lemma delta_eq_zero_core {n : ℕ} (m : EffectMeasure n) (E : Effect n) :
+    delta m E = 0 := by
+  sorry
 
 private theorem rhoCandidate_represents {n : ℕ} (m : EffectMeasure n)
     (E : Effect n) : m.μ E = (opTrace (rhoCandidate m * E.op)).re := by
-  -- Requires: POVM additivity of μ → μ is linear on Herm(n)
-  -- → μ agrees with Re(Tr(ρ·)) on all of Herm(n) (since they agree on a basis).
-  sorry
+  have h := delta_eq_zero_core m E
+  unfold delta at h; linarith
+
+-- PSD follows from representation: for any v, the rank-1 projector |v><v|/||v||² is an effect,
+-- and Re(<v, rho*v>) = ||v||² · μ(P_v) ≥ 0 by μ.nonneg.
+private theorem rhoCandidate_psd {n : ℕ} (m : EffectMeasure n) :
+    IsPosSemidef (rhoCandidate m) := by
+  exact ⟨rhoCandidate_hermitian m, fun v => by
+    sorry⟩
 
 -- ============================================================
 -- Main theorems
