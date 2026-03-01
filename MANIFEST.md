@@ -1,27 +1,37 @@
-# nems-lean v2.0.0 — Artifact Manifest
+# nems-lean v2.0.1 — Artifact Manifest
 
-**Release:** v2.0.0  
+**Release:** v2.0.1  
 **Date:** February 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8062 jobs, 0 errors, **1 `sorry`** (see below), **zero custom axioms**
+**Build result:** 8062 jobs, 0 errors, **2 `sorry`** (see below), **zero custom axioms**
 
 ### Sorry status
 
-One `sorry` remains in `NemS/Quantum/BuschGleason.lean`: the **existence** direction of the Busch/Gleason
-representation theorem (`busch_gleason`). This is the deep result that for any normalized,
-POVM-additive probability assignment μ on quantum effects, *there exists* a density operator ρ
-such that μ(E) = Re(Tr(ρE)) for all effects E.
+Two `sorry` statements remain in `NemS/Quantum/BuschGleason.lean`, both encoding the core
+mathematical content of the Busch/Gleason representation theorem:
 
-This result is mathematically well-established (Gleason 1957; Busch 1999) and is not in
-scientific dispute. It requires a linear-extension argument on the finite-dimensional Hermitian
-space Herm(n) — specifically showing POVM-additivity implies linearity — which goes beyond the
-matrix-computation infrastructure currently in this library.
+1. **`delta_eq_zero_core`** (line ~971): The linear extension step showing that a POVM-additive
+   measure μ on effects agrees with the trace functional Re(Tr(rhoCandidate·)) on all effects.
+   This requires proving that POVM additivity + boundedness implies ℝ-linearity on the effect space,
+   then using the fact that test effects span Herm(n) over ℝ.
+
+2. **`rhoCandidate_psd`** (line ~985, inside the PSD proof): Positive semidefiniteness of rhoCandidate.
+   Once representation is proved, PSD follows by applying representation to rank-1 projector effects
+   |v><v|/||v||² and using μ.nonneg. The remaining `sorry` is the rank-1 projector construction
+   (~80 lines of Hermitian/PSD/bounded proofs).
+
+Both sorrys are precisely documented with complete mathematical specifications and references to
+Busch (Phys. Rev. Lett. 91, 120403, 2003). The mathematical arguments are standard and not in dispute.
+The Lean formalization requires ~200 additional lines of careful matrix algebra and 1D real analysis
+(bounded additive functions on [0,1] vanishing on rationals must vanish everywhere).
 
 All other theorems in the library are fully proved without `sorry`, including:
 - **Uniqueness**: `busch_gleason_unique` — if any ρ represents μ, it must be the unique one (0 sorrys)
+- **Test-effect agreement**: rhoCandidate provably matches μ on all test effects D_k, R_ij, Q_ij (0 sorrys)
+- **Delta infrastructure**: binary additivity, POVM-sum-zero, complement identity (0 sorrys)
 - The full diagonal barrier, physical incompleteness, and determinism no-go chains (0 sorrys)
-- The complete NEMS core, MFRR bridge, and test-effect infrastructure (0 sorrys)
+- The complete NEMS core, MFRR bridge, and PT non-effectiveness (0 sorrys)
 
 ## Verified theorems
 
