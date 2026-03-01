@@ -43,6 +43,11 @@ import NemS.Diagonal.HaltingReduction
 import NemS.Diagonal.Barrier
 import NemS.Diagonal.Instantiation
 
+-- Physical universal computation → ASR
+import NemS.Physical.UniversalComputation
+import NemS.Physical.ASRFromUCT
+import NemS.Physical.Instantiation
+
 -- Examples
 import NemS.Examples.Toy
 
