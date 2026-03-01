@@ -71,3 +71,6 @@ import NemS.MFRR.DiagonalBarrier
 import NemS.MFRR.BridgeToNEMS
 import NemS.MFRR.PTNonEffective
 import NemS.MFRR.ToyMFRR
+
+-- Reverse direction: BICS ⇒ NEMS ⇒ PSC (Paper 14)
+import NemS.ReverseBICS
