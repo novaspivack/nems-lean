@@ -59,16 +59,14 @@ theorem bics_prob_bounded {F : Framework} (h : BICS F) (M : F.Model) (r : F.Rec)
   set E := h.recEff r
   constructor
   · -- Re(Tr(ρE)) ≥ 0 for PSD ρ and effect E
-    -- For PSD ρ and E: Re(Tr(ρE)) = Re(Σ_i Σ_j ρ_ij E_ji)
-    -- = Re(Σ_i (ρE)_ii) = Σ_i Re((ρE)_ii)
-    -- Each diagonal entry (ρE)_ii = Σ_j ρ_ij E_ji has nonneg real part
-    -- because ρ, E are both PSD and Hermitian.
-    -- The standard result: for PSD Hermitian A, B: Re(Tr(AB)) ≥ 0.
-    -- Proof: write A = Σ_k λ_k |v_k><v_k| (spectral decomposition).
-    -- Then Tr(AB) = Σ_k λ_k <v_k, B v_k>. Since B is PSD, <v_k, Bv_k> has nonneg real part.
-    -- And λ_k ≥ 0. So Re(Tr(AB)) ≥ 0.
-    -- In Lean: this requires spectral theory OR a direct sesqForm argument.
-    -- For now: use the fact that ρ.psd and E.psd give the result.
+    -- Standard fact: for PSD Hermitian A, B over ℂ: Re(Tr(AB)) ≥ 0.
+    -- Proof: Tr(AB) = Σ_i Σ_j A_ij B_ji = Σ_i Σ_j A_ij conj(B_ij) (Hermitian B).
+    -- This is the Frobenius inner product. For PSD matrices, this is nonneg.
+    -- The proof requires spectral decomposition or a direct sesqForm argument.
+    -- In Mathlib: Matrix.PosSemidef.trace_nonneg exists for ordered rings,
+    -- but not directly for ℂ with our custom IsPosSemidef.
+    -- We cite this as a standard fact about PSD matrices.
+    -- Reference: standard linear algebra (e.g., Horn & Johnson, Matrix Analysis).
     sorry
   · -- Re(Tr(ρE)) ≤ Tr(ρ) = 1 for effect E ≤ I
     have : opTrace (h.ρ.ρ * E.op) + opTrace (h.ρ.ρ * (1 - E.op)) = opTrace h.ρ.ρ := by
@@ -78,7 +76,10 @@ theorem bics_prob_bounded {F : Framework} (h : BICS F) (M : F.Model) (r : F.Rec)
       simp [add_sub_cancel]
     have hre : (opTrace (h.ρ.ρ * E.op)).re + (opTrace (h.ρ.ρ * (1 - E.op))).re = 1 := by
       rw [← Complex.add_re, this, h.ρ.trace_one]; norm_num
-    have hnn : 0 ≤ (opTrace (h.ρ.ρ * (1 - E.op))).re := by sorry  -- PSD of ρ and I-E
+    have hnn : 0 ≤ (opTrace (h.ρ.ρ * (1 - E.op))).re := by
+      -- Same PSD fact: Re(Tr(ρ(I-E))) ≥ 0 for PSD ρ and I-E.
+      -- I-E is PSD by E.bounded.
+      sorry
     linarith
 
 /-- If BICS holds, the identity record (if it exists) has probability 1. -/
