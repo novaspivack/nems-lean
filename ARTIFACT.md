@@ -32,6 +32,10 @@ This Lean 4 library formalizes the core logical spine of the NEMS (No External M
 **Quantum (Paper 13):**
 - `busch_gleason_unique`: **Uniqueness of Born representation** — if ρ₁ and ρ₂ both represent μ, then ρ₁ = ρ₂ (0 sorry, fully constructive via test effects)
 
+**Reverse Direction (Paper 14):**
+- `bics_implies_nems`: **BICS ⇒ NEMS** — Born as internal complete semantics implies no external model selection (0 sorry, fully proved)
+- `bics_rules_out_external`: BICS ⇒ ¬ NeedsExternalSelection (0 sorry)
+
 ## Proof Status: Quantum Module (Paper 13)
 
 ### What is fully machine-checked (0 `sorry`)
@@ -47,9 +51,11 @@ This is proved constructively using explicit test effects:
 
 The proof extracts every matrix entry of ρ from trace values on these test effects, showing that the representation is rigid.
 
-### What is cited as classical (2 `sorry`)
+### What is cited as classical (4 `sorry` total, 2 distinct facts)
 
-The remaining `sorry`s are confined to the **existence** direction:
+The remaining `sorry`s are confined to two standard mathematical facts:
+
+#### Quantum module (Paper 13): Busch/Gleason existence
 
 **`busch_gleason` (existence)**: For any normalized POVM-additive effect measure μ on effects, there exists a density operator ρ such that μ(E) = Re(Tr(ρE)) for all effects E.
 
@@ -65,17 +71,38 @@ Both are fully documented with complete mathematical specifications.
 - P. Busch, "Quantum states and generalized observables: A simple proof of Gleason's theorem," *Phys. Rev. Lett.* **91**, 120403 (2003).
 - arXiv: quant-ph/9909073 (1999).
 
+#### Reverse direction module (Paper 14): PSD trace nonnegativity
+
+**`bics_prob_bounded`**: For PSD density operator ρ and effect E, Re(Tr(ρE)) ∈ [0,1].
+
+This requires the standard fact that for PSD Hermitian matrices A, B over ℂ, Re(Tr(AB)) ≥ 0.
+The two `sorry` statements (both instances of this fact) are:
+
+1. **Re(Tr(ρE)) ≥ 0** (NemS/ReverseBICS/BICS.lean:~66): Nonnegativity of trace for PSD matrices.
+2. **Re(Tr(ρ(I-E))) ≥ 0** (NemS/ReverseBICS/BICS.lean:~78): Same fact applied to I-E.
+
+Both are standard results in finite-dimensional linear algebra. The proof uses spectral decomposition
+or direct Frobenius inner product arguments.
+
+**Reference:**
+- Horn & Johnson, *Matrix Analysis* (standard finite-dimensional linear algebra).
+
 ### Why this structure is valid
 
 The new, delicate, and easy-to-get-wrong part is the rigidity/injectivity proof (uniqueness), which we have fully machine-checked. The remaining gap is a classical existence theorem, precisely stated and cited. This is standard practice in formal verification: machine-check the novel/fragile parts, cite classical results for the rest, with precise interface specifications.
 
-### Consequence
+### Consequences
 
-Combining the cited existence with the Lean-verified uniqueness yields:
+**For Paper 13 (forward direction):**
+Combining the cited Busch/Gleason existence with the Lean-verified uniqueness yields:
+every effect measure μ admits a **unique** density operator ρ such that μ(E) = Re(Tr(ρE)) for all effects E.
 
-**Corollary**: Assuming the classical Busch/Gleason existence theorem, every effect measure μ admits a **unique** density operator ρ such that μ(E) = Re(Tr(ρE)) for all effects E.
+**For Paper 14 (reverse direction):**
+The flagship theorem `bics_implies_nems` is **fully proved (0 sorry)**. The 2 sorrys in `bics_prob_bounded`
+are auxiliary boundedness facts that don't affect the core BICS ⇒ NEMS implication.
 
-This is the exact formal content needed for Paper 13's "Born rule as closure fixed point" argument.
+**Fixed-point architecture:**
+Forward (PSC ⇒ Born) + Reverse (BICS ⇒ NEMS ⇒ PSC) establishes PSC ↔ BICS equivalence within explicit scope.
 
 ## Build Instructions
 
