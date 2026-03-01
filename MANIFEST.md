@@ -4,7 +4,24 @@
 **Date:** February 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8052 jobs, 0 errors, zero `sorry`, **zero custom axioms**
+**Build result:** 8062 jobs, 0 errors, **1 `sorry`** (see below), **zero custom axioms**
+
+### Sorry status
+
+One `sorry` remains in `NemS/Quantum/BuschGleason.lean`: the **existence** direction of the Busch/Gleason
+representation theorem (`busch_gleason`). This is the deep result that for any normalized,
+POVM-additive probability assignment μ on quantum effects, *there exists* a density operator ρ
+such that μ(E) = Re(Tr(ρE)) for all effects E.
+
+This result is mathematically well-established (Gleason 1957; Busch 1999) and is not in
+scientific dispute. It requires a linear-extension argument on the finite-dimensional Hermitian
+space Herm(n) — specifically showing POVM-additivity implies linearity — which goes beyond the
+matrix-computation infrastructure currently in this library.
+
+All other theorems in the library are fully proved without `sorry`, including:
+- **Uniqueness**: `busch_gleason_unique` — if any ρ represents μ, it must be the unique one (0 sorrys)
+- The full diagonal barrier, physical incompleteness, and determinism no-go chains (0 sorrys)
+- The complete NEMS core, MFRR bridge, and test-effect infrastructure (0 sorrys)
 
 ## Verified theorems
 
