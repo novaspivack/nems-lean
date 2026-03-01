@@ -32,7 +32,34 @@ Therefore, any purported "external selection" would either:
 Thus the theory is NEMS: no external model selection is needed or possible. -/
 theorem bics_implies_nems {F : Framework} (h : BICS F)
     (IsInternal : F.Selector → Prop) : NEMS F IsInternal := by
-  sorry
+  unfold NEMS NeedsExternalSelection
+  push_neg
+  intro hNC
+  -- Assume non-categorical. We need: ∃ S : F.Selector, IsInternal S.
+  -- BICS provides internal state ρ and record-to-effect map.
+  -- The Born probabilities are model-independent (same ρ for all M).
+  -- By BICS completeness: if M1, M2 agree on all probabilities, they're ObsEq.
+  -- Since probabilities are model-independent, all models are ObsEq.
+  -- This contradicts non-categoricity.
+  -- Therefore: the assumption "non-categorical" is false, OR an internal selector exists.
+  -- Actually, the logic is: NEMS says ¬(non-cat ∧ ¬∃ internal selector).
+  -- We need to show: ¬(non-cat ∧ ¬∃ internal selector).
+  -- Equivalently: non-cat → ∃ internal selector.
+  -- From BICS: probabilities are model-independent (prob_is_born uses same ρ for all M).
+  -- So for any M1, M2: probTruth M1 r = Re(Tr(ρ·recEff(r))) = probTruth M2 r.
+  -- By no_external_completion_bits: M1 ObsEq M2.
+  -- So all models are ObsEq, hence categorical.
+  -- This contradicts hNC.
+  exfalso
+  have hall_eq : ∀ M1 M2 : F.Model, F.ObsEq M1 M2 := by
+    intro M1 M2
+    apply h.no_external_completion_bits
+    intro r
+    rw [h.prob_is_born, h.prob_is_born]
+  have hcat : F.ObsCategorical := by
+    intro M N
+    exact hall_eq M N
+  exact hNC hcat
 
 /-- Corollary: BICS rules out the "needs external selection" branch of the trichotomy. -/
 theorem bics_rules_out_external {F : Framework} (h : BICS F)
