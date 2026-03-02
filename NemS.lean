@@ -97,3 +97,6 @@ import NemS.Terminality.ExistentialRigidity
 
 -- Paper 22: Irreducible Agency (Non-Algorithmic Adjudication)
 import NemS.Adjudication.IrreducibleAgency
+
+-- Paper 23: Foundational Finality (The Master Loop)
+import NemS.Reflexive.FinalityTheorem
