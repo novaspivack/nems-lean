@@ -74,3 +74,7 @@ import NemS.MFRR.ToyMFRR
 
 -- Paper 15: No-Emulation / Self-Necessitating Adjudication
 import NemS.Adjudication
+
+-- Paper 16: Relative PSC and Recursive NEMS
+import NemS.Adjudication.EffectiveEmulator
+import NemS.RelativePSC

@@ -138,6 +138,10 @@ NemS/ReverseBICS/BICS_Implies_NEMS.lean
 NemS/ReverseBICS/BICS_To_PSC.lean
 NemS/Adjudication/Basic.lean            # Paper 15: Choice points and Adjudicator definitions
 NemS/Adjudication/NoEmulation.lean      # Paper 15: No-Emulation theorem (no emulator exists)
+NemS/Adjudication/EffectiveEmulator.lean # Paper 16: Stronger no-emulation theorem via instance encoding
+NemS/RelativePSC/FrameworkA.lean        # Paper 16: Subsystem framework definitions
+NemS/RelativePSC/RelativeNEMS.lean      # Paper 16: Relative NEMS and Recursive NEMS theorem
+NemS/RelativePSC/DiagonalHeredity.lean  # Paper 16: Heredity of the diagonal barrier
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
