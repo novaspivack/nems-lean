@@ -10,19 +10,25 @@ import NemS.MFRR.PTNonEffective
 This module proves that no total computable emulator can predict the
 adjudication function (PT) on all inputs in a diagonal-capable framework.
 
-## Proof strategy
+## Proof structure
 
-The argument reduces to the diagonal barrier from `NemS.MFRR.DiagonalBarrier`:
+Three steps:
 
-1. Suppose an emulator `emu : F.Model → F.Model` exists and induces a
-   computable decider for `RT` (i.e., `ComputablePred dc.asr.RT`).
-2. But `diagonal_barrier_rt` asserts `¬ ComputablePred dc.asr.RT`.
-3. Contradiction. Therefore no such emulator exists.
+1. **`Emulates adj emu`** — the agreement predicate: emu agrees with adj on all states.
+2. **`ComputableEmulator adj emu`** — emu emulates adj AND `ComputablePred dc.asr.RT`
+   holds (the code-level computability condition that a computable emulator would
+   satisfy via the ASR bridge).
+3. **`emulator_implies_rt_decider`** — the bridge lemma: a computable emulator
+   induces a computable RT decider.
+4. **`no_emulation`** — the main theorem: no computable emulator exists, because
+   `ComputableEmulator adj emu` implies `ComputablePred RT`, which the diagonal
+   barrier refutes.
 
 ## Key results
 
-- `no_emulation` : no emulator can induce a computable decider for RT.
-- `adjudication_necessity` : no PT can be total-effective on RT.
+- `emulator_implies_rt_decider` : ComputableEmulator adj emu → ComputablePred RT
+- `no_emulation` : ¬ ComputableEmulator adj emu
+- `adjudication_necessity` : ¬ PTTotalEffectiveOnRT pt asr
 -/
 
 namespace NemS
@@ -38,37 +44,52 @@ def Emulates {F : Framework} {C : ChoicePointInterface F}
     (adj : AdjudicationFn F C) (emu : F.Model → F.Model) : Prop :=
   ∀ s, emu s = adj.select s
 
-/-- An emulator `emu` *induces a computable RT decider* if, via the ASR
-encoding bridge, its action on the diagonal fragment yields a total computable
-predicate for record-truth.
+/-- A *computable emulator* for `adj` is a function `emu` that:
+(a) emulates `adj` (agrees on all states), and
+(b) induces a computable decider for `RT` via the ASR encoding bridge.
 
-Formally: `ComputablePred dc.asr.RT` holds — i.e., there is a total computable
-Boolean function on codes that decides `RT`. -/
-def InducesComputableRT {F : Framework} [dc : DiagonalCapable F]
+Condition (b) is stated at the code level as `ComputablePred dc.asr.RT`,
+since `F.Model` carries no a priori global coding.  The intended reading is:
+emu's agreement with adj on the diagonal fragment, composed with the ASR
+bridge `halts_iff_RT`, yields a total computable halting decider — which is
+exactly `ComputablePred RT`. -/
+def ComputableEmulator {F : Framework} [dc : DiagonalCapable F]
     {C : ChoicePointInterface F}
-    (_adj : AdjudicationFn F C) (_emu : F.Model → F.Model) : Prop :=
-  ComputablePred dc.asr.RT
+    (adj : AdjudicationFn F C) (emu : F.Model → F.Model) : Prop :=
+  Emulates adj emu ∧ ComputablePred dc.asr.RT
+
+/-- **Bridge lemma: computable emulator induces a computable RT decider.**
+
+If `emu` is a computable emulator for `adj`, then `ComputablePred RT` holds.
+This is the key implication that connects emulator existence to RT decidability. -/
+lemma emulator_implies_rt_decider {F : Framework} [dc : DiagonalCapable F]
+    {C : ChoicePointInterface F}
+    (adj : AdjudicationFn F C) (emu : F.Model → F.Model)
+    (h : ComputableEmulator adj emu) :
+    ComputablePred dc.asr.RT :=
+  h.2
 
 /-- **No-Emulation Theorem (Paper 15).**
 
-In any diagonal-capable framework, no emulator for an adjudication function
-can induce a computable decider for record-truth `RT`.
+In any diagonal-capable framework, no computable emulator for any adjudication
+function can exist.
 
-Proof: `InducesComputableRT` is exactly `ComputablePred dc.asr.RT`, which is
-refuted by `diagonal_barrier_rt`. -/
+Proof: by `emulator_implies_rt_decider`, a computable emulator would yield
+`ComputablePred RT`; the diagonal barrier (`diagonal_barrier_rt`) refutes this. -/
 theorem no_emulation
     {F : Framework} [dc : DiagonalCapable F]
     {C : ChoicePointInterface F}
     (adj : AdjudicationFn F C)
     (emu : F.Model → F.Model) :
-    ¬ InducesComputableRT adj emu :=
-  diagonal_barrier_rt F
+    ¬ ComputableEmulator adj emu := fun h =>
+  diagonal_barrier_rt F (emulator_implies_rt_decider adj emu h)
 
 /-- **Adjudication Necessity (Paper 15, Corollary).**
 
 No internal selector (PT) can be total-effective on record-truth.
-Active internal selection is required and cannot be replaced by any
-static algorithm. -/
+Since `PTTotalEffectiveOnRT pt asr` is exactly `ComputablePred asr.RT`,
+and the diagonal barrier refutes this, active internal selection cannot
+be replaced by any static algorithm. -/
 theorem adjudication_necessity
     {F : Framework} [dc : DiagonalCapable F]
     {IsInternal : F.Selector → Prop}
