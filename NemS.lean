@@ -85,3 +85,6 @@ import NemS.RSMC
 
 -- Paper 18: The Theorem of Semantic Terminality
 import NemS.Optimality
+
+-- Paper 19: The Non-Emulability of Execution
+import NemS.Adjudication.ExecutionNecessity

@@ -147,6 +147,7 @@ NemS/Observers/AdjudicatorNetwork.lean  # Paper 17: Adjudicator networks and wea
 NemS/RSMC/RSMC.lean                     # Paper 17: Reflexive Self-Model Closure (RSMC)
 NemS/RSMC/AdjudicatorImpliesRSMC.lean   # Paper 17: Adjudication requires RSMC conditional
 NemS/Optimality/Terminality.lean        # Paper 18: Semantic Terminality and end of reductionism
+NemS/Adjudication/ExecutionNecessity.lean # Paper 19: Non-emulability of execution (Agentic Necessity)
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
