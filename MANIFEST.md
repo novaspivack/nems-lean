@@ -149,6 +149,7 @@ NemS/RSMC/AdjudicatorImpliesRSMC.lean   # Paper 17: Adjudication requires RSMC c
 NemS/Optimality/Terminality.lean        # Paper 18: Semantic Terminality and end of reductionism
 NemS/Adjudication/ExecutionNecessity.lean # Paper 19: Non-emulability of execution (Agentic Necessity)
 NemS/Physics/Rigidity.lean              # Paper 20: Rigidity of the Lagrangian (Mathematical Uniqueness)
+NemS/Terminality/ExistentialRigidity.lean # Paper 21: Existential Rigidity (The End of Choice)
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean

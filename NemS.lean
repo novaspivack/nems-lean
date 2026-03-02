@@ -91,3 +91,6 @@ import NemS.Adjudication.ExecutionNecessity
 
 -- Paper 20: The Rigidity of the Lagrangian
 import NemS.Physics.Rigidity
+
+-- Paper 21: The Theorem of Existential Rigidity
+import NemS.Terminality.ExistentialRigidity
