@@ -25,9 +25,10 @@ open NemS.Optimality
 
 /-- **Definition: Ontologically Legal.**
 A theory is ontologically legal if it is foundational (does not require
-external selectors/free bits) and is not physically redundant. -/
+external selectors/free bits) and is not physically redundant relative to
+a PSC-optimal terminal theory. -/
 def OntologicallyLegal {S : GaugeTheorySpace} (T : S.Theory) : Prop :=
-  ¬ S.FailsPSC T ∧ (∀ T_base, S.Extends T T_base → ¬ S.Redundant T T_base)
+  ¬ S.FailsPSC T ∧ ¬ ∃ T_base, S.PSCOptimal T_base ∧ S.Redundant T T_base
 
 /-- **Premise (L21.1): Legality implies Admissibility.**
 If a gauge theory is ontologically legal (foundational and non-redundant),
