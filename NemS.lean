@@ -100,3 +100,6 @@ import NemS.Adjudication.IrreducibleAgency
 
 -- Paper 23: Foundational Finality (The Master Loop)
 import NemS.Reflexive.FinalityTheorem
+
+-- Paper 24: The Theorem of the Semantic Floor
+import NemS.Cosmology.SemanticFloor

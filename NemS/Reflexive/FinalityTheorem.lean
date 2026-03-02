@@ -36,23 +36,33 @@ structure ReflexiveTheorySpace extends TheorySpace where
   /-- A meta-theory `T'` claims to explain `T` from the "outside" (e.g. a simulator). -/
   MetaExplanation : Theory → Theory → Prop
   
-  /-- The core reduction: any meta-explanation either introduces unrecorded
-  external selection (fails PSC), or it is record-equivalent to the base theory.
-  If it is record-equivalent, it either adds genuine complexity (redundant)
-  or it is just an isomorphic re-presentation. -/
-  meta_reduction : ∀ T' T, MetaExplanation T' T →
-    FailsPSC T' ∨ (RecordEquivalent T' T ∧ (Isomorphic T' T ∨ K T < K T'))
+  /-- Execution and description are internally co-realized and semantically visible. -/
+  ExecInternal : Theory → Prop
+  
+  /-- **Premise (L23.1a): Outside explanation implies selection or record equivalence.**
+  If `T'` purports to explain `T` from the outside, then either it introduces
+  external selection (free bits) or it is record-equivalent to `T`. -/
+  meta_implies_selection_or_req : ∀ T' T, MetaExplanation T' T →
+    FailsPSC T' ∨ RecordEquivalent T' T
+    
+  /-- **Premise (L23.1b): Uniqueness of optimal representation.**
+  If two theories are both PSC-Optimal and record-equivalent, they are isomorphic. -/
+  optimal_unique_up_to_iso : ∀ T1 T2, 
+    TheorySpace.PSCOptimal toTheorySpace T1 → TheorySpace.PSCOptimal toTheorySpace T2 → RecordEquivalent T1 T2 → Isomorphic T1 T2
+    
+  /-- Record equivalence is an equivalence relation (symmetric and transitive). -/
+  req_symm : ∀ T1 T2, RecordEquivalent T1 T2 → RecordEquivalent T2 T1
+  req_trans : ∀ T1 T2 T3, RecordEquivalent T1 T2 → RecordEquivalent T2 T3 → RecordEquivalent T1 T3
 
 namespace ReflexiveTheorySpace
 
 variable {S : ReflexiveTheorySpace}
 
 /-- **Definition: Master Loop System.**
-A theory `T` forms a Master Loop if it is PSC-Optimal (no redundant free bits)
-and does not fail PSC (no external selectors). Execution and description are
-internally co-realized. -/
+A theory `T` forms a Master Loop if it is PSC-Optimal (no redundant free bits),
+does not fail PSC (no external selectors), and its execution is internal. -/
 def MasterLoop (S : ReflexiveTheorySpace) (T : S.Theory) : Prop :=
-  S.PSCOptimal T ∧ ¬ S.FailsPSC T
+  S.PSCOptimal T ∧ ¬ S.FailsPSC T ∧ S.ExecInternal T
 
 /-- **Theorem 23.1: Foundational Finality.**
 
@@ -68,18 +78,41 @@ theorem foundational_finality (S : ReflexiveTheorySpace)
     (T : S.Theory) (h_loop : S.MasterLoop T)
     (T' : S.Theory) (h_meta : S.MetaExplanation T' T) :
     S.FailsPSC T' ∨ S.Redundant T' T ∨ S.Isomorphic T' T := by
-  rcases S.meta_reduction T' T h_meta with h_fails | ⟨h_req, h_iso_or_complex⟩
+  -- By L23.1a, T' either fails PSC or is record-equivalent to T
+  rcases S.meta_implies_selection_or_req T' T h_meta with h_fails | h_req
   · -- Case 1: T' fails PSC
     exact Or.inl h_fails
-  · -- Case 2: T' is record-equivalent
-    rcases h_iso_or_complex with h_iso | h_complex
-    · -- Subcase 2a: T' is isomorphic
-      exact Or.inr (Or.inr h_iso)
-    · -- Subcase 2b: T' is strictly more complex
-      -- Since T is PSC-Optimal, K T <= K T'.
-      -- But h_complex gives K T < K T', which means it's redundant.
-      have h_redundant : S.Redundant T' T := ⟨h_req, h_complex⟩
+  · -- Case 2: T' is record-equivalent to T
+    -- We compare the complexity of T' and T
+    -- Since T is PSC-Optimal, K T <= K T'
+    have h_opt_T : S.PSCOptimal T := h_loop.1
+    have h_le : S.K T ≤ S.K T' := h_opt_T T' (by
+      -- S.RecordEquivalent is symmetric, but we need to prove it or assume it.
+      -- In TheorySpace, RecordEquivalent is usually an equivalence relation.
+      -- For this proof, we assume h_req : RecordEquivalent T' T implies RecordEquivalent T' T.
+      -- Wait, PSCOptimal takes `RecordEquivalent T' T`.
+      exact h_req)
+      
+    -- Now we check if K T < K T' or K T = K T'
+    rcases lt_or_eq_of_le h_le with h_lt | h_eq
+    · -- Subcase 2a: T' is strictly more complex -> Redundant
+      have h_redundant : S.Redundant T' T := ⟨h_req, h_lt⟩
       exact Or.inr (Or.inl h_redundant)
+    · -- Subcase 2b: T' has the same complexity. 
+      -- Since T is PSC-Optimal and T' has the same complexity and is record-equivalent,
+      -- T' must also be PSC-Optimal.
+      have h_opt_T' : S.PSCOptimal T' := by
+        intro T'' h_req''
+        -- K T' = K T <= K T''
+        have h_eq_symm : S.K T' = S.K T := h_eq.symm
+        rw [h_eq_symm]
+        -- We need RecordEquivalent T'' T
+        -- We have h_req'' : RecordEquivalent T'' T'
+        -- We have h_req : RecordEquivalent T' T
+        -- So RecordEquivalent T'' T by transitivity
+        exact h_opt_T T'' (S.req_trans T'' T' T h_req'' h_req)
+      -- Then by L23.1b, they are isomorphic
+      exact Or.inr (Or.inr (S.optimal_unique_up_to_iso T' T h_opt_T' h_opt_T h_req))
 
 /-! ### Level C: The Reflexive Fixed Point (Law = Description = Execution) -/
 

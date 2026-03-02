@@ -152,6 +152,7 @@ NemS/Physics/Rigidity.lean              # Paper 20: Rigidity of the Lagrangian (
 NemS/Terminality/ExistentialRigidity.lean # Paper 21: Existential Rigidity (The End of Choice)
 NemS/Adjudication/IrreducibleAgency.lean  # Paper 22: Irreducible Agency (Non-Algorithmic Adjudication)
 NemS/Reflexive/FinalityTheorem.lean     # Paper 23: Foundational Finality (The Master Loop)
+NemS/Cosmology/SemanticFloor.lean       # Paper 24: The Theorem of the Semantic Floor
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
