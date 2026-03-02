@@ -150,7 +150,7 @@ NemS/Optimality/Terminality.lean        # Paper 18: Semantic Terminality and end
 NemS/Adjudication/ExecutionNecessity.lean # Paper 19: Non-emulability of execution (Agentic Necessity)
 NemS/Physics/Rigidity.lean              # Paper 20: Rigidity of the Lagrangian (Mathematical Uniqueness)
 NemS/Terminality/ExistentialRigidity.lean # Paper 21: Existential Rigidity (The End of Choice)
-NemS/Adjudication/IrreducibleAgency.lean  # Paper 22: Irreducible Agency (Sentience as a Physical Constant)
+NemS/Adjudication/IrreducibleAgency.lean  # Paper 22: Irreducible Agency (Non-Algorithmic Adjudication)
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean

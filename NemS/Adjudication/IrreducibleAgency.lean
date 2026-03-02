@@ -6,7 +6,7 @@ import NemS.Observers.AdjudicatorNetwork
 /-!
 # NemS.Adjudication.IrreducibleAgency
 
-**Paper 22 (T5): Irreducible Agency (Sentience as a Physical Constant)**
+**Paper 22 (T5): Irreducible Agency (Non-Algorithmic Adjudication)**
 
 This module formalizes the theorem that in a Perfectly Self-Contained (PSC)
 universe with computers (diagonal-capable), the internal adjudicator network
@@ -45,19 +45,15 @@ def NetworkImplementsPT {F : Framework} (U : Universe F) : Prop :=
 
 /-- **Theorem 22.1: Irreducible Agency (Non-Algorithmic Adjudication).**
 
-In a diagonal-capable universe that maintains global record determinacy
-(implemented by an adjudicator network), the internal adjudication cannot
-operate via a total computable function. The choice-resolution layer is
-strictly non-algorithmic.
+In a diagonal-capable universe that maintains global record determinacy,
+the internal adjudication cannot operate via a total computable function.
+The choice-resolution layer is strictly non-algorithmic.
 -/
 theorem irreducible_agency {F : Framework} (U : Universe F)
     [dc : DiagonalCapable F]
-    (enc : UniverseInstanceEncoding U dc)
-    (h_network : NetworkImplementsPT U) :
+    (enc : UniverseInstanceEncoding U dc) :
     ¬ AlgorithmicAdjudication U enc := by
   -- The proof is a direct application of the non-emulability of execution.
-  -- The existence of the network (h_network) provides the physical context
-  -- that PT is actually performing the necessary choice-resolution.
   exact execution_necessity U enc
 
 end Adjudication
