@@ -29,10 +29,13 @@ structure GTESpace where
   -- The specific Lepton Seed (1, 73, 823)
   LeptonSeed : Triple
   -- A predicate for triples that satisfy the Semantic Floor (K_min)
+  -- This corresponds to the ridge level n=10, the unique level supporting a prime-locked, mirror-dual survivor pair.
   SatisfiesFloor : Triple → Prop
   -- A predicate for triples that satisfy the Quarter-Lock Rigidity (forces SM gauge group)
+  -- This corresponds to the symmetry protector k_M = k_{gen^2} + 1/4 k_{L^2}
   QuarterLockRigid : Triple → Prop
   -- A predicate for triples that satisfy Diffeomorphism Redundancy (Relational Anchoring)
+  -- Gravity is the enforcer of relational anchoring.
   RelationalAnchor : Triple → Prop
 
 namespace GTESpace
