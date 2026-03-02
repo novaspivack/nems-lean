@@ -25,9 +25,9 @@ structure TheorySpace where
   /-- `Extends T' T` means `T'` is a "deeper" or more detailed reductionist
   extension of `T` (adds micro-parameters). -/
   Extends : Theory → Theory → Prop
-  /-- `FailsFoundational T` means `T` requires external selectors not captured
+  /-- `FailsPSC T` means `T` requires external selectors not captured
   in the record language, violating Perfect Self-Containment (PSC). -/
-  FailsFoundational : Theory → Prop
+  FailsPSC : Theory → Prop
 
 namespace TheorySpace
 
@@ -36,9 +36,9 @@ variable {S : TheorySpace}
 /-- **Premise 1:** If `T'` extends `T` with new micro-parameters, then either
 these parameters don't change the macroscopic records (RecordEquivalent),
 or if they do introduce unrecorded differences, they act as external
-selectors (FailsFoundational). -/
+selectors (FailsPSC). -/
 def ExtensionDichotomy (S : TheorySpace) : Prop :=
-  ∀ T' T, S.Extends T' T → S.RecordEquivalent T' T ∨ S.FailsFoundational T'
+  ∀ T' T, S.Extends T' T → S.RecordEquivalent T' T ∨ S.FailsPSC T'
 
 /-- **Premise 2:** Adding micro-parameters that do not change the record facts
 strictly increases the descriptional complexity of the theory. -/
@@ -58,14 +58,14 @@ def Redundant (S : TheorySpace) (T' T : S.Theory) : Prop :=
 /-- **Theorem 18.1: Semantic Terminality.**
 
 If `T` is a PSC-Optimal theory, any deeper extension `T'` either fails
-foundational status or is physically redundant.
+PSC or is physically redundant.
 -/
 theorem semantic_terminality (S : TheorySpace)
     (h_dichotomy : S.ExtensionDichotomy)
     (h_complexity : S.ExtensionComplexity)
     (T : S.Theory) (h_opt : S.PSCOptimal T)
     (T' : S.Theory) (h_ext : S.Extends T' T) :
-    S.FailsFoundational T' ∨ S.Redundant T' T := by
+    S.FailsPSC T' ∨ S.Redundant T' T := by
   cases h_dichotomy T' T h_ext with
   | inl h_req =>
     right
