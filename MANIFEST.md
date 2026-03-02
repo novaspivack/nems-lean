@@ -136,6 +136,8 @@ NemS/ReverseBICS.lean
 NemS/ReverseBICS/BICS.lean
 NemS/ReverseBICS/BICS_Implies_NEMS.lean
 NemS/ReverseBICS/BICS_To_PSC.lean
+NemS/Adjudication/Basic.lean            # Paper 15: Choice points and Adjudicator definitions
+NemS/Adjudication/NoEmulation.lean      # Paper 15: No-Emulation theorem (no emulator exists)
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
