@@ -88,3 +88,6 @@ import NemS.Optimality
 
 -- Paper 19: The Non-Emulability of Execution
 import NemS.Adjudication.ExecutionNecessity
+
+-- Paper 20: The Rigidity of the Lagrangian
+import NemS.Physics.Rigidity
