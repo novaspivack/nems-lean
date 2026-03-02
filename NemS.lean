@@ -94,3 +94,6 @@ import NemS.Physics.Rigidity
 
 -- Paper 21: The Theorem of Existential Rigidity
 import NemS.Terminality.ExistentialRigidity
+
+-- Paper 22: Irreducible Agency (Sentience as a Physical Constant)
+import NemS.Adjudication.IrreducibleAgency
