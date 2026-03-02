@@ -146,6 +146,7 @@ NemS/Observers/RecordStability.lean     # Paper 17: Record stability and coheren
 NemS/Observers/AdjudicatorNetwork.lean  # Paper 17: Adjudicator networks and weak necessity
 NemS/RSMC/RSMC.lean                     # Paper 17: Reflexive Self-Model Closure (RSMC)
 NemS/RSMC/AdjudicatorImpliesRSMC.lean   # Paper 17: Adjudication requires RSMC conditional
+NemS/Optimality/Terminality.lean        # Paper 18: Semantic Terminality and end of reductionism
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean

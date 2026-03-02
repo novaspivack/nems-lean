@@ -82,3 +82,6 @@ import NemS.RelativePSC
 -- Paper 17: Necessary Adjudicators and RSMC
 import NemS.Observers
 import NemS.RSMC
+
+-- Paper 18: The Theorem of Semantic Terminality
+import NemS.Optimality
