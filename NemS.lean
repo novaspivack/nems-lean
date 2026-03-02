@@ -78,3 +78,7 @@ import NemS.Adjudication
 -- Paper 16: Relative PSC and Recursive NEMS
 import NemS.Adjudication.EffectiveEmulator
 import NemS.RelativePSC
+
+-- Paper 17: Necessary Adjudicators and RSMC
+import NemS.Observers
+import NemS.RSMC

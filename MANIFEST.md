@@ -142,6 +142,10 @@ NemS/Adjudication/EffectiveEmulator.lean # Paper 16: Stronger no-emulation theor
 NemS/RelativePSC/FrameworkA.lean        # Paper 16: Subsystem framework definitions
 NemS/RelativePSC/RelativeNEMS.lean      # Paper 16: Relative NEMS and Recursive NEMS theorem
 NemS/RelativePSC/DiagonalHeredity.lean  # Paper 16: Heredity of the diagonal barrier
+NemS/Observers/RecordStability.lean     # Paper 17: Record stability and coherence constraints
+NemS/Observers/AdjudicatorNetwork.lean  # Paper 17: Adjudicator networks and weak necessity
+NemS/RSMC/RSMC.lean                     # Paper 17: Reflexive Self-Model Closure (RSMC)
+NemS/RSMC/AdjudicatorImpliesRSMC.lean   # Paper 17: Adjudication requires RSMC conditional
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
 lakefile.lean
