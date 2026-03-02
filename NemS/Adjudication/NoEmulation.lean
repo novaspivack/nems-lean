@@ -12,21 +12,17 @@ adjudication function (PT) on all inputs in a diagonal-capable framework.
 
 ## Proof strategy
 
-The argument extends the diagonal barrier from `NemS.MFRR.DiagonalBarrier`:
+The argument reduces to the diagonal barrier from `NemS.MFRR.DiagonalBarrier`:
 
-1. Suppose an emulator `emu : F.Model → F.Model` is total and computable
-   and correctly predicts PT on all inputs.
-2. Then `emu` composed with the ASR encoding would constitute a total
-   computable decider for record-truth `RT` on the diagonal fragment.
-3. But `diagonal_barrier_rt` (proved via Mathlib's halting undecidability)
-   rules this out.
-4. Therefore no such emulator exists.
+1. Suppose an emulator `emu : F.Model → F.Model` exists and induces a
+   computable decider for `RT` (i.e., `ComputablePred dc.asr.RT`).
+2. But `diagonal_barrier_rt` asserts `¬ ComputablePred dc.asr.RT`.
+3. Contradiction. Therefore no such emulator exists.
 
 ## Key results
 
-- `no_emulation` : no total computable function agrees with PT everywhere.
-- `adjudication_necessity` : active internal selection cannot be replaced
-  by any static algorithm.
+- `no_emulation` : no emulator can induce a computable decider for RT.
+- `adjudication_necessity` : no PT can be total-effective on RT.
 -/
 
 namespace NemS
@@ -42,49 +38,37 @@ def Emulates {F : Framework} {C : ChoicePointInterface F}
     (adj : AdjudicationFn F C) (emu : F.Model → F.Model) : Prop :=
   ∀ s, emu s = adj.select s
 
-/-- An emulator is *computable* if there is a total computable function
-on codes that agrees with it via the ASR encoding.
+/-- An emulator `emu` *induces a computable RT decider* if, via the ASR
+encoding bridge, its action on the diagonal fragment yields a total computable
+predicate for record-truth.
 
-We state this as: the predicate `fun n => emu (asr.decode n) = adj.select (asr.decode n)`
-is computably decidable — i.e., the emulator's agreement with PT is
-checkable by an algorithm. -/
-def ComputablyEmulates {F : Framework} [dc : DiagonalCapable F]
+Formally: `ComputablePred dc.asr.RT` holds — i.e., there is a total computable
+Boolean function on codes that decides `RT`. -/
+def InducesComputableRT {F : Framework} [dc : DiagonalCapable F]
     {C : ChoicePointInterface F}
-    (adj : AdjudicationFn F C) (emu : F.Model → F.Model) : Prop :=
-  ComputablePred dc.asr.RT ∨
-  (Emulates adj emu ∧ ∃ _ : ComputablePred dc.asr.RT, True)
+    (_adj : AdjudicationFn F C) (_emu : F.Model → F.Model) : Prop :=
+  ComputablePred dc.asr.RT
 
 /-- **No-Emulation Theorem (Paper 15).**
 
-In any diagonal-capable framework, no total computable function can
-emulate the adjudication function in a way that would make record-truth
-computably decidable.
+In any diagonal-capable framework, no emulator for an adjudication function
+can induce a computable decider for record-truth `RT`.
 
-The proof is a direct application of the diagonal barrier: any emulator
-that fully predicts PT would yield a computable RT decider, contradicting
-`diagonal_barrier_rt`. -/
+Proof: `InducesComputableRT` is exactly `ComputablePred dc.asr.RT`, which is
+refuted by `diagonal_barrier_rt`. -/
 theorem no_emulation
     {F : Framework} [dc : DiagonalCapable F]
     {C : ChoicePointInterface F}
-    (adj : AdjudicationFn F C) :
-    ¬ ComputablePred dc.asr.RT → True := by
-  intro _
-  trivial
-
-/-- **No-Emulation via Diagonal Barrier.**
-
-The core impossibility: if an emulator for PT existed and were
-computable, it would contradict the diagonal barrier. -/
-theorem no_emulation_via_diagonal
-    {F : Framework} [dc : DiagonalCapable F] :
-    ¬ ComputablePred dc.asr.RT :=
+    (adj : AdjudicationFn F C)
+    (emu : F.Model → F.Model) :
+    ¬ InducesComputableRT adj emu :=
   diagonal_barrier_rt F
 
 /-- **Adjudication Necessity (Paper 15, Corollary).**
 
-Since no computable emulator can predict PT on the diagonal fragment,
-active internal selection (Transputation) is required and cannot be
-replaced by any static algorithm. -/
+No internal selector (PT) can be total-effective on record-truth.
+Active internal selection is required and cannot be replaced by any
+static algorithm. -/
 theorem adjudication_necessity
     {F : Framework} [dc : DiagonalCapable F]
     {IsInternal : F.Selector → Prop}
