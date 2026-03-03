@@ -45,6 +45,21 @@ universe u v
 
 /-! ## The primary two-sorted Master Fixed-Point Theorem -/
 
+namespace SRI0'
+
+variable {Obj : Type u} {Code : Type v} [S : SRI0' Obj Code]
+
+/-- **Master Fixed-Point Theorem (MFP-1) — two-sorted form (minimal interface).**
+
+For any transformer `F : Code → Obj`, there exists `p : Obj` with
+`S.Equiv p (F (S.quote p))`.  Uses only `repr_spec`; no `eval_quote` required. -/
+theorem master_fixed_point (F : Code → Obj) :
+    ∃ p : Obj, S.Equiv p (F (S.quote p)) :=
+  let G : Code → Obj := fun c => F (S.quote (S.run c c))
+  ⟨S.run (S.repr G) (S.repr G), S.repr_spec G (S.repr G)⟩
+
+end SRI0'
+
 namespace CSRI'
 
 variable {Obj : Type u} {Code : Type v} [S : CSRI' Obj Code]
@@ -52,18 +67,10 @@ variable {Obj : Type u} {Code : Type v} [S : CSRI' Obj Code]
 /-- **Master Fixed-Point Theorem (MFP-1) — two-sorted form.**
 
 For any transformer `F : Code → Obj`, there exists `p : Obj` with
-`S.Equiv p (F (S.quote p))`.
-
-This is the mixed fixed point: `p` is an object semantically equivalent
-to `F` applied to the code of `p`.  The proof uses only `repr_spec`.
-
-**Proof**: Set `G c := F (quote (run c c))`, `d := repr G`.
-Then `run d d ≃ G d = F (quote (run d d)) = F (quote p)` where `p = run d d`. -/
-theorem master_fixed_point
-    (F : Code → Obj) :
+`S.Equiv p (F (S.quote p))`.  Inherited from SRI₀′; the proof uses only `repr_spec`. -/
+theorem master_fixed_point (F : Code → Obj) :
     ∃ p : Obj, S.Equiv p (F (S.quote p)) :=
-  let G : Code → Obj := fun c => F (S.quote (S.run c c))
-  ⟨S.run (S.repr G) (S.repr G), S.repr_spec G (S.repr G)⟩
+  SRI0'.master_fixed_point F
 
 /-- **Code-level fixed point** (two-sorted form, alternative formulation).
 

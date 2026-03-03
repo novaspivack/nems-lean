@@ -4,7 +4,7 @@
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8046 jobs, 0 errors, **6 `sorry`** (see below), **zero custom axioms**
+**Build result:** 8090 jobs, 0 errors, **6 `sorry`** (see below), **zero custom axioms**
 
 ## v2.2.0 additions: General Self-Reference Calculus
 
@@ -12,6 +12,19 @@ A new `SelfReference` library has been added alongside `NemS`.  It extracts
 the NEMS diagonal machinery into an abstract interface (the SRI) and proves
 a master fixed-point theorem (MFP-1) and master diagonal barrier (MFP-2)
 once, recovering Gödel, Kleene, Löb, and NEMS as instances.
+
+A new `Closure` library provides the theory-closure and audit toolkit (Group A):
+observational semantics (`ObsSemantics`), world-types, selectors (sections of
+the quotient), parameterized internality (`InternalPred`), audit soundness
+(decidable-on-world-type ⇒ invariant), and the A0 bridge: when a theory has
+internal representability (`TheoryWithInternalRepr`), it yields an `SRI'` instance
+so that SelfReference's MFP-1 and diagonal barrier apply.  Zero sorrys, zero
+custom axioms.  The Closure library includes: **Canonicalization** (gauge-fixing,
+selector from canon), **Effective** (EffectiveSemantics, BoundedCover), **BoundedSelector**
+(classical selector from bounded cover + canon; total bounded-search selector when
+`DecidableEq WorldType`), and **Examples.FintypeWorld** (toy: finite worlds ⇒
+effective semantics + bounded cover ⇒ selector).  See `Closure/Theorems/BoundedSelector.lean`
+and `Closure/Examples/FintypeWorld.lean`.
 
 ### New sorrys (v2.2.0)
 
@@ -124,6 +137,31 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/ReverseBICS/BICS_Implies_NEMS.lean` | `bics_implies_nems` | **BICS ⇒ NEMS (reverse direction flagship)** |
 | `NemS/ReverseBICS/BICS_Implies_NEMS.lean` | `bics_rules_out_external` | BICS ⇒ ¬ NeedsExternalSelection |
 
+### Closure (v2.2.0, Paper 27)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `Closure/Theorems/AuditSoundness.lean` | `audit_soundness` | Decidable-on-world-type ⇒ invariant |
+| `Closure/Theorems/AuditSoundness.lean` | `not_invariant_implies_not_decidable_on_world_type` | ¬ invariant ⇒ ¬ decidable on world-type |
+| `Closure/Theorems/BoundedSelector.lean` | `boundedSelectorClassical` | Selector from BoundedCover + Canonicalization (classical) |
+| `Closure/Theorems/BoundedSelector.lean` | `nonempty_selector_of_bounded_cover` | BoundedCover + Canonicalization ⇒ Nonempty (Selector) |
+| `Closure/Theorems/BoundedSelector.lean` | `boundedSelectorAsSelector` | Total selector by bounded search when DecidableEq WorldType |
+| `Closure/Examples/FintypeWorld.lean` | `effectiveSemanticsOfFintype` | Fintype World + DecidableRel ObsEquiv ⇒ EffectiveSemantics |
+| `Closure/Examples/FintypeWorld.lean` | `boundedCoverOfFintype` | Fintype ⇒ BoundedCover (cover = Fintype.card) |
+| `Closure/Examples/FintypeWorld.lean` | `selectorOfFintypeWorld` | Fintype world ⇒ selector (nailed constructive instance) |
+
+### Reflection (v2.3.0, Paper 28)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `Reflection/Core/SRI_R.lean` | `SRI_R` class | Restricted repr: repr only for F ∈ R |
+| `Reflection/Core/SRI_R.lean` | `DiagClosed` | R closed under diagonalization template |
+| `Reflection/Core/SRI_R.lean` | `sri0'_to_sri_r` | SRI₀′ induces SRI_R with R = allRepresentable |
+| `Reflection/Theorems/DiagonalClosure.lean` | `restricted_master_fixed_point` | **Diagonal Closure Theorem**: DiagClosed R ⇒ ∀F∈R, ∃p, p ≃ F(quote p) |
+| `Reflection/Hierarchy/Examples.lean` | `allRepresentable_restricted_fixed_point` | Recovery: R = allRepresentable ⇒ full MFP-1 |
+| `Reflection/Hierarchy/Separation.lean` | `not_diagClosed_identity_only` | R = {id} is not diagonally closed |
+| `Reflection/Hierarchy/Separation.lean` | `method_level_separation` | ∃ F ∈ R such that G_F ∉ R (identity-only) |
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -178,6 +216,29 @@ NemS/Cosmology/SemanticFloor.lean       # Paper 24: The Theorem of the Semantic 
 NemS/Bridge/UnifiedRigidity.lean        # Paper 25: The Unified Rigidity Theorem
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
+Closure.lean
+Closure/Core/ObsSemantics.lean
+Closure/Core/Selector.lean
+Closure/Core/Internal.lean
+Closure/Core/Canonicalization.lean
+Closure/Core/Effective.lean
+Closure/Theorems/AuditSoundness.lean
+Closure/Theorems/Preservation.lean
+Closure/Theorems/BoundedSelector.lean
+Closure/Bridge/SelfReferenceInstance.lean
+Closure/Examples/FintypeWorld.lean
+SelfReference.lean
+SelfReference/Core/Interface.lean
+SelfReference/Core/Representability.lean
+SelfReference/Core/FixedPoint.lean
+SelfReference/Consequences/DiagonalBarrier.lean
+SelfReference/Instances/NEMS.lean
+Reflection.lean
+Reflection/Core/SRI_R.lean
+Reflection/Theorems/DiagonalClosure.lean
+Reflection/Hierarchy/Examples.lean
+Reflection/Hierarchy/Separation.lean
+Reflection/Bridge/ClosureInstance.lean
 lakefile.lean
 lean-toolchain
 ```
@@ -190,7 +251,7 @@ lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (8052 jobs).`
+Expected output: `Build completed successfully (8090 jobs).`
 
 ## What is axiomatized vs. proved
 
@@ -272,4 +333,6 @@ This artifact formalizes the core spine of:
 - *Semantic Closure Under No External Model Selection* (NEMS Theorem paper)
 - *The NEMS Framework* (overview document)
 - *From NEMS to MFRR: A Machine-Checked Bridge* (Paper 21)
-- *General Self-Reference Calculus* (forthcoming — the SelfReference library)
+- *General Self-Reference Calculus* (Paper 26 — the SelfReference library)
+- *A No-Free-Bits Calculus for Determinacy and Outsourcing* (Paper 27 — the Closure library: audits, canonicalization, effective semantics, BoundedSelector, FintypeWorld)
+- *Reflection as a Resource* (Paper 28 — the Reflection library: SRI_R, DiagClosed, Diagonal Closure Theorem, restricted_master_fixed_point, hierarchy, bridge from Closure)

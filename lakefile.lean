@@ -13,3 +13,9 @@ lean_lib NemS where
 
 lean_lib SelfReference where
   globs := #[.submodules `SelfReference]
+
+lean_lib Closure where
+  globs := #[.submodules `Closure]
+
+lean_lib Reflection where
+  globs := #[.submodules `Reflection]

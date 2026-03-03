@@ -69,55 +69,52 @@ universe u v
 
 /-! ## The two-sorted Self-Reference Interface -/
 
-/-- The **Self-Reference Interface** (two-sorted version).
+/-- **Minimal Self-Reference Interface (SRI₀′).**  Repr-spec only; sufficient for MFP-1.
 
-An `SRI' Obj Code` bundles:
-- an equivalence `Equiv` on `Obj` (the semantic level),
-- a quotation map `quote : Obj → Code`,
-- a two-argument evaluation `run : Code → Code → Obj`,
-- a representation operator `repr : (Code → Obj) → Code`,
-- the representation axiom `repr_spec`,
-- the round-trip law `eval_quote`.
-
-`repr_spec` states: `run (repr F) c ≃ F c` for all `F : Code → Obj`, `c : Code`.
-`eval_quote` states: `run (quote x) (quote x) ≃ x` for all `x : Obj`.
-
-The key design point: `Equiv` lives on `Obj` (the semantic level), while
-`Code` is a purely syntactic type.  This matches all concrete instances:
-Gödel numbers, program indices, and record-statement codes are all just `ℕ`,
-while the semantic equivalence (provable biconditional, extensional program
-equality, observational equivalence) lives on the object side. -/
-class SRI' (Obj : Type u) (Code : Type v) where
-  /-- Extensional equivalence on objects. -/
-  Equiv : Obj → Obj → Prop
-  /-- `Equiv` is reflexive. -/
+Bundles: `Equiv`, `quote`, `run`, `repr`, and `repr_spec`.  No `eval_quote`.
+Gödel's diagonal lemma is at this level; Kleene/NEMS need the re-entry extension. -/
+class SRI0' (Obj : Type u) (Code : Type v) where
+  Equiv       : Obj → Obj → Prop
   equiv_refl  : ∀ x, Equiv x x
-  /-- `Equiv` is symmetric. -/
   equiv_symm  : ∀ {x y}, Equiv x y → Equiv y x
-  /-- `Equiv` is transitive. -/
   equiv_trans : ∀ {x y z}, Equiv x y → Equiv y z → Equiv x z
-  /-- Quotation: internalize an object as its code. -/
-  quote : Obj → Code
-  /-- Two-argument evaluation: run program-code `e` on input-code `c`, yielding an object. -/
-  run   : Code → Code → Obj
-  /-- Representation: any `Code → Obj` transformer has a code. -/
-  repr  : (Code → Obj) → Code
-  /-- Representation axiom: `run (repr F) c ≃ F c`. -/
-  repr_spec  : ∀ (F : Code → Obj) (c : Code), Equiv (run (repr F) c) (F c)
+  quote       : Obj → Code
+  run         : Code → Code → Obj
+  repr        : (Code → Obj) → Code
+  repr_spec   : ∀ (F : Code → Obj) (c : Code), Equiv (run (repr F) c) (F c)
+
+/-- **Self-Reference Interface (SRI′)** — re-entry extension of SRI₀′.
+
+Adds `eval_quote`: `run (quote x) (quote x) ≃ x`.  Needed for the unityped
+fixed-point corollary and for Kleene/NEMS instances. -/
+class SRI' (Obj : Type u) (Code : Type v) extends SRI0' Obj Code where
   /-- Round-trip law: `run (quote x) (quote x) ≃ x`. -/
   eval_quote : ∀ (x : Obj), Equiv (run (quote x) (quote x)) x
+
+namespace SRI0'
+
+variable {Obj : Type u} {Code : Type v} [S : SRI0' Obj Code]
+
+theorem equiv_is_equivalence : Equivalence (SRI0'.Equiv (Obj := Obj) (Code := Code)) :=
+  ⟨SRI0'.equiv_refl, SRI0'.equiv_symm, SRI0'.equiv_trans⟩
+
+def equivSetoid : Setoid Obj where
+  r     := SRI0'.Equiv (Obj := Obj) (Code := Code)
+  iseqv := equiv_is_equivalence
+
+end SRI0'
 
 namespace SRI'
 
 variable {Obj : Type u} {Code : Type v} [S : SRI' Obj Code]
 
-/-- `Equiv` is an `Equivalence`. -/
-theorem equiv_is_equivalence : Equivalence (SRI'.Equiv (Obj := Obj) (Code := Code)) :=
-  ⟨SRI'.equiv_refl, SRI'.equiv_symm, SRI'.equiv_trans⟩
+/-- `Equiv` is an `Equivalence` (inherited from SRI₀′). -/
+theorem equiv_is_equivalence : Equivalence (SRI0'.Equiv (Obj := Obj) (Code := Code)) :=
+  ⟨SRI0'.equiv_refl, SRI0'.equiv_symm, SRI0'.equiv_trans⟩
 
 /-- The `Setoid` induced by `Equiv`. -/
 def equivSetoid : Setoid Obj where
-  r     := SRI'.Equiv (Obj := Obj) (Code := Code)
+  r     := SRI0'.Equiv (Obj := Obj) (Code := Code)
   iseqv := equiv_is_equivalence
 
 end SRI'
