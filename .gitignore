@@ -10,3 +10,4 @@
 *.hash
 *.json
 build/
+.DS_Store
