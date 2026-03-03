@@ -82,36 +82,23 @@ theorem foundational_finality (S : ReflexiveTheorySpace)
   rcases S.meta_implies_selection_or_req T' T h_meta with h_fails | h_req
   · -- Case 1: T' fails PSC
     exact Or.inl h_fails
-  · -- Case 2: T' is record-equivalent to T
-    -- We compare the complexity of T' and T
-    -- Since T is PSC-Optimal, K T <= K T'
+  · -- Case 2: T' is record-equivalent to T.
+    -- PSC-Optimality of T gives K T ≤ K T'.
     have h_opt_T : S.PSCOptimal T := h_loop.1
-    have h_le : S.K T ≤ S.K T' := h_opt_T T' (by
-      -- S.RecordEquivalent is symmetric, but we need to prove it or assume it.
-      -- In TheorySpace, RecordEquivalent is usually an equivalence relation.
-      -- For this proof, we assume h_req : RecordEquivalent T' T implies RecordEquivalent T' T.
-      -- Wait, PSCOptimal takes `RecordEquivalent T' T`.
-      exact h_req)
-      
-    -- Now we check if K T < K T' or K T = K T'
+    have h_le : S.K T ≤ S.K T' := h_opt_T T' h_req
     rcases lt_or_eq_of_le h_le with h_lt | h_eq
-    · -- Subcase 2a: T' is strictly more complex -> Redundant
-      have h_redundant : S.Redundant T' T := ⟨h_req, h_lt⟩
-      exact Or.inr (Or.inl h_redundant)
-    · -- Subcase 2b: T' has the same complexity. 
-      -- Since T is PSC-Optimal and T' has the same complexity and is record-equivalent,
-      -- T' must also be PSC-Optimal.
+    · -- Subcase 2a: T' is strictly more complex; it is therefore redundant.
+      exact Or.inr (Or.inl ⟨h_req, h_lt⟩)
+    · -- Subcase 2b: T' has the same complexity as T.
+      -- Since T' is record-equivalent to T and K T' = K T, T' is also PSC-Optimal:
+      -- for any T'' record-equivalent to T', transitivity gives T'' record-equivalent to T,
+      -- so K T ≤ K T'' by h_opt_T, and K T' = K T rewrites to K T' ≤ K T''.
       have h_opt_T' : S.PSCOptimal T' := by
         intro T'' h_req''
-        -- K T' = K T <= K T''
         have h_eq_symm : S.K T' = S.K T := h_eq.symm
         rw [h_eq_symm]
-        -- We need RecordEquivalent T'' T
-        -- We have h_req'' : RecordEquivalent T'' T'
-        -- We have h_req : RecordEquivalent T' T
-        -- So RecordEquivalent T'' T by transitivity
         exact h_opt_T T'' (S.req_trans T'' T' T h_req'' h_req)
-      -- Then by L23.1b, they are isomorphic
+      -- Two PSC-Optimal theories that are record-equivalent are isomorphic (L23.1b).
       exact Or.inr (Or.inr (S.optimal_unique_up_to_iso T' T h_opt_T' h_opt_T h_req))
 
 /-! ### Level C: The Reflexive Fixed Point (Law = Description = Execution) -/

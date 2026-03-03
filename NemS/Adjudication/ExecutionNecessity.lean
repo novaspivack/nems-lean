@@ -77,23 +77,21 @@ theorem execution_necessity {F : Framework} (U : Universe F)
   -- Construct the decider
   let decider := fun n => enc.extract_RT (A.compute (enc.diagInstance n))
   
-  -- The decider is computable by assumption
+  -- Computability of the decider follows directly from h_effective.
   have h_comp : Computable decider := h_effective
   
-  -- The decider is correct because A emulates PT on diagonal instances
+  -- Correctness: A emulates PT on diagonal instances, and enc.correctness
+  -- bridges the PT output back to RT, so decider n = true ↔ dc.asr.RT n.
   have h_correct : ∀ n, decider n = true ↔ dc.asr.RT n := by
     intro n
     have h_eq : A.compute (enc.diagInstance n) = U.PT (enc.diagInstance n) := h_emulates n
-    -- We need to unfold decider to substitute
     have h_dec_eq : decider n = enc.extract_RT (A.compute (enc.diagInstance n)) := rfl
     rw [h_dec_eq, h_eq]
     exact enc.correctness n
 
-  -- Convert the boolean decider into a ComputablePred
-  have h_comp_pred : ComputablePred dc.asr.RT := by
-    apply computable_pred_of_bool dc.asr.RT decider h_comp h_correct
-
-  -- Contradict the diagonal barrier
+  -- Promote the Boolean decider to a ComputablePred and apply the diagonal barrier.
+  have h_comp_pred : ComputablePred dc.asr.RT :=
+    computable_pred_of_bool dc.asr.RT decider h_comp h_correct
   exact diagonal_barrier_rt F h_comp_pred
 
 end Adjudication

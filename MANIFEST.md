@@ -1,10 +1,32 @@
-# nems-lean v2.0.1 — Artifact Manifest
+# nems-lean v2.2.0 — Artifact Manifest
 
-**Release:** v2.1.0  
-**Date:** February 2026  
+**Release:** v2.2.0  
+**Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8040 jobs, 0 errors, **4 `sorry`** (see below), **zero custom axioms**
+**Build result:** 8046 jobs, 0 errors, **6 `sorry`** (see below), **zero custom axioms**
+
+## v2.2.0 additions: General Self-Reference Calculus
+
+A new `SelfReference` library has been added alongside `NemS`.  It extracts
+the NEMS diagonal machinery into an abstract interface (the SRI) and proves
+a master fixed-point theorem (MFP-1) and master diagonal barrier (MFP-2)
+once, recovering Gödel, Kleene, Löb, and NEMS as instances.
+
+### New sorrys (v2.2.0)
+
+**5. `nems_rt_no_total_bool_decider` fixed-point step** (`SelfReference/Instances/NEMS.lean:96`):
+The fixed point `∃ d, d = F d` for the negating transformer `F n := if decide n = true then false_n else true_n`.
+Requires the Kleene recursion theorem for ℕ.  The NEMS diagonal barrier
+is already proved without sorry in `NemS.Diagonal.Barrier` via the halting
+reduction; this sorry is in the *abstract route* only.
+
+**6. `lob` HBL chaining** (`SelfReference/Instances/Loeb.lean:56`):
+The Hilbert–Bernays–Löb derivability conditions chaining in Löb's theorem.
+The diagonal lemma step is fully proved.  The HBL chaining is standard
+modal logic (Löb 1955, Boolos 1993).
+
+---
 
 ### Sorry status
 
@@ -189,9 +211,65 @@ Expected output: `Build completed successfully (8052 jobs).`
 
 ### Summary: the entire library has **zero custom axioms** beyond Lean's kernel axioms.
 
+---
+
+## General Self-Reference Calculus (v2.2.0)
+
+### SelfReference.Core
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `SelfReference/Core/Interface.lean` | `SRI` typeclass | Abstract self-reference interface: `Equiv`, `quote`, `run`, `repr`, `repr_spec`, `eval_quote` |
+| `SelfReference/Core/Interface.lean` | `CSRI` typeclass | SRI + `quote_cong` (congruence of quotation) |
+| `SelfReference/Core/Representability.lean` | `diag` | Diagonal code: `repr (fun c => F (quote (run c c)))` |
+| `SelfReference/Core/Representability.lean` | `diag_spec` | `run (diag F) c ≃ F (quote (run c c))` |
+| `SelfReference/Core/Representability.lean` | `diag_code_fixed_point` | `run (diag F) (quote (diag F)) ≃ F (quote (diag F))` |
+| `SelfReference/Core/FixedPoint.lean` | `CSRI.master_fixed_point` | **MFP-1**: ∀ F congruent, ∃ d, d ≃ F d |
+| `SelfReference/Core/FixedPoint.lean` | `CSRI.master_fixed_point_code` | Code-level fixed point: ∃ d, run d (quote d) ≃ F (quote d) |
+
+### SelfReference.Consequences
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `SelfReference/Consequences/DiagonalBarrier.lean` | `no_total_decider` | **MFP-2**: Extensional nontrivial T + total decider → False |
+| `SelfReference/Consequences/DiagonalBarrier.lean` | `no_total_decider_nontrivial` | No extensional nontrivial predicate has a total decider |
+
+### SelfReference.Instances
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `SelfReference/Instances/Godel.lean` | `godel_diagonal_lemma` | **Gödel diagonal lemma**: ∀ F congruent, ∃ ψ, ProvBic ψ (F ψ) |
+| `SelfReference/Instances/Godel.lean` | `godel_sentence` | Gödel sentence: ∃ ψ, ProvBic ψ (neg (prov ψ)) |
+| `SelfReference/Instances/Kleene.lean` | `kleene_recursion_theorem` | **Kleene recursion theorem**: ∀ F, ∃ e, ExtEq e (F e) |
+| `SelfReference/Instances/Kleene.lean` | `rogers_fixed_point` | Rogers' fixed-point theorem |
+| `SelfReference/Instances/NEMS.lean` | `nems_rt_no_total_bool_decider` | NEMS diagonal barrier (abstract form, 1 sorry for fixed-point step) |
+| `SelfReference/Instances/Loeb.lean` | `lob` | **Löb's theorem**: T ⊢ □φ → φ implies T ⊢ φ (diagonal step proved; HBL chaining 1 sorry) |
+
+### SelfReference.Minimality
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `SelfReference/Minimality/Countermodels.lean` | `bool_not_no_fixed_point` | `not` has no fixed point on Bool |
+| `SelfReference/Minimality/Countermodels.lean` | `shift_breaks_eval_quote` | Shifting `quote` breaks `eval_quote` |
+| `SelfReference/Minimality/StratifiedReflection.lean` | `stratum1_not_implies_stratum2` | Partial internalization does not imply full internalization |
+| `SelfReference/Minimality/StratifiedReflection.lean` | `universal_diagonal_trichotomy` | **Universal Diagonal Trichotomy**: every system is Stratum 0, 1, or 2 |
+| `SelfReference/Minimality/StratifiedReflection.lean` | `stratum2_implies_diagonal_barrier` | Stratum 2 (full SRI) implies the diagonal barrier |
+
+### The Universal Diagonal Trichotomy
+
+The flagship result of the SelfReference library:
+
+> **Theorem** (`universal_diagonal_trichotomy`): For any type `α`, exactly one of:
+> 1. It lacks Stratum 1 structure (no internalization — NEMS Class I).
+> 2. It has Stratum 1 but not Stratum 2 (partial internalization — NEMS Class IIa).
+> 3. It has Stratum 2 (full internalization — NEMS Class IIb, diagonal barrier applies).
+
+NEMS I/IIa/IIb correspond precisely to Strata 0/1/2.
+
 ## Companion papers
 
 This artifact formalizes the core spine of:
 - *Semantic Closure Under No External Model Selection* (NEMS Theorem paper)
 - *The NEMS Framework* (overview document)
 - *From NEMS to MFRR: A Machine-Checked Bridge* (Paper 21)
+- *General Self-Reference Calculus* (forthcoming — the SelfReference library)

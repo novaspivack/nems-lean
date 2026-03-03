@@ -10,3 +10,6 @@ require mathlib from git
 @[default_target]
 lean_lib NemS where
   globs := #[.submodules `NemS]
+
+lean_lib SelfReference where
+  globs := #[.submodules `SelfReference]

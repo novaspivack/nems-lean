@@ -35,21 +35,10 @@ theorem bics_implies_nems {F : Framework} (h : BICS F)
   unfold NEMS NeedsExternalSelection
   push_neg
   intro hNC
-  -- Assume non-categorical. We need: ∃ S : F.Selector, IsInternal S.
-  -- BICS provides internal state ρ and record-to-effect map.
-  -- The Born probabilities are model-independent (same ρ for all M).
-  -- By BICS completeness: if M1, M2 agree on all probabilities, they're ObsEq.
-  -- Since probabilities are model-independent, all models are ObsEq.
-  -- This contradicts non-categoricity.
-  -- Therefore: the assumption "non-categorical" is false, OR an internal selector exists.
-  -- Actually, the logic is: NEMS says ¬(non-cat ∧ ¬∃ internal selector).
-  -- We need to show: ¬(non-cat ∧ ¬∃ internal selector).
-  -- Equivalently: non-cat → ∃ internal selector.
-  -- From BICS: probabilities are model-independent (prob_is_born uses same ρ for all M).
-  -- So for any M1, M2: probTruth M1 r = Re(Tr(ρ·recEff(r))) = probTruth M2 r.
-  -- By no_external_completion_bits: M1 ObsEq M2.
-  -- So all models are ObsEq, hence categorical.
-  -- This contradicts hNC.
+  -- The BICS Born probabilities are model-independent: `prob_is_born` uses the same
+  -- internal state ρ for every model M, so probTruth M1 r = probTruth M2 r for all M1, M2.
+  -- By `no_external_completion_bits`, any two models that agree on all probabilities are ObsEq.
+  -- Therefore all models are ObsEq, making the framework categorical — contradicting hNC.
   exfalso
   have hall_eq : ∀ M1 M2 : F.Model, F.ObsEq M1 M2 := by
     intro M1 M2

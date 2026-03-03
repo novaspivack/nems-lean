@@ -44,10 +44,10 @@ theorem distinct_evaluators_not_obsEq
     ¬ (∀ r : F.Rec ⊕ E,
         (F.selfEncode E).Truth ⟨M, e₁⟩ r ↔ (F.selfEncode E).Truth ⟨M, e₂⟩ r) := by
   intro h
-  -- (h (Sum.inr e₁)).mp rfl : (F.selfEncode E).Truth ⟨M, e₂⟩ (Sum.inr e₁)
-  -- which unfolds to e₂ = e₁; we need e₁ ≠ e₂, so use .symm
+  -- The trace record (Sum.inr e₁) is true for ⟨M, e₁⟩ by reflexivity.
+  -- Transferring via h gives (F.selfEncode E).Truth ⟨M, e₂⟩ (Sum.inr e₁), which unfolds to e₂ = e₁.
+  -- Symmetry yields e₁ = e₂, contradicting hne.
   have h21 : (F.selfEncode E).Truth ⟨M, e₂⟩ (Sum.inr e₁) := (h (Sum.inr e₁)).mp rfl
-  -- h21 : e₂ = e₁
   exact hne h21.symm
 
 end SelfEncoding

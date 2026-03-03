@@ -106,3 +106,6 @@ import NemS.Cosmology.SemanticFloor
 
 -- Paper 25: The Unified Rigidity Theorem
 import NemS.Bridge.UnifiedRigidity
+
+-- General Self-Reference Calculus (NEMS as seed crystal)
+import SelfReference
