@@ -1,6 +1,6 @@
 # nems-lean: Overview for users
 
-This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
+This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
 
 ---
 
@@ -84,6 +84,7 @@ So: Closure defines the objects/codes/fragments and what “internal” means; S
 
 - **SelfReference** is the “universal self-reference kernel”: minimal axioms (repr_spec, then eval_quote for the unityped corollary) and two master theorems. Any system that implements the interface gets the theorems.
 - **Closure** is the “theory/audit” layer: observational semantics, selectors, internality, and audit soundness. When a theory in this sense has internal representability, the **A0 bridge** turns it into an SRI' instance, so SelfReference applies.
+- **Reflection** (Paper 28) adds stratified representability (SRI_R, DiagClosed); **SelectorStrength** (29) the barrier hierarchy; **Learning** (30) the self-certifier barrier; **EpistemicAgency** (31) society as verification protocol; **SelfImprovement** (32) upgrade-certifier barrier and society-improves-improvement; **SelfAwareness** (33) limits of self-awareness (hierarchy, selector necessity, rightness barrier).
 - **NemS** is the main application: NEMS framework, diagonal barrier (Theorem 5.9), PSC, etc. It uses both the concrete diagonal machinery and (where applicable) the SelfReference instances.
 
 So for external use:
@@ -146,11 +147,60 @@ The **Learning** library applies the SelectorStrength barrier to **self-trust in
 
 ---
 
-## 6. References
+## 6. EpistemicAgency (Paper 31)
+
+### What it is
+
+The **EpistemicAgency** library turns the Papers 26–30 spine into a theorem-grade theory of **epistemic agency and social verification**. It formalizes society as a verification protocol (finite verifiers, soundness-on-coverage, admissible aggregation), proves **strict separation** (some society+protocol has certified coverage strictly larger than any individual), and **diversity necessity** (homogeneous societies cannot strictly improve; role diversity is necessary). A **meta-barrier** shows that society+protocol as a single diagonal-capable system cannot totally self-certify (Paper 30 barrier reappears at the societal level).
+
+### Where in the repo
+
+- Root barrel: **`EpistemicAgency.lean`**
+- Core: **`EpistemicAgency/Core/ClaimDomain.lean`**, **Agent.lean**, **Protocol.lean**
+- Theorems: **NoSelfCertifierImported.lean**, **ProtocolStrictImprovement.lean**, **Diversity.lean**, **MetaBarrier.lean**
+- Examples: **`EpistemicAgency/Examples/ToySociety.lean`**
+
+---
+
+## 7. SelfImprovement (Paper 32)
+
+### What it is
+
+The **SelfImprovement** library applies the barrier spine to **self-improvement**: upgrade certificates, good-predicates, and internal certifiers. It proves **no total internal self-upgrade certifier** under diagonal capability (Paper 30 applied to Cert = Agent × Upgrade), **stratified improvement** (positive result when hFP is not supplied), **protocol strict improvement** and **diversity necessity** for upgrade verification (via EpistemicAgency), and a **meta-barrier** for self-improvement at the societal level.
+
+### Where in the repo
+
+- Root barrel: **`SelfImprovement.lean`**
+- Core: **`SelfImprovement/Core/Upgrades.lean`**
+- Theorems: **Barrier.lean**, **Stratified.lean**, **SocietyImproves.lean**, **MetaBarrier.lean**
+- Examples: **`SelfImprovement/Examples/ToyUpgrades.lean`**
+
+---
+
+## 8. SelfAwareness (Paper 33)
+
+### What it is
+
+The **SelfAwareness** library formalizes **limits of self-awareness** as internal certification capacity over claim classes. It proves: (i) **hierarchy** — base class C₀ can have a total certifier (witness: ToyHierarchy), class C₂ has no total certifier under diagonal capability (Paper 30 barrier); (ii) **selector necessity** — when multiple observationally indistinguishable self-model fixed points exist, selection cannot be total-effective internally (SelectorNecessity + Learning barrier); (iii) **introspective optimality barrier** — no total internal rightness certifier under diagonal capability, with stratified positive examples (ToyRightness). ToyMultiplicity gives two indistinguishable fixed points (Fin 2, identity update).
+
+### Where in the repo
+
+- Root barrel: **`SelfAwareness.lean`**
+- Core: **`SelfAwareness/Core/ClaimFamilies.lean`**, **SelfModel.lean**
+- Theorems: **Hierarchy.lean**, **SelectorNecessity.lean**, **IntrospectiveOptimality.lean**
+- Examples: **ToyHierarchy.lean**, **ToyMultiplicity.lean**, **ToyRightness.lean**
+
+---
+
+## 9. References
 
 - **Paper 26:** *A General Self-Reference Calculus* — SRI, MFP-1, MFP-2, and instances.
+- **Paper 27:** *A No-Free-Bits Calculus* — Closure library, audit soundness, BoundedSelector.
 - **Paper 28:** *Reflection as a Resource* — SRI_R, DiagClosed, restricted_master_fixed_point.
 - **Paper 29:** *Selector Strength and Completion Hierarchies* — barrier schema, strength poset, bridges.
 - **Paper 30:** *Second Incompleteness for Self-Certifying Learners* — no total self-certifier, stratified self-certification, Learning library.
+- **Paper 31:** *Epistemic Agency Under Diagonal Constraints* — society as verification protocol, strict separation, diversity necessity, EpistemicAgency library.
+- **Paper 32:** *Self-Improvement Under Diagonal Constraints* — no total upgrade certifier, stratified improvement, society improves improvement, SelfImprovement library.
+- **Paper 33:** *Self-Awareness as a Resource* — hierarchy, selector necessity, introspective optimality barrier, SelfAwareness library.
 - **MANIFEST.md:** Verified theorem list, sorry count, and file-level layout.
 - **GSRC_Significance** (in the suite): Short significance note for the General Self-Reference Calculus.

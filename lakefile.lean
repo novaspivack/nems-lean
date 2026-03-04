@@ -28,3 +28,9 @@ lean_lib Learning where
 
 lean_lib EpistemicAgency where
   globs := #[.submodules `EpistemicAgency]
+
+lean_lib SelfImprovement where
+  globs := #[.submodules `SelfImprovement]
+
+lean_lib SelfAwareness where
+  globs := #[.submodules `SelfAwareness]

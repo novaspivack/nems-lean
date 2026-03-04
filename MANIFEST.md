@@ -4,7 +4,7 @@
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8090 jobs, 0 errors, **6 `sorry`** (see below), **zero custom axioms**
+**Build result:** 8042 jobs, 0 errors, **6 `sorry`** (see below), **zero custom axioms**
 
 ## v2.2.0 additions: General Self-Reference Calculus
 
@@ -207,6 +207,34 @@ Learning library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength a
 
 EpistemicAgency library: **0 sorry**, 0 custom axioms. Composes with Learning (Paper 30).
 
+### SelfImprovement (v2.7.0, Paper 32)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `SelfImprovement/Core/Upgrades.lean` | Agent, Upgrade, UpCert, Good | Upgrade certificates and good-predicate vocabulary |
+| `SelfImprovement/Theorems/Barrier.lean` | `no_total_upgrade_certifier` | **No total upgrade certifier**: Extensional + Nontrivial + AntiDeciderClosed + hFP ⇒ ¬ DecidableAt (Paper 30 applied to upgrades) |
+| `SelfImprovement/Theorems/Stratified.lean` | `stratified_improvement_schema` | Stratified positive result (barrier contrapositive) |
+| `SelfImprovement/Theorems/SocietyImproves.lean` | `protocol_strict_improvement_upgrades`, `diversity_necessary_upgrades` | Protocol strict improvement; diversity necessary (uses EpistemicAgency) |
+| `SelfImprovement/Theorems/MetaBarrier.lean` | `meta_barrier_self_improvement` | Meta-barrier for self-improvement (society+protocol as single system) |
+| `SelfImprovement/Examples/ToyUpgrades.lean` | Toy upgrades | Toy instance (EpistemicAgency.toyDomain, toySociety) |
+
+SelfImprovement library: **0 sorry**, 0 custom axioms. Composes with Learning, EpistemicAgency.
+
+### SelfAwareness (v2.8.0, Paper 33)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `SelfAwareness/Core/ClaimFamilies.lean` | ClaimLang, SelfAwareAt | Claim languages, self-awareness at strength, classes C₀/C₁/C₂ |
+| `SelfAwareness/Core/SelfModel.lean` | Fix, MultipleFixedPoints | Self-model update, fixed points, multiplicity |
+| `SelfAwareness/Theorems/Hierarchy.lean` | `no_total_certifier_C2` | **No total certifier for C₂** under diagonal capability (Paper 30 barrier) |
+| `SelfAwareness/Theorems/SelectorNecessity.lean` | `selection_not_total_effective`, `selector_necessary_from_multiplicity` | Multiplicity ⇒ selector necessity; selection barrier |
+| `SelfAwareness/Theorems/IntrospectiveOptimality.lean` | `no_total_rightness_certifier` | No total rightness certifier under diagonal capability; stratified positive results |
+| `SelfAwareness/Examples/ToyHierarchy.lean` | `base_certifier_exists` | Concrete claim ladder (C₀ has total certifier) |
+| `SelfAwareness/Examples/ToyMultiplicity.lean` | `toy_multiple_fixed_points` | Two indistinguishable fixed points toy (Fin 2, identity update) |
+| `SelfAwareness/Examples/ToyRightness.lean` | `stratified_rightness_toy` | Finite rightness toy (stratified certifier exists) |
+
+SelfAwareness library: **0 sorry**, 0 custom axioms. Composes with Learning, Closure, Reflection, SelectorStrength.
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -310,6 +338,22 @@ EpistemicAgency/Theorems/ProtocolStrictImprovement.lean
 EpistemicAgency/Theorems/Diversity.lean
 EpistemicAgency/Theorems/MetaBarrier.lean
 EpistemicAgency/Examples/ToySociety.lean
+SelfImprovement.lean
+SelfImprovement/Core/Upgrades.lean
+SelfImprovement/Theorems/Barrier.lean
+SelfImprovement/Theorems/Stratified.lean
+SelfImprovement/Theorems/SocietyImproves.lean
+SelfImprovement/Theorems/MetaBarrier.lean
+SelfImprovement/Examples/ToyUpgrades.lean
+SelfAwareness.lean
+SelfAwareness/Core/ClaimFamilies.lean
+SelfAwareness/Core/SelfModel.lean
+SelfAwareness/Theorems/Hierarchy.lean
+SelfAwareness/Theorems/SelectorNecessity.lean
+SelfAwareness/Theorems/IntrospectiveOptimality.lean
+SelfAwareness/Examples/ToyHierarchy.lean
+SelfAwareness/Examples/ToyMultiplicity.lean
+SelfAwareness/Examples/ToyRightness.lean
 lakefile.lean
 lean-toolchain
 ```

@@ -3,13 +3,13 @@
 **Version:** v2.5.0  
 **Lean:** leanprover/lean4:v4.28.0  
 **Mathlib:** v4.28.0  
-**Build:** 8090 jobs, 0 errors, 6 sorrys (see MANIFEST.md), **0 custom axioms**
+**Build:** 8041 jobs, 0 errors, 6 sorrys (see MANIFEST.md), **0 custom axioms**
 
 ## What This Artifact Proves
 
-This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–31)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
+This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–33)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
 
-### Abstract-core spine (Papers 26–31, 0 sorry in Learning and EpistemicAgency)
+### Abstract-core spine (Papers 26–33, 0 sorry in Learning, EpistemicAgency, SelfImprovement, SelfAwareness)
 
 - **Paper 26 (SelfReference):** MFP-1, MFP-2, instances (Gödel, Kleene, Löb, NEMS). Documented sorrys only in instance layers (NEMS fixed-point step, Löb HBL chaining).
 - **Paper 27 (Closure):** Audit soundness, canonicalization, BoundedSelector, FintypeWorld, bridge to SelfReference.
@@ -17,6 +17,8 @@ This Lean 4 library formalizes the core logical spine of the NEMS (No External M
 - **Paper 29 (SelectorStrength):** Barrier schema (no_total_decider_at_strength), monotonicity, reflection_supplies_hFP, trivial and ComputableNat instances.
 - **Paper 30 (Learning):** no_total_self_certifier, reflection_supplies_hFP_for_learning, stratified_self_certification_toy, ToyGuarantee. **0 sorry.**
 - **Paper 31 (EpistemicAgency):** Society as verification protocol, strict separation (society > individual), diversity necessity, meta-barrier. **0 sorry.**
+- **Paper 32 (SelfImprovement):** Upgrade certificates, no_total_upgrade_certifier, stratified improvement, protocol strict improvement, diversity necessity, meta-barrier. **0 sorry.**
+- **Paper 33 (SelfAwareness):** Claim hierarchy (C₀/C₁/C₂), no_total_certifier_C2, selector necessity, introspective optimality barrier, ToyHierarchy, ToyRightness. **0 sorry.**
 
 ### Fully Verified Theorems (0 sorry, 0 custom axioms)
 
