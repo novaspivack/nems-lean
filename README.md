@@ -1,6 +1,6 @@
 # nems-lean
 
-Lean 4 formalization for the NEMS/MFRR suite: **NemS**, **SelfReference** (Paper 26), **Closure** (Paper 27), **Reflection** (Paper 28), **SelectorStrength** (Paper 29), **Learning** (Paper 30), and **EpistemicAgency** (Paper 31).
+Lean 4 formalization for the NEMS Suite: **NemS**, **SelfReference** (Paper 26), **Closure** (Paper 27), **Reflection** (Paper 28), **SelectorStrength** (Paper 29), **Learning** (Paper 30), **EpistemicAgency** (Paper 31), **SelfImprovement** (Paper 32), and **SelfAwareness** (Paper 33).
 
 **Lean 4** with **Mathlib v4.28.0**. Zero custom axioms; for current sorry count and verified theorems see [MANIFEST.md](MANIFEST.md).
 
@@ -15,6 +15,8 @@ Lean 4 formalization for the NEMS/MFRR suite: **NemS**, **SelfReference** (Paper
 | **SelectorStrength** | Selector strength and completion hierarchies (Paper 29): strength poset, barrier schema (no_total_decider_at_strength), monotonicity, bridges to Reflection/Closure, trivial and ComputableNat instances. |
 | **Learning** | Second incompleteness for self-certifying learners (Paper 30): certificates, claims, no_total_self_certifier, reflection supplies hFP, stratified self-certification, ToyGuarantee. 0 sorry. |
 | **EpistemicAgency** | Epistemic agency under diagonal constraints (Paper 31): society as verification protocol, strict separation (society > individual), diversity necessity, meta-barrier. 0 sorry. |
+| **SelfImprovement** | Self-improvement under diagonal constraints (Paper 32): upgrade certificates, no total upgrade certifier, stratified improvement, protocol strict improvement, diversity necessity, meta-barrier. 0 sorry. |
+| **SelfAwareness** | Self-awareness as a resource (Paper 33): claim hierarchy (C₀/C₁/C₂), no total certifier for C₂, selector necessity, introspective optimality barrier, ToyHierarchy, ToyRightness. 0 sorry. |
 
 For a short **user-oriented overview** of the libraries and how they connect, see **[docs/Overview.md](docs/Overview.md)**.
 
@@ -25,7 +27,7 @@ lake update
 lake build
 ```
 
-Expected: `Build completed successfully` (8k+ jobs). See [MANIFEST.md](MANIFEST.md) for reproduction and checksums.
+Expected: `Build completed successfully` (8041 jobs). See [MANIFEST.md](MANIFEST.md) for reproduction and checksums.
 
 ## Papers and manifest
 
@@ -35,4 +37,6 @@ Expected: `Build completed successfully` (8k+ jobs). See [MANIFEST.md](MANIFEST.
 - **Paper 29:** *Selector Strength and Completion Hierarchies* — `SelectorStrength` library.
 - **Paper 30:** *Second Incompleteness for Self-Certifying Learners* — `Learning` library (0 sorry).
 - **Paper 31:** *Epistemic Agency Under Diagonal Constraints* — `EpistemicAgency` library (0 sorry).
+- **Paper 32:** *Self-Improvement Under Diagonal Constraints* — `SelfImprovement` library (0 sorry).
+- **Paper 33:** *Self-Awareness as a Resource* — `SelfAwareness` library (0 sorry).
 - **MANIFEST.md:** Verified theorem list, sorry status, and library layout.
