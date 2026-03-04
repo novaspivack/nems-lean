@@ -34,3 +34,12 @@ lean_lib SelfImprovement where
 
 lean_lib SelfAwareness where
   globs := #[.submodules `SelfAwareness]
+
+lean_lib Sieve where
+  globs := #[.submodules `Sieve]
+
+lean_lib ChronologyUnderClosure where
+  globs := #[.submodules `ChronologyUnderClosure]
+
+lean_lib BlackHoles where
+  globs := #[.submodules `BlackHoles]

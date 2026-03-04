@@ -7,9 +7,9 @@
 
 ## What This Artifact Proves
 
-This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–33)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
+This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–37)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 37** (Black Hole Information) — BlackHoles library (0 sorry). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
 
-### Abstract-core spine (Papers 26–33, 0 sorry in Learning, EpistemicAgency, SelfImprovement, SelfAwareness)
+### Abstract-core spine (Papers 26–34, 0 sorry in Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve)
 
 - **Paper 26 (SelfReference):** MFP-1, MFP-2, instances (Gödel, Kleene, Löb, NEMS). Documented sorrys only in instance layers (NEMS fixed-point step, Löb HBL chaining).
 - **Paper 27 (Closure):** Audit soundness, canonicalization, BoundedSelector, FintypeWorld, bridge to SelfReference.
@@ -19,6 +19,7 @@ This Lean 4 library formalizes the core logical spine of the NEMS (No External M
 - **Paper 31 (EpistemicAgency):** Society as verification protocol, strict separation (society > individual), diversity necessity, meta-barrier. **0 sorry.**
 - **Paper 32 (SelfImprovement):** Upgrade certificates, no_total_upgrade_certifier, stratified improvement, protocol strict improvement, diversity necessity, meta-barrier. **0 sorry.**
 - **Paper 33 (SelfAwareness):** Claim hierarchy (C₀/C₁/C₂), no_total_certifier_C2, selector necessity, introspective optimality barrier, ToyHierarchy, ToyRightness. **0 sorry.**
+- **Paper 34 (Sieve):** Theory space, constraints as list, SieveHolds, Residual subtype, sieve_sublist, residual_mono, pullbackConstraints, sieve_pullback (functoriality), ToyDomain. **0 sorry.**
 
 ### Fully Verified Theorems (0 sorry, 0 custom axioms)
 
@@ -159,6 +160,12 @@ This artifact formalizes the core spine of:
 - **Paper 29:** *Selector Strength and Completion Hierarchies* (SelectorStrength)
 - **Paper 30:** *Second Incompleteness for Self-Certifying Learners* (Learning; 0 sorry)
 - **Paper 31:** *Epistemic Agency Under Diagonal Constraints* (EpistemicAgency; 0 sorry)
+- **Paper 32:** *Self-Improvement Under Diagonal Constraints* (SelfImprovement; 0 sorry)
+- **Paper 33:** *Self-Awareness as a Resource* (SelfAwareness; 0 sorry)
+- **Paper 34:** *A Sieve Engine for Theory Spaces* (Sieve; 0 sorry)
+- **Paper 35:** *Oracles as External Selectors* (companion; Lean library Hypercomputation/ planned)
+- **Paper 36:** *Chronology Under Closure* (ChronologyUnderClosure; 0 sorry)
+- **Paper 37:** *NEMS Constraints on Black Hole Information* (BlackHoles; 0 sorry)
 
 ## Future Work
 

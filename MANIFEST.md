@@ -4,7 +4,7 @@
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8042 jobs, 0 errors, **6 `sorry`** (see below), **zero custom axioms**
+**Build result:** 8090 jobs, 0 errors, **6 `sorry`** (in NemS/SelfReference only; ChronologyUnderClosure and BlackHoles are 0 sorry) (see below), **zero custom axioms**
 
 ## v2.2.0 additions: General Self-Reference Calculus
 
@@ -235,6 +235,39 @@ SelfImprovement library: **0 sorry**, 0 custom axioms. Composes with Learning, E
 
 SelfAwareness library: **0 sorry**, 0 custom axioms. Composes with Learning, Closure, Reflection, SelectorStrength.
 
+### Sieve (v2.9.0, Paper 34)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `Sieve/Core/TheorySpace.lean` | `TheorySpace` | Type of candidates with optional Equiv and canon |
+| `Sieve/Core/Constraints.lean` | `Constraint`, `SieveHolds`, `Residual` | Constraint = α → Prop; sieve = List.Forall; residual = { a // SieveHolds cs a } |
+| `Sieve/Theorems/Residual.lean` | `sieve_sublist` | cs.Sublist cs' ∧ SieveHolds cs' a → SieveHolds cs a |
+| `Sieve/Theorems/Residual.lean` | `residual_mono` | Monotonicity: more constraints ⇒ smaller residual |
+| `Sieve/Theorems/Residual.lean` | `pullbackConstraints` | Pullback of constraint list along f : α → β |
+| `Sieve/Theorems/Residual.lean` | `sieve_pullback` | SieveHolds (pullback f ds) a ↔ SieveHolds ds (f a) (functoriality) |
+| `Sieve/Examples/ToyDomain.lean` | `toySpace`, `toySieve`, `toy_residual_nonempty` | Toy: Fin 3, two constraints, certified residual witness |
+
+Sieve library: **0 sorry**, 0 custom axioms. Composes with NemS.Prelude; reusable for gauge theory, oracles, and other theory-space classifications.
+
+### ChronologyUnderClosure (Paper 36)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `ChronologyUnderClosure/Core/RecordDynamics.lean` | Feedback, SelfConsistent, Overwrite | Record dynamics; self-consistent loop = fixed point mod ObsEquiv; overwrite = o holds at w, not at F(w) |
+| `ChronologyUnderClosure/Theorems/RecordNonOverwrite.lean` | `record_non_overwrite` | Overwrite (w, o) → ¬ Categorical (branching) |
+| `ChronologyUnderClosure/Theorems/SelectionBarrier.lean` | `selection_barrier_chronology`, `loopPred_extensional` | Under hFP + AntiClosed, "which loop" indicator not in Sbool; loop predicate extensional |
+
+ChronologyUnderClosure library: **0 sorry**, 0 custom axioms. Composes with Closure, SelectorStrength.
+
+### BlackHoles (Paper 37)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `BlackHoles/Core/RecordFragments.lean` | ErasingAppearance, `record_consistency_abstract` | Erasing appearance (w, w', o); record consistency: erasing ⇒ ¬ Categorical ∨ selector |
+| `BlackHoles/Theorems/NoHypercomputingFromBH.lean` | `no_hypercomputing_from_bh` | Under barrier premises, no total decider at Sbool for nontrivial extensional T (no BH decoder) |
+
+BlackHoles library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength.
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -354,6 +387,11 @@ SelfAwareness/Theorems/IntrospectiveOptimality.lean
 SelfAwareness/Examples/ToyHierarchy.lean
 SelfAwareness/Examples/ToyMultiplicity.lean
 SelfAwareness/Examples/ToyRightness.lean
+Sieve.lean
+Sieve/Core/TheorySpace.lean
+Sieve/Core/Constraints.lean
+Sieve/Theorems/Residual.lean
+Sieve/Examples/ToyDomain.lean
 lakefile.lean
 lean-toolchain
 ```
@@ -454,3 +492,9 @@ This artifact formalizes the core spine of:
 - *Selector Strength and Completion Hierarchies* (Paper 29 — the SelectorStrength library: barrier schema no_total_decider_at_strength, monotonicity, bridges to Reflection/Closure, trivial and computable-Nat instances)
 - *Second Incompleteness for Self-Certifying Learners* (Paper 30 — the Learning library: no_total_self_certifier, reflection_supplies_hFP_for_learning, stratified_self_certification_toy, ToyGuarantee; 0 sorry)
 - *Epistemic Agency Under Diagonal Constraints* (Paper 31 — the EpistemicAgency library: society as verification protocol, strict separation, diversity necessity, meta-barrier; 0 sorry)
+- *Self-Improvement Under Diagonal Constraints* (Paper 32 — SelfImprovement library; 0 sorry)
+- *Self-Awareness as a Resource* (Paper 33 — SelfAwareness library; 0 sorry)
+- *A Sieve Engine for Theory Spaces* (Paper 34 — the Sieve library: theory space, constraints as list, SieveHolds, Residual, monotonicity, pullback/functoriality, ToyDomain; 0 sorry)
+- *Oracles as External Selectors: NEMS Constraints on Hypercomputation and Physical Computability* (Paper 35 — companion paper; Lean library Hypercomputation/ planned, not yet in nems-lean)
+- *Chronology Under Closure: NEMS Constraints on Admissible Time Travel* (Paper 36 — ChronologyUnderClosure library: record dynamics, record_non_overwrite, selection_barrier_chronology; 0 sorry)
+- *NEMS Constraints on Black Hole Information* (Paper 37 — BlackHoles library: record_consistency_abstract, no_hypercomputing_from_bh; 0 sorry)

@@ -1,6 +1,6 @@
 # nems-lean: Overview for users
 
-This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
+This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
 
 ---
 
@@ -84,7 +84,7 @@ So: Closure defines the objects/codes/fragments and what “internal” means; S
 
 - **SelfReference** is the “universal self-reference kernel”: minimal axioms (repr_spec, then eval_quote for the unityped corollary) and two master theorems. Any system that implements the interface gets the theorems.
 - **Closure** is the “theory/audit” layer: observational semantics, selectors, internality, and audit soundness. When a theory in this sense has internal representability, the **A0 bridge** turns it into an SRI' instance, so SelfReference applies.
-- **Reflection** (Paper 28) adds stratified representability (SRI_R, DiagClosed); **SelectorStrength** (29) the barrier hierarchy; **Learning** (30) the self-certifier barrier; **EpistemicAgency** (31) society as verification protocol; **SelfImprovement** (32) upgrade-certifier barrier and society-improves-improvement; **SelfAwareness** (33) limits of self-awareness (hierarchy, selector necessity, rightness barrier).
+- **Reflection** (Paper 28) adds stratified representability (SRI_R, DiagClosed); **SelectorStrength** (29) the barrier hierarchy; **Learning** (30) the self-certifier barrier; **EpistemicAgency** (31) society as verification protocol; **SelfImprovement** (32) upgrade-certifier barrier and society-improves-improvement; **SelfAwareness** (33) limits of self-awareness (hierarchy, selector necessity, rightness barrier); **Sieve** (34) meta-methodology kernel for theory spaces (constraints as list, residual subtype, monotonicity, pullback/functoriality). **Paper 35** (Oracles as External Selectors) applies Closure and SelectorStrength to hypercomputation; its Lean library (Hypercomputation/) is planned. **Paper 36** (Chronology Under Closure) applies the same framework to time travel (record dynamics, selection barrier); **Paper 37** (Black Hole Information) to record consistency and no-hypercomputing-from-BH; both have Lean libraries (ChronologyUnderClosure, BlackHoles; 0 sorry).
 - **NemS** is the main application: NEMS framework, diagonal barrier (Theorem 5.9), PSC, etc. It uses both the concrete diagonal machinery and (where applicable) the SelfReference instances.
 
 So for external use:
@@ -192,7 +192,33 @@ The **SelfAwareness** library formalizes **limits of self-awareness** as interna
 
 ---
 
-## 9. References
+## 9. Sieve (Paper 34)
+
+### What it is
+
+The **Sieve** library is a **meta-methodology kernel** for theory spaces: a type of candidates α, optional equivalence and canonicalization (same structure as Closure’s canonicalization), constraints as a list of predicates (α → Prop), a sieve as the conjunction (List.Forall), and a residual as the subtype { a : α // SieveHolds cs a }. It proves **monotonicity** (adding constraints shrinks the residual; sieve_sublist, residual_mono) and **residual functoriality** (pullback of constraints along a map f : α → β preserves sieve membership; pullbackConstraints, sieve_pullback). Proof-carrying enumeration: external generators propose candidates plus certificates; Lean verifies. ToyDomain illustrates with Fin 3 and two constraints.
+
+### Main types and names
+
+- **`Sieve.TheorySpace α`** — Type of candidates with optional Equiv and canon.
+- **`Sieve.Constraint α`** — α → Prop.
+- **`Sieve.SieveHolds cs a`** — Candidate a satisfies every constraint in list cs.
+- **`Sieve.Residual cs`** — Subtype { a // SieveHolds cs a }.
+- **`Sieve.sieve_sublist`**, **`Sieve.residual_mono`** — Monotonicity (cs.Sublist cs' ⇒ smaller residual).
+- **`Sieve.pullbackConstraints f ds`** — Pullback of constraint list on β to α along f.
+- **`Sieve.sieve_pullback`** — SieveHolds (pullback f ds) a ↔ SieveHolds ds (f a).
+- **`Sieve.Examples.ToyDomain`** — toySpace (Fin 3), toySieve, toy_residual_nonempty.
+
+### Where in the repo
+
+- Root barrel: **`Sieve.lean`**
+- Core: **`Sieve/Core/TheorySpace.lean`**, **Constraints.lean**
+- Theorems: **`Sieve/Theorems/Residual.lean`**
+- Examples: **`Sieve/Examples/ToyDomain.lean`**
+
+---
+
+## 10. References
 
 - **Paper 26:** *A General Self-Reference Calculus* — SRI, MFP-1, MFP-2, and instances.
 - **Paper 27:** *A No-Free-Bits Calculus* — Closure library, audit soundness, BoundedSelector.
@@ -202,5 +228,9 @@ The **SelfAwareness** library formalizes **limits of self-awareness** as interna
 - **Paper 31:** *Epistemic Agency Under Diagonal Constraints* — society as verification protocol, strict separation, diversity necessity, EpistemicAgency library.
 - **Paper 32:** *Self-Improvement Under Diagonal Constraints* — no total upgrade certifier, stratified improvement, society improves improvement, SelfImprovement library.
 - **Paper 33:** *Self-Awareness as a Resource* — hierarchy, selector necessity, introspective optimality barrier, SelfAwareness library.
+- **Paper 34:** *A Sieve Engine for Theory Spaces* — theory space, constraints as list, SieveHolds, Residual, monotonicity, pullback/functoriality, Sieve library.
+- **Paper 35:** *Oracles as External Selectors* — oracle-as-selector (Closure), no internal hypercomputer (SelectorStrength), hypercomputation taxonomy; Lean library Hypercomputation/ planned.
+- **Paper 36:** *Chronology Under Closure* — record dynamics, self-consistent loops, record_non_overwrite, selection_barrier_chronology; ChronologyUnderClosure library (0 sorry).
+- **Paper 37:** *NEMS Constraints on Black Hole Information* — record fragments, record_consistency_abstract, no_hypercomputing_from_bh; BlackHoles library (0 sorry).
 - **MANIFEST.md:** Verified theorem list, sorry count, and file-level layout.
 - **GSRC_Significance** (in the suite): Short significance note for the General Self-Reference Calculus.
