@@ -1,13 +1,13 @@
 # nems-lean Artifact Documentation
 
-**Version:** v2.5.0  
+**Version:** v2.6.0  
 **Lean:** leanprover/lean4:v4.28.0  
 **Mathlib:** v4.28.0  
-**Build:** 8041 jobs, 0 errors, 6 sorrys (see MANIFEST.md), **0 custom axioms**
+**Build:** 8041+ jobs, 0 errors, 6 sorrys (see MANIFEST.md), **0 custom axioms**
 
 ## What This Artifact Proves
 
-This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–37)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 37** (Black Hole Information) — BlackHoles library (0 sorry). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
+This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–40)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (The Arrow of Time from Closure) — ArrowOfTime library (0 sorry). **Paper 37** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 38** (Black Hole Information) — BlackHoles library (0 sorry). **Paper 39** (Probability as Closure in GPTs) — GPTClosure library (0 sorry). **Paper 40** (Institutions Under Diagonal Constraints) — InstitutionalEpistemics library (0 sorry). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
 
 ### Abstract-core spine (Papers 26–34, 0 sorry in Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve)
 

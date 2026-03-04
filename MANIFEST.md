@@ -1,10 +1,10 @@
-# nems-lean v2.5.0 — Artifact Manifest
+# nems-lean v2.6.0 — Artifact Manifest
 
-**Release:** v2.5.0  
+**Release:** v2.6.0  
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
-**Build result:** 8090 jobs, 0 errors, **6 `sorry`** (in NemS/SelfReference only; ChronologyUnderClosure and BlackHoles are 0 sorry) (see below), **zero custom axioms**
+**Build result:** 8039+ jobs, 0 errors, **6 `sorry`** (in NemS/SelfReference only; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure, InstitutionalEpistemics are 0 sorry) (see below), **zero custom axioms**
 
 ## v2.2.0 additions: General Self-Reference Calculus
 
@@ -249,7 +249,21 @@ SelfAwareness library: **0 sorry**, 0 custom axioms. Composes with Learning, Clo
 
 Sieve library: **0 sorry**, 0 custom axioms. Composes with NemS.Prelude; reusable for gauge theory, oracles, and other theory-space classifications.
 
-### ChronologyUnderClosure (Paper 36)
+### ArrowOfTime (Paper 36)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `ArrowOfTime/Core/RecordFiltration.lean` | RecordFiltration, Visible, ObsEqAt, WorldTypeAt | Time-indexed record filtration; stage equivalence and stage world-types |
+| `ArrowOfTime/Core/Refinement.lean` | forget | Forgetful map WorldTypeAt (t+1) → WorldTypeAt t |
+| `ArrowOfTime/Theorems/ArrowRefinement.lean` | `strict_refinement` | Strict record growth at t ⇒ forget not injective |
+| `ArrowOfTime/Theorems/NoOverwrite.lean` | OverwriteAt, `no_overwrite_implies_not_categorical` | Overwrite at stage t ⇒ ¬ CategoricalAt t |
+| `ArrowOfTime/Theorems/Irreversibility.lean` | `no_global_reversal` | Stage-preserving involution fixes world-types |
+| `ArrowOfTime/Theorems/SelectionBarrier.lean` | `selection_barrier_retrodiction` | Under hFP + AntiClosed, retrodiction selector ruled out |
+| `ArrowOfTime/Examples/Toy.lean` | filt, toy_strict_growth, toy_no_overwrite_witness | Toy: two bits; strict refinement; overwrite ⇒ not categorical |
+
+ArrowOfTime library: **0 sorry**, 0 custom axioms. Composes with Closure, SelectorStrength.
+
+### ChronologyUnderClosure (Paper 37)
 
 | File | Definition/Theorem | Statement |
 |------|--------------------|-----------|
@@ -259,14 +273,41 @@ Sieve library: **0 sorry**, 0 custom axioms. Composes with NemS.Prelude; reusabl
 
 ChronologyUnderClosure library: **0 sorry**, 0 custom axioms. Composes with Closure, SelectorStrength.
 
-### BlackHoles (Paper 37)
+### BlackHoles (Paper 38)
 
 | File | Definition/Theorem | Statement |
 |------|--------------------|-----------|
-| `BlackHoles/Core/RecordFragments.lean` | ErasingAppearance, `record_consistency_abstract` | Erasing appearance (w, w', o); record consistency: erasing ⇒ ¬ Categorical ∨ selector |
+| `BlackHoles/Core/RecordFragments.lean` | ErasingAppearance, `record_consistency_abstract` | Erasing appearance ⇒ ¬ Categorical (selection required); selector exists classically |
 | `BlackHoles/Theorems/NoHypercomputingFromBH.lean` | `no_hypercomputing_from_bh` | Under barrier premises, no total decider at Sbool for nontrivial extensional T (no BH decoder) |
 
 BlackHoles library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength.
+
+### GPTClosure (Paper 39)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `GPTClosure/Core/OrderedSpaces.lean` | Ordered unit space, cone | Finite-dimensional ordered unit space $(V, V_+, u)$ |
+| `GPTClosure/Core/EffectsStates.lean` | Effects, states, prob | Effects $0 \le e \le u$; states as positive linear functionals; $\mathsf{prob}$ |
+| `GPTClosure/Core/Measurements.lean` | Measurements | Measurements as unit decompositions |
+| `GPTClosure/Theorems/Uniqueness.lean` | `state_extensionality`, `uniqueness_under_spanning` | States determined by agreement on effects; unique extension when effects span $V$ |
+| `GPTClosure/Theorems/ClosurePrinciples.lean` | `ClosureAssignment`, `closure_implies_affine_linear` | Closure principles ⇒ unique affine/linear state functional |
+| `GPTClosure/Examples/Toy.lean` | Toy | Classical simplex; closure axioms hold |
+
+GPTClosure library: **0 sorry**, 0 custom axioms. Standalone (Paper 39: probability as closure in GPTs).
+
+### InstitutionalEpistemics (Paper 40)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `InstitutionalEpistemics/Core/Roles.lean` | Role, coverage, diversity | Roles and coverage sets; role equivalence |
+| `InstitutionalEpistemics/Core/ThreatModel.lean` | Instance space, adversary | Threat model, attack surface |
+| `InstitutionalEpistemics/Core/Protocols.lean` | Protocol, Admissible | Protocol aggregates verifiers; admissibility (no hallucination) |
+| `InstitutionalEpistemics/Theorems/NoUniversalJudge.lean` | `no_universal_final_judge` | Under anti-decider closure and hFP, no institution is total+sound+complete on nontrivial claims |
+| `InstitutionalEpistemics/Theorems/LowerBounds.lean` | `k_role_lower_bound` | $k$-way partition + role-type constraint ⇒ full certified coverage needs ≥ $k$ roles |
+| `InstitutionalEpistemics/Theorems/RobustnessImprovement.lean` | `diversity_necessity` | Strict robustness improvement ⇒ at least two non-equivalent roles |
+| `InstitutionalEpistemics/Examples/ToyRegulation.lean` | Toy | Explicit toy witness for k-role bound |
+
+InstitutionalEpistemics library: **0 sorry**, 0 custom axioms. Composes with Learning, EpistemicAgency, SelectorStrength.
 
 ## Key source files (SHA-256)
 
@@ -392,6 +433,36 @@ Sieve/Core/TheorySpace.lean
 Sieve/Core/Constraints.lean
 Sieve/Theorems/Residual.lean
 Sieve/Examples/ToyDomain.lean
+ArrowOfTime.lean
+ArrowOfTime/Core/RecordFiltration.lean
+ArrowOfTime/Core/Refinement.lean
+ArrowOfTime/Theorems/ArrowRefinement.lean
+ArrowOfTime/Theorems/NoOverwrite.lean
+ArrowOfTime/Theorems/Irreversibility.lean
+ArrowOfTime/Theorems/SelectionBarrier.lean
+ArrowOfTime/Examples/Toy.lean
+ChronologyUnderClosure.lean
+ChronologyUnderClosure/Core/RecordDynamics.lean
+ChronologyUnderClosure/Theorems/RecordNonOverwrite.lean
+ChronologyUnderClosure/Theorems/SelectionBarrier.lean
+BlackHoles.lean
+BlackHoles/Core/RecordFragments.lean
+BlackHoles/Theorems/NoHypercomputingFromBH.lean
+GPTClosure.lean
+GPTClosure/Core/OrderedSpaces.lean
+GPTClosure/Core/EffectsStates.lean
+GPTClosure/Core/Measurements.lean
+GPTClosure/Theorems/Uniqueness.lean
+GPTClosure/Theorems/ClosurePrinciples.lean
+GPTClosure/Examples/Toy.lean
+InstitutionalEpistemics.lean
+InstitutionalEpistemics/Core/Roles.lean
+InstitutionalEpistemics/Core/ThreatModel.lean
+InstitutionalEpistemics/Core/Protocols.lean
+InstitutionalEpistemics/Theorems/NoUniversalJudge.lean
+InstitutionalEpistemics/Theorems/LowerBounds.lean
+InstitutionalEpistemics/Theorems/RobustnessImprovement.lean
+InstitutionalEpistemics/Examples/ToyRegulation.lean
 lakefile.lean
 lean-toolchain
 ```
@@ -496,5 +567,8 @@ This artifact formalizes the core spine of:
 - *Self-Awareness as a Resource* (Paper 33 — SelfAwareness library; 0 sorry)
 - *A Sieve Engine for Theory Spaces* (Paper 34 — the Sieve library: theory space, constraints as list, SieveHolds, Residual, monotonicity, pullback/functoriality, ToyDomain; 0 sorry)
 - *Oracles as External Selectors: NEMS Constraints on Hypercomputation and Physical Computability* (Paper 35 — companion paper; Lean library Hypercomputation/ planned, not yet in nems-lean)
-- *Chronology Under Closure: NEMS Constraints on Admissible Time Travel* (Paper 36 — ChronologyUnderClosure library: record dynamics, record_non_overwrite, selection_barrier_chronology; 0 sorry)
-- *NEMS Constraints on Black Hole Information* (Paper 37 — BlackHoles library: record_consistency_abstract, no_hypercomputing_from_bh; 0 sorry)
+- *The Arrow of Time from Closure* (Paper 36 — ArrowOfTime library: record filtration, refinement, no_overwrite, irreversibility, selection_barrier_retrodiction, Toy; 0 sorry)
+- *Chronology Under Closure: NEMS Constraints on Admissible Time Travel* (Paper 37 — ChronologyUnderClosure library: record dynamics, record_non_overwrite, selection_barrier_chronology; 0 sorry)
+- *NEMS Constraints on Black Hole Information* (Paper 38 — BlackHoles library: record_consistency_abstract, no_hypercomputing_from_bh; 0 sorry)
+- *Probability as Closure in General Probabilistic Theories* (Paper 39 — GPTClosure library: state_extensionality, uniqueness_under_spanning, closure_implies_affine_linear, Toy; 0 sorry)
+- *Institutions Under Diagonal Constraints* (Paper 40 — InstitutionalEpistemics library: no_universal_final_judge, k_role_lower_bound, diversity_necessity, ToyRegulation; 0 sorry)
