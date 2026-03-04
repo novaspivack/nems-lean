@@ -25,3 +25,6 @@ lean_lib SelectorStrength where
 
 lean_lib Learning where
   globs := #[.submodules `Learning]
+
+lean_lib EpistemicAgency where
+  globs := #[.submodules `EpistemicAgency]

@@ -1,6 +1,6 @@
 # nems-lean: Overview for users
 
-This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
+This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
 
 ---
 
@@ -120,10 +120,37 @@ The **SelectorStrength** library formalizes a **poset of realizability strengths
 
 ---
 
-## 5. References
+## 5. Learning (Learning library, Paper 30)
 
-- **Paper 26:** *A General Self-Reference Calculus* — main reference for the SRI, MFP-1, MFP-2, and instances.
+### What it is
+
+The **Learning** library applies the SelectorStrength barrier to **self-trust in learning systems**: certificates, claims (guarantee predicates), and internal verifiers. It proves that **no total internal self-certifier** exists for any nontrivial extensional claim when the strength is anti-decider closed and has the fixed-point premise (hFP). Reflection supplies hFP when the representability class R is diagonally closed. A **positive result** (stratified self-certification): when hFP is not supplied (e.g. R not diagonally closed), total verifiers can exist for some claims; the toy claim (n=0 on ℕ) has a total decider at S_all when hFP is not assumed.
+
+### Main types and names
+
+- **`Learning.Core.Certificates`** — Claim, TotalDecider, Extensional, Nontrivial (re-exports Deciders).
+- **`Learning.Core.SelfTrust`** — SelfCertifierAtStrength, selfCertifierAtStrength_iff.
+- **`Learning.Theorems.SelfTrustBarrier.no_total_self_certifier`** — Headline: Extensional + Nontrivial + AntiDeciderClosed + hFP ⇒ ¬ DecidableAt Sbool Claim.
+- **`Learning.Bridge.Reflection`** — reflection_supplies_hFP_for_learning, barrier_premise_from_reflection.
+- **`Learning.Examples.ToyGuarantee`** — ToyClaim (n=0), toyClaim_extensional, toyClaim_nontrivial, no_total_self_certifier_toy.
+- **`Learning.Positive.Stratified.stratified_self_certification_toy`** — DecidableAt S_all ToyClaim (positive result when hFP not assumed).
+
+### Where in the repo
+
+- Root barrel: **`Learning.lean`**
+- Core: **`Learning/Core/Certificates.lean`**, **SelfTrust.lean**
+- Theorems: **`Learning/Theorems/SelfTrustBarrier.lean`**
+- Bridge: **`Learning/Bridge/Reflection.lean`**
+- Examples: **`Learning/Examples/ToyGuarantee.lean`**
+- Positive: **`Learning/Positive/Stratified.lean`**
+
+---
+
+## 6. References
+
+- **Paper 26:** *A General Self-Reference Calculus* — SRI, MFP-1, MFP-2, and instances.
 - **Paper 28:** *Reflection as a Resource* — SRI_R, DiagClosed, restricted_master_fixed_point.
 - **Paper 29:** *Selector Strength and Completion Hierarchies* — barrier schema, strength poset, bridges.
+- **Paper 30:** *Second Incompleteness for Self-Certifying Learners* — no total self-certifier, stratified self-certification, Learning library.
 - **MANIFEST.md:** Verified theorem list, sorry count, and file-level layout.
 - **GSRC_Significance** (in the suite): Short significance note for the General Self-Reference Calculus.

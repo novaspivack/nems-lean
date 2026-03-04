@@ -1,13 +1,22 @@
 # nems-lean Artifact Documentation
 
-**Version:** v2.0.1  
+**Version:** v2.5.0  
 **Lean:** leanprover/lean4:v4.28.0  
 **Mathlib:** v4.28.0  
-**Build:** 8062 jobs, 0 errors, 2 sorrys (documented below), **0 custom axioms**
+**Build:** 8090 jobs, 0 errors, 6 sorrys (see MANIFEST.md), **0 custom axioms**
 
 ## What This Artifact Proves
 
-This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) classification framework and its machine-checked bridge to MFRR (Mathematical Foundations of Reflexive Reality).
+This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–31)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
+
+### Abstract-core spine (Papers 26–31, 0 sorry in Learning and EpistemicAgency)
+
+- **Paper 26 (SelfReference):** MFP-1, MFP-2, instances (Gödel, Kleene, Löb, NEMS). Documented sorrys only in instance layers (NEMS fixed-point step, Löb HBL chaining).
+- **Paper 27 (Closure):** Audit soundness, canonicalization, BoundedSelector, FintypeWorld, bridge to SelfReference.
+- **Paper 28 (Reflection):** SRI_R, DiagClosed, restricted_master_fixed_point, method-level separation (identity-only not diagonally closed).
+- **Paper 29 (SelectorStrength):** Barrier schema (no_total_decider_at_strength), monotonicity, reflection_supplies_hFP, trivial and ComputableNat instances.
+- **Paper 30 (Learning):** no_total_self_certifier, reflection_supplies_hFP_for_learning, stratified_self_certification_toy, ToyGuarantee. **0 sorry.**
+- **Paper 31 (EpistemicAgency):** Society as verification protocol, strict separation (society > individual), diversity necessity, meta-barrier. **0 sorry.**
 
 ### Fully Verified Theorems (0 sorry, 0 custom axioms)
 
@@ -112,7 +121,7 @@ lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (8062 jobs).`
+Expected output: `Build completed successfully (8090 jobs).`
 
 ## Axiom Audit
 
@@ -141,12 +150,13 @@ NemS/
 ## Companion Papers
 
 This artifact formalizes the core spine of:
-- Paper 1: *The NEMS Framework*
-- Paper 2: *Semantic Closure Under No External Model Selection*
-- Paper 8: *From NEMS to MFRR: A Machine-Checked Bridge*
-- Paper 11: *Physical Incompleteness*
-- Paper 12: *Determinism No-Go*
-- Paper 13: *Born Rule as a Closure Fixed Point*
+- Papers 1–2, 8, 11–14: NEMS framework, MFRR bridge, physical incompleteness, determinism no-go, Born rule, BICS ⇒ NEMS.
+- **Paper 26:** *A General Self-Reference Calculus* (SelfReference)
+- **Paper 27:** *A No-Free-Bits Calculus for Determinacy and Outsourcing* (Closure)
+- **Paper 28:** *Reflection as a Resource* (Reflection)
+- **Paper 29:** *Selector Strength and Completion Hierarchies* (SelectorStrength)
+- **Paper 30:** *Second Incompleteness for Self-Certifying Learners* (Learning; 0 sorry)
+- **Paper 31:** *Epistemic Agency Under Diagonal Constraints* (EpistemicAgency; 0 sorry)
 
 ## Future Work
 
@@ -176,6 +186,6 @@ If you use this artifact, please cite:
   title        = {nems-lean: Lean 4 Formalization of the NEMS Core Spine and MFRR Bridge},
   howpublished = {Software artifact, Lean 4.28.0 / Mathlib 4.28.0},
   year         = {2026},
-  note         = {v2.0.1: 8062 jobs; 2 sorrys (Busch/Gleason existence); zero custom axioms.}
+  note         = {v2.5.0+: 8k+ jobs; 6 sorrys (see MANIFEST); Papers 26–31 abstract-core spine including EpistemicAgency; zero custom axioms.}
 }
 ```

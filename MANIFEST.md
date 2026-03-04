@@ -1,6 +1,6 @@
-# nems-lean v2.2.0 — Artifact Manifest
+# nems-lean v2.5.0 — Artifact Manifest
 
-**Release:** v2.2.0  
+**Release:** v2.5.0  
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.28.0  
 **Mathlib version:** v4.28.0  
@@ -176,6 +176,37 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `SelectorStrength/Instances/Trivial.lean` | `S_all`, `no_total_decider_all` | Trivial strength (all functions); barrier corollary |
 | `SelectorStrength/Instances/ComputableNat.lean` | `no_total_decider_nat` | Barrier for Nat at parametric strength (Sbool, Sα) |
 
+### Learning (v2.5.0, Paper 30)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `Learning/Core/Certificates.lean` | `Claim`, `TotalDecider`, `Extensional`, `Nontrivial` | Certificate/claim vocabulary (re-exports Deciders) |
+| `Learning/Core/SelfTrust.lean` | `SelfCertifierAtStrength`, `selfCertifierAtStrength_iff` | Self-certifier at strength S |
+| `Learning/Theorems/SelfTrustBarrier.lean` | `no_total_self_certifier` | **No total internal self-certifier**: Extensional + Nontrivial + AntiDeciderClosed + hFP ⇒ ¬ DecidableAt Sbool Claim |
+| `Learning/Theorems/SelfTrustBarrier.lean` | `no_self_certifier_at_strength` | Same theorem phrased as no self-certifier at strength |
+| `Learning/Bridge/Reflection.lean` | `reflection_supplies_hFP_for_learning` | DiagClosed R + quote=id ⇒ fixed point for barrier |
+| `Learning/Bridge/Reflection.lean` | `barrier_premise_from_reflection` | DiagClosed R + quote=id ⇒ hFP for all F ∈ R |
+| `Learning/Examples/ToyGuarantee.lean` | `ToyClaim`, `toyClaim_extensional`, `toyClaim_nontrivial` | Toy claim (n=0 on ℕ); extensional, nontrivial |
+| `Learning/Examples/ToyGuarantee.lean` | `no_total_self_certifier_toy` | Barrier applies to ToyClaim when hFP present |
+| `Learning/Positive/Stratified.lean` | `stratified_self_certification_toy` | **Stratified self-certification**: DecidableAt S_all ToyClaim (when hFP not assumed) |
+
+Learning library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength and Reflection.
+
+### EpistemicAgency (v2.6.0, Paper 31)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `EpistemicAgency/Core/ClaimDomain.lean` | Claim domain, coverage | Finite claim domain and certified coverage |
+| `EpistemicAgency/Core/Agent.lean` | Agent, verifier | Agent as verifier; no universal total self-certifier (imported from Learning) |
+| `EpistemicAgency/Core/Protocol.lean` | Protocol, Admissible | Verification protocol; admissible = no hallucination where all abstain |
+| `EpistemicAgency/Theorems/NoSelfCertifierImported.lean` | Agency theorem | Diagonal-capable agent has no universal total internal self-certifier (Paper 30) |
+| `EpistemicAgency/Theorems/ProtocolStrictImprovement.lean` | Strict separation | ∃ society and protocol with certified coverage strictly larger than any individual verifier |
+| `EpistemicAgency/Theorems/Diversity.lean` | Diversity necessity | Homogeneous societies cannot strictly improve; role diversity necessary for strict improvement |
+| `EpistemicAgency/Theorems/MetaBarrier.lean` | Meta-barrier | Society+protocol as single diagonal-capable system ⇒ Paper 30 barrier reappears at societal level |
+| `EpistemicAgency/Examples/ToySociety.lean` | Toy society | Concrete toy instance |
+
+EpistemicAgency library: **0 sorry**, 0 custom axioms. Composes with Learning (Paper 30).
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -263,6 +294,22 @@ SelectorStrength/Bridge/Reflection.lean
 SelectorStrength/Bridge/Closure.lean
 SelectorStrength/Instances/Trivial.lean
 SelectorStrength/Instances/ComputableNat.lean
+Learning.lean
+Learning/Core/Certificates.lean
+Learning/Core/SelfTrust.lean
+Learning/Theorems/SelfTrustBarrier.lean
+Learning/Bridge/Reflection.lean
+Learning/Examples/ToyGuarantee.lean
+Learning/Positive/Stratified.lean
+EpistemicAgency.lean
+EpistemicAgency/Core/ClaimDomain.lean
+EpistemicAgency/Core/Agent.lean
+EpistemicAgency/Core/Protocol.lean
+EpistemicAgency/Theorems/NoSelfCertifierImported.lean
+EpistemicAgency/Theorems/ProtocolStrictImprovement.lean
+EpistemicAgency/Theorems/Diversity.lean
+EpistemicAgency/Theorems/MetaBarrier.lean
+EpistemicAgency/Examples/ToySociety.lean
 lakefile.lean
 lean-toolchain
 ```
@@ -361,3 +408,5 @@ This artifact formalizes the core spine of:
 - *A No-Free-Bits Calculus for Determinacy and Outsourcing* (Paper 27 — the Closure library: audits, canonicalization, effective semantics, BoundedSelector, FintypeWorld)
 - *Reflection as a Resource* (Paper 28 — the Reflection library: SRI_R, DiagClosed, Diagonal Closure Theorem, restricted_master_fixed_point, hierarchy, bridge from Closure)
 - *Selector Strength and Completion Hierarchies* (Paper 29 — the SelectorStrength library: barrier schema no_total_decider_at_strength, monotonicity, bridges to Reflection/Closure, trivial and computable-Nat instances)
+- *Second Incompleteness for Self-Certifying Learners* (Paper 30 — the Learning library: no_total_self_certifier, reflection_supplies_hFP_for_learning, stratified_self_certification_toy, ToyGuarantee; 0 sorry)
+- *Epistemic Agency Under Diagonal Constraints* (Paper 31 — the EpistemicAgency library: society as verification protocol, strict separation, diversity necessity, meta-barrier; 0 sorry)
