@@ -1,45 +1,15 @@
 import Lake
 open Lake DSL
 
-package nems where
-  name := `nems
+package «nems-lean» where
+  -- GPTClosure (Paper 39), InstitutionalEpistemics (Paper 40)
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.28.0"
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.14.0"
 
 @[default_target]
-lean_lib NemS where
-  globs := #[.submodules `NemS]
+lean_lib «GPTClosure» where
+  -- Paper 39
 
-lean_lib SelfReference where
-  globs := #[.submodules `SelfReference]
-
-lean_lib Closure where
-  globs := #[.submodules `Closure]
-
-lean_lib Reflection where
-  globs := #[.submodules `Reflection]
-
-lean_lib SelectorStrength where
-  globs := #[.submodules `SelectorStrength]
-
-lean_lib Learning where
-  globs := #[.submodules `Learning]
-
-lean_lib EpistemicAgency where
-  globs := #[.submodules `EpistemicAgency]
-
-lean_lib SelfImprovement where
-  globs := #[.submodules `SelfImprovement]
-
-lean_lib SelfAwareness where
-  globs := #[.submodules `SelfAwareness]
-
-lean_lib Sieve where
-  globs := #[.submodules `Sieve]
-
-lean_lib ChronologyUnderClosure where
-  globs := #[.submodules `ChronologyUnderClosure]
-
-lean_lib BlackHoles where
-  globs := #[.submodules `BlackHoles]
+lean_lib «InstitutionalEpistemics» where
+  -- Paper 40
