@@ -239,14 +239,22 @@ private lemma sum_to_normSq_Q {n : ℕ} (i j : Fin n) (v : Fin n → ℂ) :
                    Complex.I * ((if j = a then 1 else 0) * (if i = b then starRingEnd ℂ (v a) * v b else 0)) +
                    (if j = a then 1 else 0) * (if j = b then starRingEnd ℂ (v a) * v b else 0)) := by
     intro a b; simp_rw [ite_and_split]; split_ifs <;> ring
-  simp_rw [h1, mul_add, Finset.sum_add_distrib, ← Finset.mul_sum]
-  simp only [← Finset.sum_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, one_mul, mul_one]
-  simp only [starRingEnd, map_add, map_mul, starRingAut_apply, Complex.star_def]
-  simp only [Complex.normSq_apply, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
+  simp_rw [h1]
+  simp only [mul_add, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul,
+             ite_mul, mul_ite, one_mul, zero_mul, mul_one, mul_zero,
+             Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  have star_eq : ∀ x : ℂ, starRingAut x = star x := fun x => rfl
+  simp only [star_eq, Complex.star_def, Complex.normSq_apply,
+             Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
              Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im,
-             Complex.div_re, Complex.one_re, Complex.one_im, Complex.ofReal_re, Complex.ofReal_im,
-             Complex.sub_re, Complex.sub_im, Complex.star_def, Complex.conj_re, Complex.conj_im]
-  norm_num; ring
+             Complex.ofReal_re, Complex.ofReal_im,
+             Complex.sub_re, Complex.sub_im, Complex.conj_re, Complex.conj_im]
+  have hre : (1 / 2 : ℂ).re = (1 / 2 : ℝ) := by norm_num
+  have him : (1 / 2 : ℂ).im = (0 : ℝ) := by norm_num
+  have hrc1 : (Nat.rawCast 1 : ℝ) = 1 := by norm_num [Nat.rawCast]
+  have hrc2 : (Nat.rawCast 2 : ℝ) = 2 := by norm_num [Nat.rawCast]
+  rw [hre, him, hrc1, hrc2] at *
+  ring
 
 -- ============================================================
 -- Bounded helper for R and Q effects
@@ -565,7 +573,7 @@ private lemma binary_additivity {n : ℕ} (m : EffectMeasure n) (E F : Effect n)
 private lemma diagEffects_sum_one (n : ℕ) :
     (∑ i : Fin n, (diagEffect i).op) = 1 := by
   ext a b; simp only [Matrix.one_apply]
-  rw [Finset.sum_apply, Finset.sum_apply]
+  rw [Matrix.sum_apply]
   simp only [diagEffect, Matrix.single_apply]
   by_cases hab : a = b
   · subst hab; simp [and_self, Finset.sum_ite_eq']
@@ -1062,15 +1070,26 @@ theorem busch_gleason_unique {n : ℕ} (m : EffectMeasure n)
       have h2 := hermitian_antisym_im ρ₂.hermitian i j
       have hii : (ρ₁.ρ i i).re = (ρ₂.ρ i i).re := (Complex.ext_iff.mp (hdiag i)).1
       have hjj : (ρ₁.ρ j j).re = (ρ₂.ρ j j).re := (Complex.ext_iff.mp (hdiag j)).1
-      simp only [Complex.mul_re, Complex.add_re, Complex.mul_re, Complex.neg_re, Complex.I_re,
-                 Complex.I_im, one_mul, zero_mul, sub_zero, Complex.ofReal_re,
-                 Complex.div_re, Complex.one_re, Complex.one_im] at hQ
-      norm_num at hQ
-      simp only [Complex.add_re, Complex.mul_re, Complex.neg_re, Complex.I_re, Complex.I_im,
-                 Complex.ofReal_re] at h1 h2
-      linarith [hQ, hii, hjj, h1, h2,
-                hermitian_diag_real ρ₁.hermitian i, hermitian_diag_real ρ₁.hermitian j,
-                hermitian_diag_real ρ₂.hermitian i, hermitian_diag_real ρ₂.hermitian j]
+      have hd1i := hermitian_diag_real ρ₁.hermitian i
+      have hd1j := hermitian_diag_real ρ₁.hermitian j
+      have hd2i := hermitian_diag_real ρ₂.hermitian i
+      have hd2j := hermitian_diag_real ρ₂.hermitian j
+      have star_eq : ∀ x : ℂ, starRingAut x = star x := fun x => rfl
+      simp only [Complex.mul_re, Complex.add_re, Complex.neg_re, Complex.I_re,
+                 Complex.I_im, Complex.ofReal_re, Complex.ofReal_im,
+                 Complex.div_re, Complex.one_re, Complex.one_im,
+                 one_mul, zero_mul, sub_zero, mul_zero, mul_one,
+                 star_eq, Complex.star_def, Complex.conj_re, Complex.conj_im] at hQ h1 h2
+      have hre : (1 / 2 : ℂ).re = (1 / 2 : ℝ) := by norm_num
+      have him : (1 / 2 : ℂ).im = (0 : ℝ) := by norm_num
+      have hcr2 : Complex.re (2 : ℂ) = (2 : ℝ) := by norm_num
+      have hci2 : Complex.im (2 : ℂ) = (0 : ℝ) := by norm_num
+      have hns2 : Complex.normSq (2 : ℂ) = (4 : ℝ) := by norm_num [Complex.normSq_apply]
+      have hnIim : (-Complex.I).im = (-1 : ℝ) := by simp [Complex.neg_im, Complex.I_im]
+      simp only [hre, him, hcr2, hci2, hns2, hnIim,
+                 mul_zero, zero_mul, add_zero, zero_add, sub_zero, zero_sub,
+                 neg_zero, zero_div, mul_neg, neg_mul, mul_one, one_mul] at hQ h1 h2
+      linarith [hQ, hii, hjj, h1, h2, hd1i, hd1j, hd2i, hd2j]
 
 /-- Born rule follows from existence. -/
 theorem born_rule {n : ℕ} (m : EffectMeasure n) :

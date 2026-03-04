@@ -1,7 +1,8 @@
 -- Ordered unit space: finite-dimensional real vector space with cone and order unit
 -- Used as the base for GPT effects and states (Paper 39)
-import Mathlib.LinearAlgebra.Basic
+import Mathlib.Algebra.Module.Basic
 import Mathlib.Algebra.Module.Submodule.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Convex.Cone.Basic
 
 variable (V : Type*) [AddCommGroup V] [Module ℝ V]
@@ -32,7 +33,7 @@ theorem le_trans (a b c : V) : K.le a b → K.le b c → K.le a c := by
 theorem le_antisymm (a b : V) : K.le a b → K.le b a → a = b := by
   intro hab hba; rw [ConePredicate.le] at hab hba
   have heq : b - a = -(a - b) := by abel
-  rw [← heq] at hab
+  rw [heq] at hab
   exact sub_eq_zero.mp (K.pos_neg_iff_zero (a - b) hba hab)
 
 end ConePredicate
@@ -53,13 +54,14 @@ theorem le_refl (a : V) : S.le a a := S.cone.le_refl a
 theorem le_trans (a b c : V) : S.le a b → S.le b c → S.le a c := S.cone.le_trans a b c
 theorem le_antisymm (a b : V) : S.le a b → S.le b a → a = b := S.cone.le_antisymm a b
 
-instance instLE : LE V where
-  le := S.le
-
 instance instPartialOrder : PartialOrder V where
-  le := (· ≤ ·)
+  le := S.le
   le_refl := S.le_refl
   le_trans := S.le_trans
   le_antisymm := S.le_antisymm
+
+/-- LE V from any OrderedUnitSpace (so downstream modules can use ≤). -/
+instance orderedUnitSpaceLE (S' : OrderedUnitSpace V) : LE V where
+  le := S'.cone.le
 
 end OrderedUnitSpace

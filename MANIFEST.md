@@ -1,10 +1,12 @@
 # nems-lean v2.6.0 — Artifact Manifest
 
-**Release:** v2.6.0  
+**Release:** v2.7.0  
 **Date:** March 2026  
-**Lean version:** leanprover/lean4:v4.28.0  
-**Mathlib version:** v4.28.0  
-**Build result:** 8039+ jobs, 0 errors, **6 `sorry`** (in NemS/SelfReference only; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure, InstitutionalEpistemics are 0 sorry) (see below), **zero custom axioms**
+**Lean version:** leanprover/lean4:v4.29.0-rc3  
+**Mathlib version:** v4.29.0-rc3  
+**Build result:** 1713 jobs, 0 errors, **9 `sorry`** (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure core, InstitutionalEpistemics, RefinementFlow are 0 sorry) (see below), **zero custom axioms**
+
+**Lean 4.29 upgrade:** Compatibility fixes in `BuschGleason.lean` (tactic/API only; no theorem changes). See `LEAN_4.29_UPGRADE_DISCLOSURE.md`.
 
 ## v2.2.0 additions: General Self-Reference Calculus
 
@@ -43,7 +45,7 @@ modal logic (Löb 1955, Boolos 1993).
 
 ### Sorry status
 
-Four `sorry` statements remain across two modules:
+Seven `sorry` statements remain across three modules (plus 2 in SelfReference instances = 9 total):
 
 **Quantum module (Paper 13):** Two sorrys in `NemS/Quantum/BuschGleason.lean`, encoding the
 Busch/Gleason representation theorem existence direction:
@@ -73,6 +75,25 @@ The Lean formalization requires ~200 additional lines of careful matrix algebra 
 4. **`bics_implies_nems`** (NemS/ReverseBICS/BICS_Implies_NEMS.lean:~33): The flagship reverse-direction
    theorem showing BICS (Born as internal complete semantics) implies NEMS (no external model selection).
    Requires: proof that BICS completeness (no external completion bits) forbids external selection.
+
+**QuantumFinite bridge module (Paper 39 ↔ Paper 13):** Three sorrys in `GPTClosure/Instances/QuantumFinite.lean`,
+bridging Paper 13's quantum formalization with Paper 39's GPT framework:
+
+5. **PSD cone pointedness** (`quantumCone` pointedness): The PSD cone satisfies `x ∈ cone ∧ -x ∈ cone → x = 0`.
+   Requires spectral argument: if both H and −H are PSD then all eigenvalues are zero, so H = 0.
+
+6. **Born-rule nonnegativity** (inside `born_rule_is_gpt_prob`): For PSD ρ and PSD effect E,
+   `Re(Tr(ρ * E)) ≥ 0`. Standard fact: trace of product of two PSD matrices is nonneg.
+
+7. **Wiring to `busch_gleason_unique`** (inside `quantum_state_uniqueness`): Connecting the GPT
+   uniqueness result to Paper 13's `busch_gleason_unique` theorem. Requires unpacking the
+   `densityToState` / `quantumEffectToGPT` definitions to show agreement on all effects implies
+   agreement on all test effects, then applying `busch_gleason_unique`.
+
+All structural definitions (`quantumCone`, `quantumOUS`, `bornMap`, `densityToState`,
+`quantumEffectToGPT`, `povmToMeasurement`) and the Born-rule-equals-GPT-pairing theorem
+(`born_rule_is_gpt_prob`) are fully proved (modulo the nonnegativity sorry above).
+The module works around a Lean 4.29 instance search limitation with explicit `@` notation.
 
 All other theorems in the library are fully proved without `sorry`, including:
 - **Uniqueness**: `busch_gleason_unique` — if any ρ represents μ, it must be the unique one (0 sorrys)
@@ -289,11 +310,17 @@ BlackHoles library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength
 | `GPTClosure/Core/OrderedSpaces.lean` | Ordered unit space, cone | Finite-dimensional ordered unit space $(V, V_+, u)$ |
 | `GPTClosure/Core/EffectsStates.lean` | Effects, states, prob | Effects $0 \le e \le u$; states as positive linear functionals; $\mathsf{prob}$ |
 | `GPTClosure/Core/Measurements.lean` | Measurements | Measurements as unit decompositions |
-| `GPTClosure/Theorems/Uniqueness.lean` | `state_extensionality`, `uniqueness_under_spanning` | States determined by agreement on effects; unique extension when effects span $V$ |
+| `GPTClosure/Theorems/Uniqueness.lean` | `state_ext_effect_span`, `uniqueness_under_spanning` | States determined by agreement on effects; unique extension when effects span $V$ |
 | `GPTClosure/Theorems/ClosurePrinciples.lean` | `ClosureAssignment`, `closure_implies_affine_linear` | Closure principles ⇒ unique affine/linear state functional |
 | `GPTClosure/Examples/Toy.lean` | Toy | Classical simplex; closure axioms hold |
+| `GPTClosure/Instances/QuantumFinite.lean` | `quantumCone`, `quantumOUS` | PSD cone as ordered unit space (1 sorry: pointedness) |
+| `GPTClosure/Instances/QuantumFinite.lean` | `bornMap`, `densityToState` | Born map and density-to-GPT-state embedding |
+| `GPTClosure/Instances/QuantumFinite.lean` | `quantumEffectToGPT` | Quantum effects ↪ GPT effects |
+| `GPTClosure/Instances/QuantumFinite.lean` | `born_rule_is_gpt_prob` | **Born rule = GPT state-effect pairing** (1 sorry: nonnegativity) |
+| `GPTClosure/Instances/QuantumFinite.lean` | `povmToMeasurement` | POVMs ↪ GPT measurements |
+| `GPTClosure/Instances/QuantumFinite.lean` | `quantum_state_uniqueness` | Quantum state uniqueness via GPT uniqueness (1 sorry: wiring to busch_gleason_unique) |
 
-GPTClosure library: **0 sorry**, 0 custom axioms. Standalone (Paper 39: probability as closure in GPTs).
+GPTClosure core library: **0 sorry**, 0 custom axioms. GPTClosure/Instances/QuantumFinite: **3 sorry** (PSD cone pointedness, Born-rule nonnegativity, wiring to busch_gleason_unique). Standalone (Paper 39: probability as closure in GPTs; QuantumFinite bridges Paper 13 ↔ Paper 39).
 
 ### InstitutionalEpistemics (Paper 40)
 
@@ -308,6 +335,18 @@ GPTClosure library: **0 sorry**, 0 custom axioms. Standalone (Paper 39: probabil
 | `InstitutionalEpistemics/Examples/ToyRegulation.lean` | Toy | Explicit toy witness for k-role bound |
 
 InstitutionalEpistemics library: **0 sorry**, 0 custom axioms. Composes with Learning, EpistemicAgency, SelectorStrength.
+
+### RefinementFlow (Paper 41)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `RefinementFlow/Core/RefinementFlow.lean` | `forgetFromTo` | Iterated forget: WorldTypeAt t' → WorldTypeAt t when t ≤ t' |
+| `RefinementFlow/Core/RefinementFlow.lean` | `forgetFromTo_succ` | One-step case: forgetFromTo t (t+1) = forget (Paper 36) |
+| `RefinementFlow/Core/RefinementFlow.lean` | `forgetFromTo_coherent` | forgetFromTo t t' h (toWorldTypeAt t' w) = toWorldTypeAt t w |
+| `RefinementFlow/Core/RefinementFlow.lean` | `forgetFromTo_naturality` | forgetFromTo t t' ∘ forgetFromTo t' t'' = forgetFromTo t t'' when t ≤ t' ≤ t'' |
+| `RefinementFlow/Examples/ToyBits.lean` | `toy_strict_growth`, `toy_forgetFromTo_01` | Toy two-bit world; strict growth at 0; coherence of forgetFromTo 1→0 |
+
+RefinementFlow library: **0 sorry**, 0 custom axioms. Composes with ArrowOfTime (Paper 36).
 
 ## Key source files (SHA-256)
 
@@ -441,6 +480,9 @@ ArrowOfTime/Theorems/NoOverwrite.lean
 ArrowOfTime/Theorems/Irreversibility.lean
 ArrowOfTime/Theorems/SelectionBarrier.lean
 ArrowOfTime/Examples/Toy.lean
+RefinementFlow.lean
+RefinementFlow/Core/RefinementFlow.lean
+RefinementFlow/Examples/ToyBits.lean
 ChronologyUnderClosure.lean
 ChronologyUnderClosure/Core/RecordDynamics.lean
 ChronologyUnderClosure/Theorems/RecordNonOverwrite.lean
@@ -455,6 +497,7 @@ GPTClosure/Core/Measurements.lean
 GPTClosure/Theorems/Uniqueness.lean
 GPTClosure/Theorems/ClosurePrinciples.lean
 GPTClosure/Examples/Toy.lean
+GPTClosure/Instances/QuantumFinite.lean
 InstitutionalEpistemics.lean
 InstitutionalEpistemics/Core/Roles.lean
 InstitutionalEpistemics/Core/ThreatModel.lean
@@ -570,5 +613,6 @@ This artifact formalizes the core spine of:
 - *The Arrow of Time from Closure* (Paper 36 — ArrowOfTime library: record filtration, refinement, no_overwrite, irreversibility, selection_barrier_retrodiction, Toy; 0 sorry)
 - *Chronology Under Closure: NEMS Constraints on Admissible Time Travel* (Paper 37 — ChronologyUnderClosure library: record dynamics, record_non_overwrite, selection_barrier_chronology; 0 sorry)
 - *NEMS Constraints on Black Hole Information* (Paper 38 — BlackHoles library: record_consistency_abstract, no_hypercomputing_from_bh; 0 sorry)
-- *Probability as Closure in General Probabilistic Theories* (Paper 39 — GPTClosure library: state_extensionality, uniqueness_under_spanning, closure_implies_affine_linear, Toy; 0 sorry)
+- *Probability as Closure in General Probabilistic Theories* (Paper 39 — GPTClosure library: state_ext_effect_span, uniqueness_under_spanning, closure_implies_affine_linear, Toy; 0 sorry in core; GPTClosure/Instances/QuantumFinite bridges Paper 13 ↔ Paper 39: quantumOUS, born_rule_is_gpt_prob, povmToMeasurement, quantum_state_uniqueness; 3 sorry)
 - *Institutions Under Diagonal Constraints* (Paper 40 — InstitutionalEpistemics library: no_universal_final_judge, k_role_lower_bound, diversity_necessity, ToyRegulation; 0 sorry)
+- *Refinement Flow of World-Types: Time as Growth of Stable Distinguishability* (Paper 41 — RefinementFlow library: forgetFromTo, forgetFromTo_coherent, forgetFromTo_naturality, ToyBits; 0 sorry)

@@ -1,13 +1,15 @@
 # nems-lean Artifact Documentation
 
-**Version:** v2.6.0  
-**Lean:** leanprover/lean4:v4.28.0  
-**Mathlib:** v4.28.0  
-**Build:** 8041+ jobs, 0 errors, 6 sorrys (see MANIFEST.md), **0 custom axioms**
+**Version:** v2.7.0  
+**Lean:** leanprover/lean4:v4.29.0-rc3  
+**Mathlib:** v4.29.0-rc3  
+**Build:** 1713 jobs, 0 errors, 9 sorrys (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; see MANIFEST.md), **0 custom axioms**
+
+**Lean 4.29 compatibility:** See `LEAN_4.29_UPGRADE_DISCLOSURE.md` for tactic/API fixes in BuschGleason.lean (no theorem changes).
 
 ## What This Artifact Proves
 
-This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–40)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (The Arrow of Time from Closure) — ArrowOfTime library (0 sorry). **Paper 37** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 38** (Black Hole Information) — BlackHoles library (0 sorry). **Paper 39** (Probability as Closure in GPTs) — GPTClosure library (0 sorry). **Paper 40** (Institutions Under Diagonal Constraints) — InstitutionalEpistemics library (0 sorry). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
+This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–40)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (The Arrow of Time from Closure) — ArrowOfTime library (0 sorry). **Paper 37** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 38** (Black Hole Information) — BlackHoles library (0 sorry). **Paper 39** (Probability as Closure in GPTs) — GPTClosure library (0 sorry in core); GPTClosure/Instances/QuantumFinite bridges Paper 13 (quantum) ↔ Paper 39 (GPT), showing quantum probability is an instance of closure-forced probability (3 sorry: PSD cone pointedness, Born-rule nonnegativity, wiring to busch_gleason_unique). **Paper 40** (Institutions Under Diagonal Constraints) — InstitutionalEpistemics library (0 sorry). For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
 
 ### Abstract-core spine (Papers 26–34, 0 sorry in Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve)
 
@@ -47,6 +49,12 @@ This Lean 4 library formalizes the core logical spine of the NEMS (No External M
 **Reverse Direction (Paper 14):**
 - `bics_implies_nems`: **BICS ⇒ NEMS** — Born as internal complete semantics implies no external model selection (0 sorry, fully proved)
 - `bics_rules_out_external`: BICS ⇒ ¬ NeedsExternalSelection (0 sorry)
+
+**GPT-Quantum Bridge (Paper 39 ↔ Paper 13):**
+- `quantumCone`, `quantumOUS`: PSD cone defines an ordered unit space (1 sorry: pointedness)
+- `born_rule_is_gpt_prob`: **Born rule equals GPT state-effect pairing** (1 sorry: nonnegativity for PSD operators)
+- `povmToMeasurement`: POVMs map to GPT measurements (0 sorry)
+- `quantum_state_uniqueness`: State uniqueness via GPT uniqueness theorem (1 sorry: wiring to busch_gleason_unique)
 
 ## Proof Status: Quantum Module (Paper 13)
 
@@ -124,7 +132,7 @@ lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (8090 jobs).`
+Expected output: `Build completed successfully (1713 jobs).`
 
 ## Axiom Audit
 
@@ -148,6 +156,11 @@ NemS/
 ├── Quantum/        # Born rule uniqueness (Paper 13)
 ├── Examples/       # Toy instantiations
 └── Meta/           # Audit protocol
+GPTClosure/
+├── Core/           # Ordered spaces, effects/states, measurements
+├── Theorems/       # Uniqueness, closure principles
+├── Examples/       # Classical simplex toy
+└── Instances/      # QuantumFinite (Paper 13 ↔ Paper 39 bridge)
 ```
 
 ## Companion Papers
@@ -164,12 +177,19 @@ This artifact formalizes the core spine of:
 - **Paper 33:** *Self-Awareness as a Resource* (SelfAwareness; 0 sorry)
 - **Paper 34:** *A Sieve Engine for Theory Spaces* (Sieve; 0 sorry)
 - **Paper 35:** *Oracles as External Selectors* (companion; Lean library Hypercomputation/ planned)
-- **Paper 36:** *Chronology Under Closure* (ChronologyUnderClosure; 0 sorry)
-- **Paper 37:** *NEMS Constraints on Black Hole Information* (BlackHoles; 0 sorry)
+- **Paper 36:** *The Arrow of Time from Closure* (ArrowOfTime; 0 sorry)
+- **Paper 37:** *Chronology Under Closure* (ChronologyUnderClosure; 0 sorry)
+- **Paper 38:** *NEMS Constraints on Black Hole Information* (BlackHoles; 0 sorry)
+- **Paper 39:** *Probability as Closure in GPTs* (GPTClosure; 0 sorry in core; GPTClosure/Instances/QuantumFinite bridges Paper 13 ↔ 39; 3 sorry)
+- **Paper 40:** *Institutions Under Diagonal Constraints* (InstitutionalEpistemics; 0 sorry)
 
 ## Future Work
 
-Eliminating the 2 remaining `sorry`s in the quantum module is an engineering task (not an open mathematical problem). The required components are:
+Eliminating the remaining `sorry`s in the quantum module and QuantumFinite bridge is an engineering task (not an open mathematical problem).
+
+### Quantum module (Paper 13): 2 sorrys
+
+The required components are:
 
 1. Formalize rational scaling of effect measures via POVM repetition (~40 lines)
 2. Prove bounded additive functions on [0,1] vanishing on ℚ vanish everywhere (~30 lines)
@@ -180,6 +200,14 @@ Eliminating the 2 remaining `sorry`s in the quantum module is an engineering tas
 7. Derive PSD from representation (~20 lines)
 
 Total: ~260 lines of standard matrix algebra and 1D real analysis.
+
+### QuantumFinite bridge (Paper 39 ↔ Paper 13): 3 sorrys
+
+1. PSD cone pointedness: spectral argument that H and −H both PSD ⇒ H = 0 (~20 lines)
+2. Born-rule nonnegativity: Re(Tr(ρE)) ≥ 0 for PSD ρ, E (~15 lines, standard Frobenius inner product)
+3. Wiring to busch_gleason_unique: unpack densityToState/quantumEffectToGPT to show agreement on all effects implies agreement on test effects, then apply busch_gleason_unique (~40 lines)
+
+Total: ~75 lines of standard linear algebra.
 
 ## License
 
@@ -193,7 +221,7 @@ If you use this artifact, please cite:
 @misc{SpivackNEMSLean_v2,
   author       = {Nova Spivack},
   title        = {nems-lean: Lean 4 Formalization of the NEMS Core Spine and MFRR Bridge},
-  howpublished = {Software artifact, Lean 4.28.0 / Mathlib 4.28.0},
+  howpublished = {Software artifact, Lean 4.29.0-rc3 / Mathlib 4.29.0-rc3},
   year         = {2026},
   note         = {v2.5.0+: 8k+ jobs; 6 sorrys (see MANIFEST); Papers 26–31 abstract-core spine including EpistemicAgency; zero custom axioms.}
 }

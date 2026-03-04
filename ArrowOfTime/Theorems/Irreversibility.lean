@@ -28,7 +28,7 @@ def IsInvolution (R : World → World) : Prop :=
 
 /-- **No global reversal**: A stage-preserving involution fixes every stage world-type;
 it cannot "undo" refinement (distinguish fewer worlds). -/
-theorem no_global_reversal (R : World → World) (hInv : IsInvolution R) (hStage : StagePreserving Filt R)
+theorem no_global_reversal (R : World → World) (_hInv : IsInvolution R) (hStage : StagePreserving Filt R)
     (t : Time) (w : World) :
     Filt.toWorldTypeAt t (R w) = Filt.toWorldTypeAt t w := by
   apply Quotient.sound

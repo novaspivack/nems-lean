@@ -10,6 +10,6 @@ namespace OrderedUnitSpace
 /-- A measurement with n outcomes: finite family of effects summing to the order unit. -/
 structure Measurement (n : ℕ) where
   outcomes : Fin n → S.Effect
-  sum_eq_unit : (Finset.univ.sum fun i => (outcomes i : V)) = S.orderUnit
+  sum_eq_unit : (Finset.univ.sum fun i => (outcomes i).val) = S.orderUnit
 
 end OrderedUnitSpace
