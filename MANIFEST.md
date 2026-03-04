@@ -162,6 +162,20 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `Reflection/Hierarchy/Separation.lean` | `not_diagClosed_identity_only` | R = {id} is not diagonally closed |
 | `Reflection/Hierarchy/Separation.lean` | `method_level_separation` | ∃ F ∈ R such that G_F ∉ R (identity-only) |
 
+### SelectorStrength (v2.4.0, Paper 29)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `SelectorStrength/Core/Strength.lean` | `Strength`, `Strength.le` | Strength as predicate on functions; preorder |
+| `SelectorStrength/Core/Deciders.lean` | `TotalDecider`, `DecidableAt`, `Extensional`, `Nontrivial` | Deciders and extensional predicates |
+| `SelectorStrength/Core/AntiDecider.lean` | `antiDecider`, `AntiDeciderClosed` | Anti-decider transformer and closure |
+| `SelectorStrength/Theorems/BarrierSchema.lean` | `no_total_decider_at_strength` | **Barrier schema**: AntiDeciderClosed + hFP ⇒ ¬ DecidableAt Sbool T |
+| `SelectorStrength/Theorems/Monotonicity.lean` | `decidableAt_mono` | S₁ ≤ S₂ ⇒ DecidableAt S₁ T → DecidableAt S₂ T |
+| `SelectorStrength/Bridge/Reflection.lean` | `reflection_supplies_hFP` | DiagClosed R ⇒ fixed-point premise for barrier |
+| `SelectorStrength/Bridge/Closure.lean` | `SelectorAt`, `selectorAt_mono` | Selector at strength S; monotonicity |
+| `SelectorStrength/Instances/Trivial.lean` | `S_all`, `no_total_decider_all` | Trivial strength (all functions); barrier corollary |
+| `SelectorStrength/Instances/ComputableNat.lean` | `no_total_decider_nat` | Barrier for Nat at parametric strength (Sbool, Sα) |
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -239,6 +253,16 @@ Reflection/Theorems/DiagonalClosure.lean
 Reflection/Hierarchy/Examples.lean
 Reflection/Hierarchy/Separation.lean
 Reflection/Bridge/ClosureInstance.lean
+SelectorStrength.lean
+SelectorStrength/Core/Strength.lean
+SelectorStrength/Core/Deciders.lean
+SelectorStrength/Core/AntiDecider.lean
+SelectorStrength/Theorems/BarrierSchema.lean
+SelectorStrength/Theorems/Monotonicity.lean
+SelectorStrength/Bridge/Reflection.lean
+SelectorStrength/Bridge/Closure.lean
+SelectorStrength/Instances/Trivial.lean
+SelectorStrength/Instances/ComputableNat.lean
 lakefile.lean
 lean-toolchain
 ```
@@ -336,3 +360,4 @@ This artifact formalizes the core spine of:
 - *General Self-Reference Calculus* (Paper 26 — the SelfReference library)
 - *A No-Free-Bits Calculus for Determinacy and Outsourcing* (Paper 27 — the Closure library: audits, canonicalization, effective semantics, BoundedSelector, FintypeWorld)
 - *Reflection as a Resource* (Paper 28 — the Reflection library: SRI_R, DiagClosed, Diagonal Closure Theorem, restricted_master_fixed_point, hierarchy, bridge from Closure)
+- *Selector Strength and Completion Hierarchies* (Paper 29 — the SelectorStrength library: barrier schema no_total_decider_at_strength, monotonicity, bridges to Reflection/Closure, trivial and computable-Nat instances)

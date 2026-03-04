@@ -94,8 +94,36 @@ So for external use:
 
 ---
 
-## 4. References
+## 4. Selector Strength (SelectorStrength library, Paper 29)
+
+### What it is
+
+The **SelectorStrength** library formalizes a **poset of realizability strengths** (deciders/transformers) and the **barrier theorem family**: under anti-decider closure and a fixed-point principle at a strength level, no total decider exists in that strength for nontrivial extensional predicates. Reflection supplies the fixed-point premise when R is diagonally closed; Closure supplies the selector-at-strength vocabulary.
+
+### Main types and names
+
+- **`SelectorStrength.Core.Strength`** — Strength as `(α → β) → Prop`; `Strength.le` (preorder).
+- **`SelectorStrength.Core.Deciders`** — `TotalDecider`, `DecidableAt`, `Extensional`, `Nontrivial`.
+- **`SelectorStrength.Core.AntiDecider`** — `antiDecider`, `AntiDeciderClosed`.
+- **`SelectorStrength.Theorems.BarrierSchema.no_total_decider_at_strength`** — Headline: hExt, hNontriv, AntiDeciderClosed, hFP ⇒ ¬ DecidableAt Sbool T.
+- **`SelectorStrength.Bridge.Reflection.reflection_supplies_hFP`** — DiagClosed R ⇒ fixed-point premise.
+- **`SelectorStrength.Bridge.Closure.SelectorAt`** — Selector whose section is in a given strength class.
+- **Instances:** `SelectorStrength.Instances.Trivial` (S_all; barrier corollary), `SelectorStrength.Instances.ComputableNat` (parametric barrier on Nat).
+
+### Where in the repo
+
+- Root barrel: **`SelectorStrength.lean`**
+- Core: **`SelectorStrength/Core/Strength.lean`**, **Deciders.lean**, **AntiDecider.lean**
+- Theorems: **`SelectorStrength/Theorems/BarrierSchema.lean`**, **Monotonicity.lean**
+- Bridges: **`SelectorStrength/Bridge/Reflection.lean`**, **Closure.lean**
+- Instances: **`SelectorStrength/Instances/Trivial.lean`**, **ComputableNat.lean**
+
+---
+
+## 5. References
 
 - **Paper 26:** *A General Self-Reference Calculus* — main reference for the SRI, MFP-1, MFP-2, and instances.
+- **Paper 28:** *Reflection as a Resource* — SRI_R, DiagClosed, restricted_master_fixed_point.
+- **Paper 29:** *Selector Strength and Completion Hierarchies* — barrier schema, strength poset, bridges.
 - **MANIFEST.md:** Verified theorem list, sorry count, and file-level layout.
 - **GSRC_Significance** (in the suite): Short significance note for the General Self-Reference Calculus.

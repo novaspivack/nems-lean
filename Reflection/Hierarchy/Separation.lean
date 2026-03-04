@@ -49,36 +49,38 @@ def degenerateSRI : SRI_R ℕ ℕ (· = id) where
   repr F hF   := 0
   repr_spec   := by
     intro F hF c
-    simp only
+    simp only [Nat.zero_add]
     rw [hF]
-    omega
+    rfl
 
 local instance : SRI_R ℕ ℕ (· = id) := degenerateSRI
 
 /-- The diagonalization of id: G_id(c) = id(quote(run c c)) = run c c = 2c. -/
-theorem diag_id_eq_double : (fun c => id (SRI_R.quote (SRI_R.run c c))) = (· * 2) := by
+theorem diag_id_eq_double : (fun c => id (degenerateSRI.quote (degenerateSRI.run c c))) = (· * 2) := by
   ext c
-  simp only [SRI_R.quote, SRI_R.run]
-  omega
+  delta degenerateSRI
+  show id (id (c + c)) = c * 2
+  rw [id_eq, id_eq, ← Nat.two_mul c, mul_comm]
 
 /-- G_id ≠ id: the diagonalization of the identity is doubling, not identity. -/
-theorem diag_id_ne_id : (fun c : ℕ => id (SRI_R.quote (SRI_R.run c c))) ≠ id := by
+theorem diag_id_ne_id : (fun c : ℕ => id (degenerateSRI.quote (degenerateSRI.run c c))) ≠ id := by
   intro h
-  have h1 : (fun c => id (SRI_R.quote (SRI_R.run c c))) 1 = id 1 := congr_fun h 1
-  simp only [SRI_R.quote, SRI_R.run] at h1
+  have h1 : (fun c => id (degenerateSRI.quote (degenerateSRI.run c c))) 1 = id 1 := congr_fun h 1
+  delta degenerateSRI at h1
+  simp only [id_eq] at h1
   omega
 
 /-- R = {id} is NOT diagonally closed: id ∈ R but G_id ∉ R. -/
 theorem not_diagClosed_identity_only : ¬ DiagClosed (· = id : (ℕ → ℕ) → Prop) := by
   intro h
-  have hG : (fun c => id (SRI_R.quote (SRI_R.run c c))) = id := h id rfl
+  have hG : (fun c => id (degenerateSRI.quote (degenerateSRI.run c c))) = id := h id rfl
   exact diag_id_ne_id hG
 
 /-- **Method-level separation**: there exists F ∈ R such that G_F ∉ R.
 Concretely: F = id ∈ R, but G_id = (· * 2) ∉ R. -/
 theorem method_level_separation :
     ∃ F : ℕ → ℕ, (· = id : (ℕ → ℕ) → Prop) F ∧
-      ¬ (· = id : (ℕ → ℕ) → Prop) (fun c => F (SRI_R.quote (SRI_R.run c c))) := by
+      ¬ (· = id : (ℕ → ℕ) → Prop) (fun c => F (degenerateSRI.quote (degenerateSRI.run c c))) := by
   use id
   constructor
   · rfl

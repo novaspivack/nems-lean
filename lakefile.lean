@@ -19,3 +19,9 @@ lean_lib Closure where
 
 lean_lib Reflection where
   globs := #[.submodules `Reflection]
+
+lean_lib SelectorStrength where
+  globs := #[.submodules `SelectorStrength]
+
+lean_lib Learning where
+  globs := #[.submodules `Learning]
