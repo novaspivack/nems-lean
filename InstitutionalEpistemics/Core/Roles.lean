@@ -6,8 +6,7 @@ variable (n : ℕ) (Instance : Type*)
 /-- A role is an index type (finite in practice). -/
 structure Role (n : ℕ) where
   idx : Fin n
-
-instance (n : ℕ) : DecidableEq (Role n) := inferInstanceAs (DecidableEq (Fin n))
+  deriving DecidableEq
 
 instance (n : ℕ) : Fintype (Role n) := Fintype.ofEquiv (Fin n)
   { toFun := Role.mk
@@ -19,9 +18,9 @@ instance (n : ℕ) : Fintype (Role n) := Fintype.ofEquiv (Fin n)
 def Cover (Instance : Type*) := Instance → Prop
 
 /-- Two roles are equivalent for coverage if they have the same coverage set. -/
-def RoleEquiv (Instance : Type*) (cov : Role n → Cover Instance) (r₁ r₂ : Role n) : Prop :=
+def RoleEquiv (n : ℕ) (Instance : Type*) (cov : Role n → Cover Instance) (r₁ r₂ : Role n) : Prop :=
   ∀ i, cov r₁ i ↔ cov r₂ i
 
 /-- Diversity: at least two roles with distinct coverage sets. -/
-def Diversity (Instance : Type*) (cov : Role n → Cover Instance) : Prop :=
-  ∃ r₁ r₂ : Role n, r₁ ≠ r₂ ∧ ¬(RoleEquiv Instance cov r₁ r₂)
+def Diversity (Instance : Type*) (n : ℕ) (cov : Role n → Cover Instance) : Prop :=
+  ∃ r₁ r₂ : Role n, r₁ ≠ r₂ ∧ ¬(RoleEquiv n Instance cov r₁ r₂)

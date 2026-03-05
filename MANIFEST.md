@@ -4,7 +4,7 @@
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.29.0-rc3  
 **Mathlib version:** v4.29.0-rc3  
-**Build result:** 1713 jobs, 0 errors, **9 `sorry`** (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure core, InstitutionalEpistemics, RefinementFlow are 0 sorry) (see below), **zero custom axioms**
+**Build result:** 1713 jobs, 0 errors, **9 `sorry`** (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure core, InstitutionalEpistemics, RefinementFlow, RecordEntropy, ErrorCorrectingClosure are 0 sorry) (see below), **zero custom axioms**
 
 **Lean 4.29 upgrade:** Compatibility fixes in `BuschGleason.lean` (tactic/API only; no theorem changes). See `LEAN_4.29_UPGRADE_DISCLOSURE.md`.
 
@@ -348,6 +348,34 @@ InstitutionalEpistemics library: **0 sorry**, 0 custom axioms. Composes with Lea
 
 RefinementFlow library: **0 sorry**, 0 custom axioms. Composes with ArrowOfTime (Paper 36).
 
+### RecordEntropy (Paper 42)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `RecordEntropy/Core/EntropyFinite.lean` | `recordEntropy` | H(t) = card(WorldTypeAt t) for finite case |
+| `RecordEntropy/Theorems/Monotonicity.lean` | `recordEntropy_monotone` | H(t+1) ≥ H(t) |
+| `RecordEntropy/Theorems/Monotonicity.lean` | `recordEntropy_strict` | StrictGrowthAt t ⇒ H(t+1) > H(t) |
+| `RecordEntropy/Theorems/NoncomputabilityBarrier.lean` | `entropyClaim` | T(n) := (H(t) = n) (fixed-instance) |
+| `RecordEntropy/Theorems/NoncomputabilityBarrier.lean` | `no_total_decider_entropy` | AntiDeciderClosed + hFP ⇒ ¬ DecidableAt Sbool T |
+| `RecordEntropy/Theorems/UniformEntropyBarrier.lean` | `EntropyCode`, `entropyOfCode` | Code encoding (filtration, t, n); entropy of encoded instance |
+| `RecordEntropy/Theorems/UniformEntropyBarrier.lean` | `uniformEntropyClaim`, `no_total_decider_uniform_entropy` | **Uniform barrier**: no total decider for T on codes |
+| `RecordEntropy/Examples/ToyEntropy.lean` | `toy_entropy_monotone`, `toy_entropy_strict` | Toy: monotone, strict at t=0 |
+| `RecordEntropy/Examples/ToyEntropy.lean` | `toy_no_total_decider_entropy` | Barrier applies to Toy entropy claim (fixed-instance) |
+
+RecordEntropy library: **0 sorry**, 0 custom axioms. Composes with ArrowOfTime, RefinementFlow, SelectorStrength.
+
+### ErrorCorrectingClosure (Paper 43)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `ErrorCorrectingClosure/Core/DecodingModel.lean` | `InstanceIndex`, `DecodeCode`, `isConsistent`, `decoderClaim` | Codes (instance, claimed); uniform decoder-claim predicate |
+| `ErrorCorrectingClosure/Theorems/DecoderBarrier.lean` | `decoderClaim_extensional`, `decoderClaim_nontrivial` | Decoder-claim extensional and nontrivial |
+| `ErrorCorrectingClosure/Theorems/DecoderBarrier.lean` | `no_total_decider_decoder_claim` | **Decoder barrier**: AntiDeciderClosed + hFP ⇒ ¬ DecidableAt Sbool decoderClaim |
+| `ErrorCorrectingClosure/Theorems/ProtocolImprovement.lean` | `decodingCoverage`, `StrictDecodingImprovement`, `diversity_necessity_decoding` | Wrapper over Paper 40: strict decoding improvement ⇒ diversity |
+| `ErrorCorrectingClosure/Examples/ToyDecoder.lean` | `toy_decoder_claim_nontrivial`, `toy_no_total_decider_decoder` | Toy: two instance types; barrier applies |
+
+ErrorCorrectingClosure library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength, InstitutionalEpistemics.
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -483,6 +511,17 @@ ArrowOfTime/Examples/Toy.lean
 RefinementFlow.lean
 RefinementFlow/Core/RefinementFlow.lean
 RefinementFlow/Examples/ToyBits.lean
+RecordEntropy.lean
+RecordEntropy/Core/EntropyFinite.lean
+RecordEntropy/Theorems/Monotonicity.lean
+RecordEntropy/Theorems/NoncomputabilityBarrier.lean
+RecordEntropy/Theorems/UniformEntropyBarrier.lean
+RecordEntropy/Examples/ToyEntropy.lean
+ErrorCorrectingClosure.lean
+ErrorCorrectingClosure/Core/DecodingModel.lean
+ErrorCorrectingClosure/Theorems/DecoderBarrier.lean
+ErrorCorrectingClosure/Theorems/ProtocolImprovement.lean
+ErrorCorrectingClosure/Examples/ToyDecoder.lean
 ChronologyUnderClosure.lean
 ChronologyUnderClosure/Core/RecordDynamics.lean
 ChronologyUnderClosure/Theorems/RecordNonOverwrite.lean
@@ -616,3 +655,5 @@ This artifact formalizes the core spine of:
 - *Probability as Closure in General Probabilistic Theories* (Paper 39 — GPTClosure library: state_ext_effect_span, uniqueness_under_spanning, closure_implies_affine_linear, Toy; 0 sorry in core; GPTClosure/Instances/QuantumFinite bridges Paper 13 ↔ Paper 39: quantumOUS, born_rule_is_gpt_prob, povmToMeasurement, quantum_state_uniqueness; 3 sorry)
 - *Institutions Under Diagonal Constraints* (Paper 40 — InstitutionalEpistemics library: no_universal_final_judge, k_role_lower_bound, diversity_necessity, ToyRegulation; 0 sorry)
 - *Refinement Flow of World-Types: Time as Growth of Stable Distinguishability* (Paper 41 — RefinementFlow library: forgetFromTo, forgetFromTo_coherent, forgetFromTo_naturality, ToyBits; 0 sorry)
+- *Record Entropy and Noncomputability: Monotone Semantic Complexity under Diagonal Capability* (Paper 42 — RecordEntropy library: recordEntropy, recordEntropy_monotone, recordEntropy_strict, no_total_decider_entropy, ToyEntropy; 0 sorry)
+- *Adjudication as Decoding: Semantic Error-Correction under PSC Closure* (Paper 43 — ErrorCorrectingClosure library: decoderClaim, no_total_decider_decoder_claim, diversity_necessity_decoding, ToyDecoder; 0 sorry)

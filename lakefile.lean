@@ -19,3 +19,6 @@ lean_lib «Closure» where
 lean_lib «SelectorStrength» where
 lean_lib «ArrowOfTime» where
 lean_lib «RefinementFlow» where
+lean_lib «RecordEntropy» where
+lean_lib «ErrorCorrectingClosure» where
+  -- Paper 43
