@@ -6,4 +6,4 @@ import InstitutionalEpistemics.Core.Protocols
 import InstitutionalEpistemics.Theorems.NoUniversalJudge
 import InstitutionalEpistemics.Theorems.LowerBounds
 import InstitutionalEpistemics.Theorems.RobustnessImprovement
-import InstitutionalEpistemics.Examples.ToyRegulation
+import InstitutionalEpistemics.CosmicAudit

@@ -1,6 +1,6 @@
 # nems-lean: Overview for users
 
-This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve, ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure, GPTClosure/Instances/QuantumFinite, InstitutionalEpistemics, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
+This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve, ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure, GPTClosure/Instances/QuantumFinite, InstitutionalEpistemics, CertificationLogic, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
 
 ---
 
@@ -236,5 +236,14 @@ The **Sieve** library is a **meta-methodology kernel** for theory spaces: a type
 - **Paper 39:** *Probability as Closure in GPTs* — GPTClosure library (0 sorry in core); **GPTClosure/Instances/QuantumFinite** bridges Paper 13 ↔ Paper 39: quantumOUS, born_rule_is_gpt_prob, povmToMeasurement, quantum_state_uniqueness (3 sorry).
 - **Paper 40:** *Institutions Under Diagonal Constraints* — InstitutionalEpistemics library (0 sorry).
 - **Paper 41:** *Refinement Flow of World-Types* — RefinementFlow library (0 sorry).
+- **Paper 42:** *Record Entropy and Noncomputability* — RecordEntropy library (0 sorry): recordEntropy, monotonicity, strict monotonicity, no_total_decider_entropy, ToyEntropy.
+- **Paper 43:** *Adjudication as Decoding* — ErrorCorrectingClosure library (0 sorry).
+- **Paper 44:** *Calibration as Closure* — LawCalibration library (0 sorry).
+- **Paper 45:** *Local Dynamics, Global Semantics: Semantic Nonlocality* — SemanticNonlocality library (0 sorry).
+- **Paper 46:** *Causal Nonlocality from Closure* — CausalNonlocality library (0 sorry, 0 axioms).
+- **Paper 47:** *No Spooky to Signal Compiler* — FTLConstraints library (0 sorry).
+- **Paper 48:** *Holography Under Closure* — HolographyUnderClosure library (0 sorry).
+- **Paper 49:** *Universe as Self-Auditing Institution* — InstitutionalEpistemics.CosmicAudit (1 sorry in ToyCosmic).
+- **Paper 50:** *A Complete Logic of Certification* — CertificationLogic library (0 sorry): soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary. Build: full `lake build` (see NEMS_LEAN_BUILD_NOTE.md).
 - **MANIFEST.md:** Verified theorem list, sorry count, and file-level layout.
 - **GSRC_Significance** (in the suite): Short significance note for the General Self-Reference Calculus.

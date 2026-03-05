@@ -22,3 +22,23 @@ lean_lib «RefinementFlow» where
 lean_lib «RecordEntropy» where
 lean_lib «ErrorCorrectingClosure» where
   -- Paper 43
+
+lean_lib «LawCalibration» where
+  -- Paper 44
+
+lean_lib «SemanticNonlocality» where
+  -- Paper 45
+
+lean_lib «CausalNonlocality» where
+  -- Paper 46
+
+lean_lib «FTLConstraints» where
+  -- Paper 47
+
+lean_lib «HolographyUnderClosure» where
+  -- Paper 48
+
+lean_lib «CertificationLogic» where
+  -- Paper 50 (capstone). Depends on InstitutionalEpistemics (Role) and SelectorStrength (barrier).
+  -- For a standalone CertificationLogic build, run: lake build InstitutionalEpistemics SelectorStrength CertificationLogic
+  -- or use full build: lake build

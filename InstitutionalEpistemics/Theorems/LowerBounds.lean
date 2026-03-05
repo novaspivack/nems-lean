@@ -3,13 +3,15 @@ import InstitutionalEpistemics.Core.Roles
 import InstitutionalEpistemics.Core.ThreatModel
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Union
 
-variable (Instance : Type*) [Fintype Instance] (k : ℕ)
+variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance] (k : ℕ)
 
 namespace InstitutionalEpistemics
 
 /-- A k-partition of Instance: k disjoint nonempty sets whose union is all instances. -/
-structure KPartition where
+structure KPartition (Instance : Type*) [Fintype Instance] [DecidableEq Instance] (k : ℕ) where
   parts : Fin k → Finset Instance
   disjoint : ∀ i j, i ≠ j → (parts i ∩ parts j : Finset Instance) = ∅
   cover : (Finset.univ : Finset (Fin k)).biUnion parts = Finset.univ
@@ -30,9 +32,11 @@ theorem k_role_lower_bound (P : KPartition Instance k) (roles : ℕ) (cov : Role
     (h : FullCoverage Instance roles cov) (hone : RoleInOnePart Instance k P cov) :
     roles ≥ k := by
   by_contra hk
-  simp only [Nat.lt_iff_not_le, not_le] at hk
-  have card_roles : Fintype.card (Role roles) = roles := by rw [Role]; exact Fintype.card_fin
-  have card_k : Fintype.card (Fin k) = k := Fintype.card_fin
+  rw [Nat.not_le] at hk
+  have card_roles : Fintype.card (Role roles) = roles := by
+    have e : Role roles ≃ Fin roles := { toFun := fun r => r.idx, invFun := Role.mk, left_inv := fun _ => rfl, right_inv := fun _ => rfl }
+    rw [Fintype.card_congr e]; exact Fintype.card_fin roles
+  have card_k : Fintype.card (Fin k) = k := Fintype.card_fin k
   have : Fintype.card (Role roles) < Fintype.card (Fin k) := by rw [card_roles, card_k]; exact hk
   -- Pigeonhole: ≥k parts need coverage, each role covers only one part (hone) ⇒ need ≥k roles.
   sorry

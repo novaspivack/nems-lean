@@ -4,7 +4,7 @@
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.29.0-rc3  
 **Mathlib version:** v4.29.0-rc3  
-**Build result:** 1713 jobs, 0 errors, **9 `sorry`** (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure core, InstitutionalEpistemics, RefinementFlow, RecordEntropy, ErrorCorrectingClosure are 0 sorry) (see below), **zero custom axioms**
+**Build result:** 682+ jobs, 0 errors, **10 `sorry`** (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite, 1 in InstitutionalEpistemics.CosmicAudit.Examples.ToyCosmic; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure core, InstitutionalEpistemics core, RefinementFlow, RecordEntropy, ErrorCorrectingClosure, LawCalibration, SemanticNonlocality, CausalNonlocality are 0 sorry) (see below), **zero custom axioms**
 
 **Lean 4.29 upgrade:** Compatibility fixes in `BuschGleason.lean` (tactic/API only; no theorem changes). See `LEAN_4.29_UPGRADE_DISCLOSURE.md`.
 
@@ -334,7 +334,9 @@ GPTClosure core library: **0 sorry**, 0 custom axioms. GPTClosure/Instances/Quan
 | `InstitutionalEpistemics/Theorems/RobustnessImprovement.lean` | `diversity_necessity` | Strict robustness improvement ⇒ at least two non-equivalent roles |
 | `InstitutionalEpistemics/Examples/ToyRegulation.lean` | Toy | Explicit toy witness for k-role bound |
 
-InstitutionalEpistemics library: **0 sorry**, 0 custom axioms. Composes with Learning, EpistemicAgency, SelectorStrength.
+InstitutionalEpistemics library: **0 sorry** in core/theorems, **1 sorry** in CosmicAudit.Examples.ToyCosmic (`toy_strict_improvement` match-branch proof); 0 custom axioms. Composes with Learning, EpistemicAgency, SelectorStrength.
+
+**CosmicAudit (Paper 49)** lives inside InstitutionalEpistemics: `CosmicAudit/Core/Contexts.lean`, `Core/ForcedNetwork.lean`, `Theorems/ForcedAdjudication.lean`, `Theorems/DiversityLift.lean`, `Examples/ToyCosmic.lean`. T49.1 `forced_distributed_adjudication`, T49.2 `diversity_necessary_strict_improvement` (re-export Paper 40).
 
 ### RefinementFlow (Paper 41)
 
@@ -375,6 +377,54 @@ RecordEntropy library: **0 sorry**, 0 custom axioms. Composes with ArrowOfTime, 
 | `ErrorCorrectingClosure/Examples/ToyDecoder.lean` | `toy_decoder_claim_nontrivial`, `toy_no_total_decider_decoder` | Toy: two instance types; barrier applies |
 
 ErrorCorrectingClosure library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength, InstitutionalEpistemics.
+
+### LawCalibration (Paper 44)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `LawCalibration/Core/LawUpdate.lean` | `Law`, `lawUpdate`, `IsFixedPoint`, `IsMinimalFixedPoint`, `LawCode`, `lawSelectorClaim` | Law type, update U, fixed points; toy single-instance claim (not barrier target) |
+| `LawCalibration/Core/LawUpdate.lean` | `InstanceIndex`, `LawInstanceCode`, `isMinimalForInstance`, `uniformLawSelectorClaim` | **Uniform** codes (instance, candidate, claimed); uniform predicate |
+| `LawCalibration/Theorems/LawFixedPoints.lean` | `all_fixed`, `fixed_point_exists`, `fixed_point_multiplicity`, `minimal_fixed_point` | Every element fixed; multiplicity (two distinct fixed points) |
+| `LawCalibration/Theorems/LawSelectionBarrier.lean` | `uniformLawSelectorClaim_extensional`, `uniformLawSelectorClaim_nontrivial` | Uniform law-selector claim extensional and nontrivial |
+| `LawCalibration/Theorems/LawSelectionBarrier.lean` | `no_total_decider_uniform_law_selector` | **Law selection barrier (uniform)**: AntiDeciderClosed + hFP on LawInstanceCode ⇒ ¬ DecidableAt Sbool uniformLawSelectorClaim |
+| `LawCalibration/Examples/ToyLaw.lean` | `toy_fixed_point_multiplicity`, `toy_lawSelectorClaim_nontrivial`, `toy_no_total_decider_uniform_law_selector` | Toy: multiplicity and concept; barrier re-exported for uniform predicate |
+
+LawCalibration library: **0 sorry**, 0 custom axioms. Composes with SelectorStrength.
+
+### SemanticNonlocality (Paper 45)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `SemanticNonlocality/Core/LocalityAxioms.lean` | `LocalityAxioms`, `Factorized`, `same_local_views_imp_obs_equiv` | Fragment, LocalWorld, restrict, localHolds; factorized ⇒ same local views ⇒ ObsEquiv |
+| `SemanticNonlocality/Theorems/LocalDynamicsNotLocalSemantics.lean` | `same_local_views_imp_same_world_type` | Same local views ⇒ same world-type (global gluing) |
+| `SemanticNonlocality/Examples/ToyFactorization.lean` | `toySemantics`, `toyLocality`, `toy_same_views_obs_equiv` | Toy: two fragments, Boolean local views; factorization and main theorem |
+
+SemanticNonlocality library: **0 sorry**, 0 custom axioms. Depends on Closure.Core.ObsSemantics.
+
+### CausalNonlocality (Paper 46)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `CausalNonlocality/Theorems/NoGo.lean` | `no_local_semantic_determinacy` | No-go: under barrier (anti-decider + hFP), no total decider for extensional nontrivial T (local semantic determinacy impossible). |
+| `CausalNonlocality/Examples/ToyNoGo.lean` | `ToyT`, `toy_no_go` | Barrier witness on Nat; theorem parametric in hFP (0 axioms; instantiate hFP from Reflection/Partrec for concrete no-go). |
+
+CausalNonlocality library: **0 sorry**, **0 custom axioms**. Depends on SelectorStrength. Barrier witness is parametric in the fixed-point premise.
+
+### CertificationLogic (Paper 50)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `CertificationLogic/Core/InstanceSemantics.lean` | Verdict, Verifier, coverage, canonicalVerifier | Instance semantics and coverage |
+| `CertificationLogic/Core/Protocols.lean` | Prot (atom, union, inter, prefer), atoms, protocolCoverage, `protocolCoverage_subset_union_atoms` | Protocol terms; normal form: coverage ⊆ union of atoms |
+| `CertificationLogic/Core/Formulas.lean` | Formula, Derivable, axFromCov | Claim sets; Ax, Union, Subset, StratumMono |
+| `CertificationLogic/Core/CertifiableAt.lean` | CertifiableAt, ConsistentWith, canonicalRoleAssign | Semantic certifiability |
+| `CertificationLogic/Theorems/CapstoneSoundness.lean` | `soundness_capstone` | **T50.1:** ⊢_S C ⇒ CertifiableAt(S, C) |
+| `CertificationLogic/Theorems/CapstoneCompleteness.lean` | `completeness_capstone`, `derivable_coverage` | **T50.2:** CertifiableAt(S, C) ⇒ ⊢_S C (via normal form) |
+| `CertificationLogic/Theorems/Maximality.lean` | `boundary_maximality` | **T50.3:** Under barrier premises, no total decider for extensional nontrivial T |
+| `CertificationLogic/Examples/ToyFinite.lean` | `toy_equiv` | Fin 4 toy: ⊢ C ↔ CertifiableAt(C) |
+| `CertificationLogic/Examples/ToyBoundary.lean` | `toy_boundary` | Nat boundary toy (parametric in hFP) |
+
+CertificationLogic library: **0 sorry**, 0 custom axioms. Depends on InstitutionalEpistemics.Core.Roles, SelectorStrength. Build: full `lake build` from nems-lean root (do not build CertificationLogic alone). See NEMS_LEAN_BUILD_NOTE.md.
 
 ## Key source files (SHA-256)
 
@@ -522,6 +572,28 @@ ErrorCorrectingClosure/Core/DecodingModel.lean
 ErrorCorrectingClosure/Theorems/DecoderBarrier.lean
 ErrorCorrectingClosure/Theorems/ProtocolImprovement.lean
 ErrorCorrectingClosure/Examples/ToyDecoder.lean
+LawCalibration.lean
+LawCalibration/Core/LawUpdate.lean
+LawCalibration/Theorems/LawFixedPoints.lean
+LawCalibration/Theorems/LawSelectionBarrier.lean
+LawCalibration/Examples/ToyLaw.lean
+SemanticNonlocality.lean
+SemanticNonlocality/Core/LocalityAxioms.lean
+SemanticNonlocality/Theorems/LocalDynamicsNotLocalSemantics.lean
+SemanticNonlocality/Examples/ToyFactorization.lean
+CausalNonlocality.lean
+CausalNonlocality/Theorems/NoGo.lean
+CausalNonlocality/Examples/ToyNoGo.lean
+CertificationLogic.lean
+CertificationLogic/Core/InstanceSemantics.lean
+CertificationLogic/Core/Protocols.lean
+CertificationLogic/Core/Formulas.lean
+CertificationLogic/Core/CertifiableAt.lean
+CertificationLogic/Theorems/CapstoneSoundness.lean
+CertificationLogic/Theorems/CapstoneCompleteness.lean
+CertificationLogic/Theorems/Maximality.lean
+CertificationLogic/Examples/ToyFinite.lean
+CertificationLogic/Examples/ToyBoundary.lean
 ChronologyUnderClosure.lean
 ChronologyUnderClosure/Core/RecordDynamics.lean
 ChronologyUnderClosure/Theorems/RecordNonOverwrite.lean
@@ -657,3 +729,8 @@ This artifact formalizes the core spine of:
 - *Refinement Flow of World-Types: Time as Growth of Stable Distinguishability* (Paper 41 — RefinementFlow library: forgetFromTo, forgetFromTo_coherent, forgetFromTo_naturality, ToyBits; 0 sorry)
 - *Record Entropy and Noncomputability: Monotone Semantic Complexity under Diagonal Capability* (Paper 42 — RecordEntropy library: recordEntropy, recordEntropy_monotone, recordEntropy_strict, no_total_decider_entropy, ToyEntropy; 0 sorry)
 - *Adjudication as Decoding: Semantic Error-Correction under PSC Closure* (Paper 43 — ErrorCorrectingClosure library: decoderClaim, no_total_decider_decoder_claim, diversity_necessity_decoding, ToyDecoder; 0 sorry)
+- *Calibration as Closure: Laws as Compression Fixed Points under No-Free-Bits* (Paper 44 — LawCalibration library: uniformLawSelectorClaim, no_total_decider_uniform_law_selector, fixed_point_multiplicity, ToyLaw; 0 sorry)
+- *Local Dynamics, Global Semantics: A Closure Engine for Semantic Nonlocality* (Paper 45 — SemanticNonlocality library: LocalityAxioms, same_local_views_imp_obs_equiv, same_local_views_imp_same_world_type, ToyFactorization; 0 sorry)
+- *Causal Nonlocality from Closure* (Paper 46 — CausalNonlocality library: no_local_semantic_determinacy, toy_no_go parametric in hFP; 0 sorry, 0 axioms)
+- *Cosmic Audit: Universe as a Self-Auditing Institution* (Paper 49 — InstitutionalEpistemics.CosmicAudit: forced_distributed_adjudication, diversity_necessary_strict_improvement; 1 sorry in Examples.ToyCosmic)
+- *A Complete Logic of Certification: Soundness, Completeness, and Maximality for Stratified Verification Protocols* (Paper 50 — CertificationLogic: soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary; 0 sorry)
