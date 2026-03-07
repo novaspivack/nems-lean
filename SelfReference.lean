@@ -1,3 +1,21 @@
+import SelfReference.Core.Interface
+import SelfReference.Core.Representability
+import SelfReference.Core.FixedPoint
+
+-- Consequences
+import SelfReference.Consequences.DiagonalBarrier
+
+-- Instances
+import SelfReference.Instances.NEMS
+import SelfReference.Instances.Godel
+import SelfReference.Instances.Kleene
+import SelfReference.Instances.Loeb
+
+-- Minimality
+import SelfReference.Minimality.Countermodels
+import SelfReference.Minimality.StratifiedReflection
+
+
 /-!
 # SelfReference — General Self-Reference Calculus
 
@@ -73,20 +91,3 @@ of `ProvSystem`.  The NEMS diagonal barrier is proved via
 halting reduction in `NemS.Diagonal.Barrier` (for the ASR-based version).
 -/
 
--- Core
-import SelfReference.Core.Interface
-import SelfReference.Core.Representability
-import SelfReference.Core.FixedPoint
-
--- Consequences
-import SelfReference.Consequences.DiagonalBarrier
-
--- Instances
-import SelfReference.Instances.NEMS
-import SelfReference.Instances.Godel
-import SelfReference.Instances.Kleene
-import SelfReference.Instances.Loeb
-
--- Minimality
-import SelfReference.Minimality.Countermodels
-import SelfReference.Minimality.StratifiedReflection

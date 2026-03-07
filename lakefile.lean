@@ -16,7 +16,13 @@ lean_lib «InstitutionalEpistemics» where
 
 lean_lib «NemS» where
 lean_lib «Closure» where
+lean_lib «SelfReference» where
+  -- Paper 26: SRI, MFP-1, MFP-2
+lean_lib «Reflection» where
+  -- Paper 28: SRI_R, DiagClosed, restricted_master_fixed_point
 lean_lib «SelectorStrength» where
+lean_lib «SemanticSelfDescription» where
+  -- Necessary Incompleteness of Internal Semantic Self-Description
 lean_lib «ArrowOfTime» where
 lean_lib «RefinementFlow» where
 lean_lib «RecordEntropy» where

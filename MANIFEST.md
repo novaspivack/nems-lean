@@ -1,10 +1,10 @@
-# nems-lean v2.6.0 — Artifact Manifest
+# nems-lean — Artifact Manifest
 
 **Release:** v2.7.0  
 **Date:** March 2026  
 **Lean version:** leanprover/lean4:v4.29.0-rc3  
 **Mathlib version:** v4.29.0-rc3  
-**Build result:** 682+ jobs, 0 errors, **10 `sorry`** (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite, 1 in InstitutionalEpistemics.CosmicAudit.Examples.ToyCosmic; ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure core, InstitutionalEpistemics core, RefinementFlow, RecordEntropy, ErrorCorrectingClosure, LawCalibration, SemanticNonlocality, CausalNonlocality are 0 sorry) (see below), **zero custom axioms**
+**Build result:** Current clean build succeeds with the pinned toolchain. See the reproduction section for the exact current build outcome, and see the theorem tables below for current theorem coverage and sorry-status.
 
 **Lean 4.29 upgrade:** Compatibility fixes in `BuschGleason.lean` (tactic/API only; no theorem changes). See `LEAN_4.29_UPGRADE_DISCLOSURE.md`.
 
@@ -647,7 +647,7 @@ lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (8090 jobs).`
+Expected output: `Build completed successfully.`
 
 ## What is axiomatized vs. proved
 

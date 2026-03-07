@@ -4,7 +4,7 @@ Lean 4 formalization of the **NEMS (No External Model Selection)** framework—t
 
 ## What This Repo Is
 
-nems-lean formalizes the foundational theorems of the NEMS programme: the trichotomy of foundational theories, the diagonal barrier (no total effective adjudicator on diagonal-capable fragments), the closure/audit toolkit, and the bridge to transputation and MFRR. It covers Papers 26–50 of the NEMS suite, including SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, InstitutionalEpistemics, CertificationLogic, and physics-arc libraries (ArrowOfTime, BlackHoles, GPTClosure, LawCalibration, etc.).
+nems-lean formalizes the foundational theorems of the NEMS programme: the trichotomy of foundational theories, the diagonal barrier (no total effective adjudicator on diagonal-capable fragments), the closure/audit toolkit, and the bridge to transputation and MFRR. It covers Papers 26–51 of the NEMS suite, including SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, InstitutionalEpistemics, CertificationLogic, SemanticSelfDescription, and physics-arc libraries (ArrowOfTime, BlackHoles, GPTClosure, LawCalibration, etc.).
 
 ## Build
 

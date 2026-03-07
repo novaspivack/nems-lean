@@ -63,7 +63,7 @@ PSC or is physically redundant.
 theorem semantic_terminality (S : TheorySpace)
     (h_dichotomy : S.ExtensionDichotomy)
     (h_complexity : S.ExtensionComplexity)
-    (T : S.Theory) (h_opt : S.PSCOptimal T)
+    (T : S.Theory) (_h_opt : S.PSCOptimal T)
     (T' : S.Theory) (h_ext : S.Extends T' T) :
     S.FailsPSC T' ∨ S.Redundant T' T := by
   cases h_dichotomy T' T h_ext with

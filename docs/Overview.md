@@ -1,6 +1,6 @@
 # nems-lean: Overview for users
 
-This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve, ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure, GPTClosure/Instances/QuantumFinite, InstitutionalEpistemics, CertificationLogic, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
+This document is for **outside parties** who want to use or build on the libraries (SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve, ArrowOfTime, ChronologyUnderClosure, BlackHoles, GPTClosure, GPTClosure/Instances/QuantumFinite, InstitutionalEpistemics, CertificationLogic, SemanticSelfDescription, NemS) without reading the full papers first. It covers what each part is, how to import it, and how the pieces fit together.
 
 ---
 
