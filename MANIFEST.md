@@ -426,6 +426,24 @@ CausalNonlocality library: **0 sorry**, **0 custom axioms**. Depends on Selector
 
 CertificationLogic library: **0 sorry**, 0 custom axioms. Depends on InstitutionalEpistemics.Core.Roles, SelectorStrength. Build: full `lake build` from nems-lean root (do not build CertificationLogic alone). See NEMS_LEAN_BUILD_NOTE.md.
 
+### SemanticSelfDescription (Paper 51)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `SemanticSelfDescription/Core/Claims.lean` | Claim, Code, Decode, RealizedTrue, ClaimEquiv, CodeEquiv | Self-semantic frame vocabulary |
+| `SemanticSelfDescription/Core/SelfTheory.lean` | SelfTheory, FinalSelfTheory, Internal, TotalOn, ExactOn | Final self-theory definition |
+| `SemanticSelfDescription/Core/SelfScope.lean` | SelfScoped, StronglySelfScoped | Self-scoped claims |
+| `SemanticSelfDescription/Core/SelfErasure.lean` | WeakSelfErasing, StrongSelfErasing | Weak and strong self-erasure |
+| `SemanticSelfDescription/Theorems/NoFinalSelfTheory.lean` | `no_final_self_theory` | **Flagship:** BarrierHyp + DiagClosed ⇒ ¬ FinalSelfTheory T |
+| `SemanticSelfDescription/Theorems/NoSelfErasure.lean` | `no_weak_self_erasure`, `no_strong_self_erasure` | Weak and strong self-erasure ruled out |
+| `SemanticSelfDescription/Theorems/SemanticRemainder.lean` | `semantic_remainder_or_nontotal` | Every internal self-theory fails totality or leaves irreducible remainder |
+| `SemanticSelfDescription/Theorems/PhysicalCorollary.lean` | `no_final_internal_gut` | Physical corollary: no final internal GUT |
+| `SemanticSelfDescription/Bridge/ToSelectorStrength.lean` | Bridge to Paper 29 barrier | FinalSelfTheory ⇒ total decider |
+| `SemanticSelfDescription/Bridge/ToReflection.lean` | Bridge to Paper 28 | hFP from DiagClosed |
+| `SemanticSelfDescription/Bridge/ToCertificationLogic.lean` | Bridge to Paper 50 | Necessary incompleteness implies certification boundary |
+
+SemanticSelfDescription library: **0 sorry**, 0 custom axioms. Depends on SelectorStrength, Reflection, Learning, SelfAwareness, CertificationLogic. Build: full `lake build` from nems-lean root.
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:
@@ -734,3 +752,6 @@ This artifact formalizes the core spine of:
 - *Causal Nonlocality from Closure* (Paper 46 — CausalNonlocality library: no_local_semantic_determinacy, toy_no_go parametric in hFP; 0 sorry, 0 axioms)
 - *Cosmic Audit: Universe as a Self-Auditing Institution* (Paper 49 — InstitutionalEpistemics.CosmicAudit: forced_distributed_adjudication, diversity_necessary_strict_improvement; 1 sorry in Examples.ToyCosmic)
 - *A Complete Logic of Certification: Soundness, Completeness, and Maximality for Stratified Verification Protocols* (Paper 50 — CertificationLogic: soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary; 0 sorry)
+- *Necessary Incompleteness of Internal Semantic Self-Description* (Paper 51 — SemanticSelfDescription: no_final_self_theory, no_weak_self_erasure, no_strong_self_erasure, semantic_remainder_or_nontotal; 0 sorry)
+
+**Papers 52–65 (reflexive-closure-lean):** The reflexive-closure arc (direct self-semantic fixed points, syntax-semantics separation, observer corollaries, qualia and the ledger, reflexive closure theorem, reflexive unfolding, necessary reflexive intelligence, calculus of intelligence, reality as recursive intelligence, ghost collapse, ledger grounding, Alpha theorem, grounded existence, qualia as Alpha-grounded content) is formalized in the sibling repo **reflexive-closure-lean**. See that repo's MANIFEST.md for theorem names and module structure. Libraries: SemanticSelfReference (52), SyntaxSemantics (53), QualiaLedger (55), ReflexiveClosure (56), ReflexiveUnfolding (57), NecessaryReflexiveIntelligence (58), CalculusOfIntelligence (59), RealityAsRecursiveIntelligence (60), GhostCollapse (61), LedgerGround (62), Alpha (63), GroundedExistence (64), QualiaAlphaGrounded (65).
