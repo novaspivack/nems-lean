@@ -57,6 +57,30 @@ theorem same_class_same_image (S : F.Selector) {M N : F.Model}
     (h : F.toWorldType M = F.toWorldType N) : S.sel M = S.sel N :=
   S.cong ((F.toWorldType_eq_iff).mp h)
 
+/-- **Selector Separation**: equal selector outputs imply observational equivalence.
+
+This is the converse of `S.cong`. Together they give the biconditional
+`selector_eq_iff_obsEq`. The proof uses only `S.inv` (selector-invariance):
+the selector output is always in the same `ObsEq` class as the input, so
+equal outputs force the inputs into the same class.
+
+Note: this holds for *any* `Selector`, regardless of definability-internality.
+`IsDefinabilityInternal` is not needed. -/
+theorem selector_separation (S : F.Selector) {M N : F.Model}
+    (h : S.sel M = S.sel N) : F.ObsEq M N :=
+  ObsEq.trans (ObsEq.symm (S.inv M)) (h ▸ S.inv N)
+
+/-- **Selector Equivalence Theorem**: the selector map classifies `ObsEq` classes exactly.
+
+A selector output equals another's if and only if the two models are
+observationally equivalent. This packages `S.cong` (→) and `selector_separation` (←)
+into the canonical biconditional.
+
+Consequence: every `Selector` is a complete invariant of `ObsEq`. -/
+theorem selector_eq_iff_obsEq (S : F.Selector) {M N : F.Model} :
+    S.sel M = S.sel N ↔ F.ObsEq M N :=
+  ⟨selector_separation S, S.cong⟩
+
 end Selector
 
 end Framework
