@@ -120,6 +120,9 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/Core/Internality.lean` | `nems_definability` | NEMS under definability-internality |
 | `NemS/Core/Internality.lean` | `nems_computability` | NEMS under computability-internality |
 | `NemS/Core/Internality.lean` | `definability_implies_quotient_section` | Definability ⇒ quotient section exists |
+| `NemS/Core/Internality.lean` | `selector_rigidity` | Definability-internal selectors commute with ObsEq-preserving maps (exported interface lemma for automorphism-invariance clause) |
+| `NemS/Core/Selectors.lean` | `selector_eq_iff_obsEq` | Selector outputs classify ObsEq classes exactly: `S.sel M = S.sel N ↔ ObsEq M N` (complete invariant; no internality hypothesis needed) |
+| `NemS/Core/Selectors.lean` | `selector_separation` | Separation direction: non-ObsEq inputs have distinct selector outputs |
 
 ### Diagonal Barrier (v2.0.0)
 
