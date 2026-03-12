@@ -32,6 +32,21 @@ def IsDefinabilityInternal (S : Selector F) : Prop :=
     (∀ M N : F.Model, ObsEq F M N → ObsEq F (σ M) (σ N)) →
     ∀ M : F.Model, S.sel (σ M) = σ (S.sel M))
 
+/--
+A definability-internal selector is rigid under any self-map of the model space
+that preserves observational equivalence: applying the selector after such a map
+agrees with mapping the selector's output.
+
+This is an exported interface lemma for the automorphism-invariance component of
+`IsDefinabilityInternal`.
+-/
+theorem selector_rigidity (S : F.Selector)
+    (hD : IsDefinabilityInternal S) (σ : F.Model → F.Model)
+    (hσ : ∀ M N : F.Model, ObsEq F M N → ObsEq F (σ M) (σ N))
+    (M : F.Model) :
+    S.sel (σ M) = σ (S.sel M) :=
+  hD.2 σ hσ M
+
 /-- Under definability-internality, NEMS means: either categorical, or
 there exists a unique, invariant selector. -/
 theorem nems_definability (h : NEMS F IsDefinabilityInternal) :
