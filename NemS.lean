@@ -24,6 +24,7 @@ import NemS.Core.Basics
 import NemS.Core.ObsEq
 import NemS.Core.Categoricity
 import NemS.Core.Selectors
+import NemS.Core.SelectorQuotient
 import NemS.Core.Trichotomy
 import NemS.Core.Internality
 
