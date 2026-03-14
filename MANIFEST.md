@@ -153,6 +153,14 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/MFRR/ToyMFRR.lean` | `bool_PT_exists` | Bool framework: PT extracted via bridge theorem |
 | `NemS/MFRR/ToyMFRR.lean` | `bool_has_divergent_choice` | Bool framework has record-divergent choice |
 
+### Foundational Finality (Paper 23)
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `NemS/Reflexive/FinalityTheorem.lean` | `foundational_finality` | Master Loop T + MetaExplanation T' T ⇒ FailsPSC T' ∨ Redundant T' T ∨ Isomorphic T' T |
+| `NemS/Reflexive/FinalityTheorem.lean` | `outside_dependence_exhaustion` | Same trilemma; named corollary packaging exhaustion of load-bearing outside explanations |
+| `NemS/Reflexive/FinalityTheorem.lean` | `master_loop_fixed_point` | Master Loop T ⇒ Isomorphic (reconstruct (extract T)) T |
+
 ### Reverse Direction: BICS ⇒ NEMS ⇒ PSC (v2.1.0, Paper 14)
 
 | File | Theorem | Statement |

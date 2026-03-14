@@ -11,3 +11,6 @@
 *.json
 build/
 .DS_Store
+
+# Local scripts
+scripts/local/

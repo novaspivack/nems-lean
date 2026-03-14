@@ -101,6 +101,20 @@ theorem foundational_finality (S : ReflexiveTheorySpace)
       -- Two PSC-Optimal theories that are record-equivalent are isomorphic (L23.1b).
       exact Or.inr (Or.inr (S.optimal_unique_up_to_iso T' T h_opt_T' h_opt_T h_req))
 
+/-- **Corollary: Outside-Dependence Exhaustion.**
+
+Named corollary packaging the Paper~23 trilemma as the exhaustion of load-bearing
+outside explanations. Any purported foundational external completion (external runner,
+simulator host, multiverse measure, etc.) must either fail PSC, be redundant, or be
+isomorphic to the Master Loop. This is the same theorem as `foundational_finality`;
+the alternate name emphasizes the conceptual reading for downstream citation.
+-/
+theorem outside_dependence_exhaustion (S : ReflexiveTheorySpace)
+    (T : S.Theory) (h_loop : S.MasterLoop T)
+    (T' : S.Theory) (h_meta : S.MetaExplanation T' T) :
+    S.FailsPSC T' ∨ S.Redundant T' T ∨ S.Isomorphic T' T :=
+  foundational_finality S T h_loop T' h_meta
+
 /-! ### Level C: The Reflexive Fixed Point (Law = Description = Execution) -/
 
 /-- To formalize the fixed point without a tautology, we define two spaces:
