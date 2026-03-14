@@ -3,6 +3,7 @@ import ArrowOfTime.Core.Refinement
 import ArrowOfTime.Theorems.ArrowRefinement
 import ArrowOfTime.Theorems.NoOverwrite
 import ArrowOfTime.Theorems.Irreversibility
+import ArrowOfTime.Theorems.ClosureArrow
 import ArrowOfTime.Theorems.SelectionBarrier
 import ArrowOfTime.Examples.Toy
 

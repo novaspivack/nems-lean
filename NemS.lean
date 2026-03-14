@@ -104,6 +104,8 @@ import NemS.Reflexive.FinalityTheorem
 
 -- Paper 24: The Theorem of the Semantic Floor
 import NemS.Cosmology.SemanticFloor
+-- Paper 78: Cosmological Closure Unification (Grand Unification)
+import NemS.Cosmology.CosmologicalClosureUnification
 
 -- Paper 25: The Unified Rigidity Theorem
 import NemS.Bridge.UnifiedRigidity

@@ -104,6 +104,27 @@ theorem no_singularity_trap (F : CosmologicalFramework)
     False :=
   (initial_non_externality F h_psc h_forbids) h_singularity
 
+/-- **Theorem alias: Semantic Floor Theorem.**
+
+Same as `semantic_floor`. Citation-friendly name for the synthesis paper (Paper 78).
+Forbids semantically empty or externally completed initiality. -/
+theorem semantic_floor_theorem (F : CosmologicalFramework)
+    [dc : DiagonalCapable F.toFramework]
+    (U : Universe F.toFramework) :
+    F.SatisfiesSemanticFloor :=
+  semantic_floor F U
+
+/-- **Theorem alias: No Singularity as Underspecification.**
+
+Same as `no_singularity_trap`. Citation-friendly name for the synthesis paper.
+Not every technical notion of singularity—only the underspecification interpretation. -/
+theorem no_singularity_as_underspecification (F : CosmologicalFramework)
+    (h_psc : Nonempty (PSCBundle F.toFramework (fun _ => True)))
+    (h_forbids : F.PSC_ForbidsExternalSelection)
+    (h_singularity : F.NeedsExternalInitialSelection) :
+    False :=
+  no_singularity_trap F h_psc h_forbids h_singularity
+
 end CosmologicalFramework
 end Cosmology
 end NemS

@@ -159,7 +159,48 @@ All other theorems in the library are fully proved without `sorry`, including:
 |------|---------|-----------|
 | `NemS/Reflexive/FinalityTheorem.lean` | `foundational_finality` | Master Loop T + MetaExplanation T' T ⇒ FailsPSC T' ∨ Redundant T' T ∨ Isomorphic T' T |
 | `NemS/Reflexive/FinalityTheorem.lean` | `outside_dependence_exhaustion` | Same trilemma; named corollary packaging exhaustion of load-bearing outside explanations |
+| `NemS/Reflexive/FinalityTheorem.lean` | `no_foundational_external_runner` | Alias for outside_dependence_exhaustion (Paper 78 synthesis) |
 | `NemS/Reflexive/FinalityTheorem.lean` | `master_loop_fixed_point` | Master Loop T ⇒ Isomorphic (reconstruct (extract T)) T |
+
+### Physical Incompleteness (Paper 11)
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `NemS/Physical/ASRFromUCT.lean` | `physUCT_implies_diagonalCapable` | PhysUCT ⇒ diagonal-capable (ASR) |
+| `NemS/Physical/ASRFromUCT.lean` | `physUCT_implies_RT_not_computable` | PhysUCT ⇒ RT not computable |
+| `NemS/Physical/ASRFromUCT.lean` | `physical_incompleteness` | Alias (Paper 78 synthesis): closed-universe no-total-effective-decider |
+| `NemS/Physical/ASRFromUCT.lean` | `no_total_algorithmic_toe` | Alias: no total algorithmic theory of everything |
+
+### Semantic Floor (Paper 24)
+
+| File | Theorem | Statement |
+|------|---------|-----------|
+| `NemS/Cosmology/SemanticFloor.lean` | `semantic_floor` | DiagonalCapable + Universe ⇒ SatisfiesSemanticFloor |
+| `NemS/Cosmology/SemanticFloor.lean` | `semantic_floor_theorem` | Alias (Paper 78 synthesis) |
+| `NemS/Cosmology/SemanticFloor.lean` | `no_singularity_trap` | PSC + singularity-as-underspecification ⇒ False |
+| `NemS/Cosmology/SemanticFloor.lean` | `no_singularity_as_underspecification` | Alias (Paper 78 synthesis) |
+
+### Cosmological Closure Unification (Paper 78)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `NemS/Cosmology/UnifiedClosureFramework.lean` | `UnifiedClosureFramework` | Bridge ontology: one structure interpretable in all three theorem stacks |
+| `NemS/Cosmology/UnifiedClosureFramework.lean` | `toCosmologicalFramework`, `toRecordFiltration`, `toNemSFramework` | Interpretation maps |
+| `NemS/Cosmology/CosmologicalClosureSchema.lean` | `CosmologicalClosureSchema` | Diagonal + Universe + PSC (schema on unified base) |
+| `NemS/Cosmology/Bridges/ToSemanticFloor.lean` | `ClosureAdmissibleInitiality` | Initial state satisfies semantic floor |
+| `NemS/Cosmology/Bridges/ToSemanticFloor.lean` | `closure_schema_implies_admissible_initiality` | Schema ⇒ admissible initiality |
+| `NemS/Cosmology/Bridges/ToArrowOfTime.lean` | `StructuralIrreversibility` | No-global-reversal (Paper 36) |
+| `NemS/Cosmology/Bridges/ToArrowOfTime.lean` | `closure_schema_implies_structural_irreversibility` | Schema ⇒ irreversibility |
+| `NemS/Cosmology/Bridges/ToFinality.lean` | `ClosureRealizedHistory` | ¬ NeedsExternalSelection |
+| `NemS/Cosmology/Bridges/ToFinality.lean` | `closure_schema_implies_internal_realized_history` | Schema ⇒ no external selection |
+| `NemS/Cosmology/Bridges/ToFoundationalFinality.lean` | `closure_schema_implies_outside_dependence_exhaustion` | Schema ⇒ outside-dependence exhaustion |
+| `NemS/Cosmology/Bridges/ToFoundationalFinality.lean` | `cosmological_closure_unification_plus_finality` | Summit + fuller Finality |
+| `NemS/Cosmology/Bridges/ToAdjudicators.lean` | `strong_closure_schema_implies_adjudicator_infrastructure` | Strong schema + witness ⇒ adjudicator network |
+| `NemS/Cosmology/CosmologicalClosureUnification.lean` | `cosmological_closure_unification` | **Grand unification:** Schema ⇒ admissible ∧ irreversible ∧ internal realized |
+| `NemS/Cosmology/UnifiedClosureFramework/Examples/Toy.lean` | `toyUnified`, `unified_framework_inhabited` | Structural nonvacuity witness |
+| `NemS/Cosmology/StrongCosmologicalClosureSchema.lean` | `StrongCosmologicalClosureSchema` | Base schema + GRS + NCC (Paper 17) |
+
+CosmologicalClosureUnification: **0 sorry**. Full grand theorem discharged. Extension A: stronger finality corollary (`cosmological_closure_unification_plus_finality`). Extension B: strong schema and adjudicator bridge under witness.
 
 ### Reverse Direction: BICS ⇒ NEMS ⇒ PSC (v2.1.0, Paper 14)
 
@@ -290,6 +331,7 @@ Sieve library: **0 sorry**, 0 custom axioms. Composes with NemS.Prelude; reusabl
 | `ArrowOfTime/Theorems/ArrowRefinement.lean` | `strict_refinement` | Strict record growth at t ⇒ forget not injective |
 | `ArrowOfTime/Theorems/NoOverwrite.lean` | OverwriteAt, `no_overwrite_implies_not_categorical` | Overwrite at stage t ⇒ ¬ CategoricalAt t |
 | `ArrowOfTime/Theorems/Irreversibility.lean` | `no_global_reversal` | Stage-preserving involution fixes world-types |
+| `ArrowOfTime/Theorems/ClosureArrow.lean` | `closure_arrow_theorem` | **Paper 78:** Stable records + closure ⇒ structural irreversibility (wrapper) |
 | `ArrowOfTime/Theorems/SelectionBarrier.lean` | `selection_barrier_retrodiction` | Under hFP + AntiClosed, retrodiction selector ruled out |
 | `ArrowOfTime/Examples/Toy.lean` | filt, toy_strict_growth, toy_no_overwrite_witness | Toy: two bits; strict refinement; overwrite ⇒ not categorical |
 
@@ -506,6 +548,16 @@ NemS/Terminality/ExistentialRigidity.lean # Paper 21: Existential Rigidity (The 
 NemS/Adjudication/IrreducibleAgency.lean  # Paper 22: Irreducible Agency (Non-Algorithmic Adjudication)
 NemS/Reflexive/FinalityTheorem.lean     # Paper 23: Foundational Finality (The Master Loop)
 NemS/Cosmology/SemanticFloor.lean       # Paper 24: The Theorem of the Semantic Floor
+NemS/Cosmology/UnifiedClosureFramework.lean  # Paper 78: Bridge ontology
+NemS/Cosmology/CosmologicalClosureSchema.lean
+NemS/Cosmology/Bridges/ToSemanticFloor.lean
+NemS/Cosmology/Bridges/ToArrowOfTime.lean
+NemS/Cosmology/Bridges/ToFinality.lean
+NemS/Cosmology/Bridges/ToFoundationalFinality.lean
+NemS/Cosmology/Bridges/ToAdjudicators.lean
+NemS/Cosmology/StrongCosmologicalClosureSchema.lean
+NemS/Cosmology/CosmologicalClosureUnification.lean  # Paper 78: Grand Unification
+NemS/Cosmology/UnifiedClosureFramework/Examples/Toy.lean
 NemS/Bridge/UnifiedRigidity.lean        # Paper 25: The Unified Rigidity Theorem
 NemS/Examples/Toy.lean
 NemS/Meta/AuditProtocol.lean
@@ -585,6 +637,7 @@ ArrowOfTime/Core/Refinement.lean
 ArrowOfTime/Theorems/ArrowRefinement.lean
 ArrowOfTime/Theorems/NoOverwrite.lean
 ArrowOfTime/Theorems/Irreversibility.lean
+ArrowOfTime/Theorems/ClosureArrow.lean
 ArrowOfTime/Theorems/SelectionBarrier.lean
 ArrowOfTime/Examples/Toy.lean
 RefinementFlow.lean

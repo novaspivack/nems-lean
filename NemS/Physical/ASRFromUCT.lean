@@ -64,5 +64,23 @@ theorem physUCT_implies_RT_not_computable
     ¬ ComputablePred uct.RT :=
   NemS.Diagonal.no_total_effective_rt_decider (physUCT_implies_ASR uct)
 
+/-- **Theorem alias: Physical Incompleteness.**
+
+Same as `physUCT_implies_RT_not_computable`. Citation-friendly name for the
+synthesis paper (Paper 78): closed-universe no-total-effective-decider. -/
+theorem physical_incompleteness
+    {F : Framework} (uct : PhysUCT F) :
+    ¬ ComputablePred uct.RT :=
+  physUCT_implies_RT_not_computable uct
+
+/-- **Theorem alias: No Total Algorithmic ToE.**
+
+Same as `physUCT_implies_RT_not_computable`. Citation-friendly name for the
+synthesis paper: no total algorithmic theory of everything on diagonal-capable records. -/
+theorem no_total_algorithmic_toe
+    {F : Framework} (uct : PhysUCT F) :
+    ¬ ComputablePred uct.RT :=
+  physUCT_implies_RT_not_computable uct
+
 end Physical
 end NemS

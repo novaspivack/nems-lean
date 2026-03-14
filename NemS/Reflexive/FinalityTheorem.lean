@@ -115,6 +115,16 @@ theorem outside_dependence_exhaustion (S : ReflexiveTheorySpace)
     S.FailsPSC T' ∨ S.Redundant T' T ∨ S.Isomorphic T' T :=
   foundational_finality S T h_loop T' h_meta
 
+/-- **Theorem alias: No Foundational External Runner.**
+
+Same as `outside_dependence_exhaustion`. Citation-friendly name for the synthesis paper (Paper 78).
+Any purported foundational external completion must fail PSC, be redundant, or be isomorphic. -/
+theorem no_foundational_external_runner (S : ReflexiveTheorySpace)
+    (T : S.Theory) (h_loop : S.MasterLoop T)
+    (T' : S.Theory) (h_meta : S.MetaExplanation T' T) :
+    S.FailsPSC T' ∨ S.Redundant T' T ∨ S.Isomorphic T' T :=
+  outside_dependence_exhaustion S T h_loop T' h_meta
+
 /-! ### Level C: The Reflexive Fixed Point (Law = Description = Execution) -/
 
 /-- To formalize the fixed point without a tautology, we define two spaces:
