@@ -90,6 +90,8 @@ bridging Paper 13's quantum formalization with Paper 39's GPT framework:
    `densityToState` / `quantumEffectToGPT` definitions to show agreement on all effects implies
    agreement on all test effects, then applying `busch_gleason_unique`.
 
+**Quotient Section bridge (SPEC_68_IRS Target E):** **Complete** — `halting_framework_unbounded_world_types` and `halting_framework_no_computable_section` are fully proved (0 sorry). Build verified March 2026.
+
 All structural definitions (`quantumCone`, `quantumOUS`, `bornMap`, `densityToState`,
 `quantumEffectToGPT`, `povmToMeasurement`) and the Born-rule-equals-GPT-pairing theorem
 (`born_rule_is_gpt_prob`) are fully proved (modulo the nonnegativity sorry above).
@@ -101,6 +103,7 @@ All other theorems in the library are fully proved without `sorry`, including:
 - **Delta infrastructure**: binary additivity, POVM-sum-zero, complement identity (0 sorrys)
 - The full diagonal barrier, physical incompleteness, and determinism no-go chains (0 sorrys)
 - The complete NEMS core, MFRR bridge, and PT non-effectiveness (0 sorrys)
+- **SPEC_69 (summit):** QuotientSectionStrength — `halting_framework_no_decider_at_computable`, `halting_framework_no_total_computable_decider` (0 sorrys)
 
 ## Verified theorems
 
@@ -114,6 +117,7 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/Reduction/ER.lean` | `er_non_categorical` | External dependency ⇒ non-categoricity in enlarged space |
 | `NemS/Reduction/ER.lean` | `er_nems_forces_internal_selector` | NEMS on enlarged space ⇒ internal selector |
 | `NemS/Reduction/ER.lean` | `nems_er_implies_detpsc` | NEMS + ER ⇒ determinacy-PSC |
+| `NemS/Reduction/ER.lean` | `determinacyPSC_of_framework` | DeterminacyPSC holds for every framework |
 | `NemS/Visibility/SemanticExternality.lean` | `semantic_externality_not_categorical` | Semantic externality ⇒ non-categoricity in F⁺ |
 | `NemS/Visibility/SemanticExternality.lean` | `nems_forces_evaluator_selector` | NEMS forces internal selector for evaluator choices |
 | `NemS/Meta/AuditProtocol.lean` | `passAudit_iff_nems` | PassAudit ↔ NEMS |
@@ -121,6 +125,13 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/Core/Internality.lean` | `nems_computability` | NEMS under computability-internality |
 | `NemS/Core/Internality.lean` | `definability_implies_quotient_section` | Definability ⇒ quotient section exists |
 | `NemS/Core/Internality.lean` | `selector_rigidity` | Definability-internal selectors commute with ObsEq-preserving maps (exported interface lemma for automorphism-invariance clause) |
+| `NemS/Core/Internality.lean` | `summit_theorem_collapse` | Summit: ObsCategorical ∨ (∀ M N, ObsEq M N ↔ S.sel M = S.sel N) for definability-internal S |
+| `NemS/Core/Internality.lean` | `SelectorSeparatesNonObsEq` | Predicate: selector separates non-ObsEq models |
+| `NemS/Core/Internality.lean` | `selector_always_separates` | Every selector separates non-ObsEq models |
+| `NemS/Core/Internality.lean` | `internal_selector_complete_invariant` | Under separation, selector equality classifies ObsEq exactly |
+| `NemS/Core/Internality.lean` | `ObsAut` | Observational automorphism structure |
+| `NemS/Core/Internality.lean` | `selector_rigidity_automorphism` | Definability-internal selector commutes with ObsAut |
+| `NemS/Core/Internality.lean` | `selector_orbit_commutes` | Selector and automorphism actions commute on orbits |
 | `NemS/Core/Selectors.lean` | `selector_eq_iff_obsEq` | Selector outputs classify ObsEq classes exactly: `S.sel M = S.sel N ↔ ObsEq M N` (complete invariant; no internality hypothesis needed) |
 | `NemS/Core/Selectors.lean` | `selector_separation` | Separation direction: non-ObsEq inputs have distinct selector outputs |
 
@@ -132,6 +143,25 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/Diagonal/HaltingReduction.lean` | `asr_rt_not_computable` | **ASR ⇒ RT not computable (diagonal barrier, Thm 5.9)** |
 | `NemS/Diagonal/Barrier.lean` | `no_total_effective_rt_decider` | ASR ⇒ ¬ ComputablePred RT |
 | `NemS/Diagonal/Instantiation.lean` | `halting_framework_rt_not_computable` | Concrete instantiation recovers halting undecidability |
+
+### Quotient Section / SPEC_68_IRS, SPEC_69_DSL (v2.7.0)
+
+| File | Theorem/Def | Statement |
+|------|-------------|-----------|
+| `NemS/Core/QuotientSection.lean` | `IsQuotientSection` | Section property: right inverse of toWorldType |
+| `NemS/Core/QuotientSection.lean` | `EffectivePresentation` | Enum + surj + decidable ObsEq |
+| `NemS/Core/QuotientSection.lean` | `BoundedCover` | Finite bound covering all world-types |
+| `NemS/Core/QuotientSection.lean` | `bounded_cover_gives_computable_quotient_section` | **Target A:** Bounded cover ⇒ computable section |
+| `NemS/Core/QuotientSection.lean` | `computable_section_implies_computable_selector` | **Target C:** Computable section ⇒ computable selector |
+| `NemS/Core/QuotientSection.lean` | `effective_structure_gives_computable_selector` | Effective presentation + bounded cover ⇒ computable selector |
+| `NemS/Core/QuotientSection.lean` | `definable_section_iff_definable_selector` | Definable section ↔ definable selector |
+| `NemS/Core/QuotientSection.lean` | `exact_criterion_computable_section` | **Target D:** Computable section ↔ effective structure |
+| `NemS/Core/QuotientSection.lean` | `no_total_effective_quotient_section_on_diagonal_fragment` | **Target E:** ASR + unbounded world-types ⇒ no computable section (bridge proved) |
+| `NemS/Diagonal/QuotientSectionBridge.lean` | `partrec_singleton_halting` | Singleton halting function χₖ is partial recursive |
+| `NemS/Diagonal/QuotientSectionBridge.lean` | `halting_framework_unbounded_world_types` | Halting framework has unboundedly many world-types |
+| `NemS/Diagonal/QuotientSectionBridge.lean` | `halting_framework_no_computable_section` | Halting framework: no computably realizable quotient section |
+| `NemS/Diagonal/QuotientSectionStrength.lean` | `halting_framework_no_decider_at_computable` | **SPEC_69:** Halting framework: no computable δ deciding nontrivial extensional T |
+| `NemS/Diagonal/QuotientSectionStrength.lean` | `halting_framework_no_total_computable_decider` | General form: no computable decider for any extensional nontrivial T |
 
 ### MFRR Bridge (v2.0.0)
 
@@ -195,12 +225,34 @@ All other theorems in the library are fully proved without `sorry`, including:
 | `NemS/Cosmology/Bridges/ToFinality.lean` | `closure_schema_implies_internal_realized_history` | Schema ⇒ no external selection |
 | `NemS/Cosmology/Bridges/ToFoundationalFinality.lean` | `closure_schema_implies_outside_dependence_exhaustion` | Schema ⇒ outside-dependence exhaustion |
 | `NemS/Cosmology/Bridges/ToFoundationalFinality.lean` | `cosmological_closure_unification_plus_finality` | Summit + fuller Finality |
+| `NemS/Cosmology/Bridges/ToRecordResolution.lean` | `ucf_record_resolution_monotone` | UCF ⇒ record resolution H(t+1) ≥ H(t) (EPIC_66_SL2 Track 1) |
+| `NemS/Cosmology/Bridges/ToHiddenHistoryEntropy.lean` | `ucf_fiberSize_le_under_forget`, `ucf_fiberSize_lt_under_strict_refinement` | EPIC_66_SL2 Track 2: fiber entropy decreases under refinement |
+| `NemS/Cosmology/Bridges/ToGPTClosure.lean` | `GPTClosureStructureExists`, `gpt_closure_structure_exists` | Post-67 Phase 2: bridge to GPTClosure (Paper 39) |
+| `NemS/Cosmology/Bridges/ToLawCalibration.lean` | `LawCalibrationStructureExists`, `law_calibration_structure_exists` | Post-67 Phase 3: bridge to LawCalibration (Paper 44) |
 | `NemS/Cosmology/Bridges/ToAdjudicators.lean` | `strong_closure_schema_implies_adjudicator_infrastructure` | Strong schema + witness ⇒ adjudicator network |
 | `NemS/Cosmology/CosmologicalClosureUnification.lean` | `cosmological_closure_unification` | **Grand unification:** Schema ⇒ admissible ∧ irreversible ∧ internal realized |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `FoundationallyViable`, `ClosureCompatible` | EPIC_67_FA: viability classification predicates |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `foundational_admissibility` | ClosureCompatible ⇒ FoundationallyViable |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `foundationally_viable_implies_closure_compatible` | **Converse:** FoundationallyViable ⇒ ClosureCompatible |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `viability_failure_implies_not_closure_compatible` | ¬FoundationallyViable ⇒ ¬ClosureCompatible |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `SurvivorCompatible`, `ProbabilisticallyAdmissible`, `PhysicsArchitectureAdmissible` | Post-67 cascade predicates |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `survivor_compatible_implies_foundationally_viable` | SurvivorCompatible ⇒ FoundationallyViable |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `survivor_compatible_implies_probabilistically_admissible` | SurvivorCompatible ⇒ ProbabilisticallyAdmissible |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `ClosureForcedProbabilityStructure` | Paper 80: U-relative ObsEq-respecting GPT interpretation |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `ClosureCalibratedLawStructure` | Paper 80: U-relative InitState → Law with fixed points |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `survivor_compatible_implies_closure_forced_probability_structure` | SurvivorCompat ⇒ ClosureForcedProbabilityStructure |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `foundationally_viable_implies_closure_calibrated_law_structure` | FoundationallyViable ⇒ ClosureCalibratedLawStructure |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `foundationally_viable_implies_physics_architecture_admissible` | FoundationallyViable ⇒ PhysicsArchitectureAdmissible (structure-tied) |
+| `NemS/Cosmology/Bridges/ToGPTClosure.lean` | `UCFHasObsEqRespectingGPTInterpretation` | U-relative ι : World → State (ToySpace 1) respecting ObsEqAt |
+| `NemS/Cosmology/ClassificationCascade.lean` | `CascadeCompatible` | FoundationallyViable ∧ ProbabilisticallyAdmissible ∧ PhysicsArchitectureAdmissible |
+| `NemS/Cosmology/ClassificationCascade.lean` | `NarrowSurvivorClass` | CascadeCompatible ∧ Inhabited World (genuine narrowing) |
+| `NemS/Cosmology/ClassificationCascade.lean` | `probabilistic_and_physical_filter` | SurvivorCompatible ⇒ ProbabilisticallyAdmissible ∧ PhysicsArchitectureAdmissible |
+| `NemS/Cosmology/ClassificationCascade.lean` | `survivor_compatible_implies_cascade_compatible` | SurvivorCompatible ⇒ CascadeCompatible |
+| `NemS/Cosmology/ClassificationCascade.lean` | `survivor_filter_narrows_class` | SurvivorCompatible ∧ Inhabited World ⇒ NarrowSurvivorClass |
 | `NemS/Cosmology/UnifiedClosureFramework/Examples/Toy.lean` | `toyUnified`, `unified_framework_inhabited` | Structural nonvacuity witness |
 | `NemS/Cosmology/StrongCosmologicalClosureSchema.lean` | `StrongCosmologicalClosureSchema` | Base schema + GRS + NCC (Paper 17) |
 
-CosmologicalClosureUnification: **0 sorry**. Full grand theorem discharged. Extension A: stronger finality corollary (`cosmological_closure_unification_plus_finality`). Extension B: strong schema and adjudicator bridge under witness.
+CosmologicalClosureUnification: **0 sorry**. Full grand theorem discharged. Extension A: stronger finality corollary (`cosmological_closure_unification_plus_finality`). Extension B: strong schema and adjudicator bridge under witness. EPIC_66_SL2: record resolution monotonicity bridge (`ucf_record_resolution_monotone`). EPIC_67_FA: FoundationalAdmissibility — **equivalence proved**: FoundationallyViable ↔ ClosureCompatible (foundational_admissibility, foundationally_viable_implies_closure_compatible, viability_failure_implies_not_closure_compatible). Paper 80: ClassificationCascade with structure-tied predicates (ClosureForcedProbabilityStructure, ClosureCalibratedLawStructure), NarrowSurvivorClass, survivor_filter_narrows_class.
 
 ### Reverse Direction: BICS ⇒ NEMS ⇒ PSC (v2.1.0, Paper 14)
 
@@ -321,6 +373,19 @@ SelfAwareness library: **0 sorry**, 0 custom axioms. Composes with Learning, Clo
 | `Sieve/Examples/ToyDomain.lean` | `toySpace`, `toySieve`, `toy_residual_nonempty` | Toy: Fin 3, two constraints, certified residual witness |
 
 Sieve library: **0 sorry**, 0 custom axioms. Composes with NemS.Prelude; reusable for gauge theory, oracles, and other theory-space classifications.
+
+### Hypercomputation (Paper 35)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `Hypercomputation/Core/OracleAsSelector.lean` | `AuditPassesFor`, `SelectorSensitive` | Oracle-as-selector audit vocabulary |
+| `Hypercomputation/Core/HypercomputerClaim.lean` | `HypercomputerClaim`, `HasInternalHypercomputerAt` | Hypercomputer claim interface |
+| `Hypercomputation/Theorems/NoInternalHypercomputer.lean` | `no_internal_hypercomputer_at_strength` | Under AntiDeciderClosed + hFP, no total internal hypercomputer for extensional nontrivial T |
+| `Hypercomputation/Theorems/Taxonomy.lean` | `internal_hypercomputer_claim_forces_premise_failure` | Any internal hypercomputer claim forces failure of at least one barrier premise |
+| `Hypercomputation/Examples/Halting.lean` | `no_internal_hypercomputer_for_halting` | Halting example |
+| `Hypercomputation/Examples/RecordTruth.lean` | `no_internal_hypercomputer_for_record_truth` | Record-truth example |
+
+Hypercomputation library: **0 sorry**, 0 custom axioms. Composes with Closure, Reflection, SelectorStrength, and NemS diagonal modules.
 
 ### ArrowOfTime (Paper 36)
 
@@ -554,9 +619,13 @@ NemS/Cosmology/Bridges/ToSemanticFloor.lean
 NemS/Cosmology/Bridges/ToArrowOfTime.lean
 NemS/Cosmology/Bridges/ToFinality.lean
 NemS/Cosmology/Bridges/ToFoundationalFinality.lean
+NemS/Cosmology/Bridges/ToGPTClosure.lean
+NemS/Cosmology/Bridges/ToLawCalibration.lean
 NemS/Cosmology/Bridges/ToAdjudicators.lean
 NemS/Cosmology/StrongCosmologicalClosureSchema.lean
 NemS/Cosmology/CosmologicalClosureUnification.lean  # Paper 78: Grand Unification
+NemS/Cosmology/FoundationalAdmissibility.lean       # Paper 79: EPIC_67_FA
+NemS/Cosmology/ClassificationCascade.lean           # Paper 80: Survivor selection cascade
 NemS/Cosmology/UnifiedClosureFramework/Examples/Toy.lean
 NemS/Bridge/UnifiedRigidity.lean        # Paper 25: The Unified Rigidity Theorem
 NemS/Examples/Toy.lean
@@ -631,6 +700,15 @@ Sieve/Core/TheorySpace.lean
 Sieve/Core/Constraints.lean
 Sieve/Theorems/Residual.lean
 Sieve/Examples/ToyDomain.lean
+Hypercomputation.lean
+Hypercomputation/Core/OracleAsSelector.lean
+Hypercomputation/Core/HypercomputerClaim.lean
+Hypercomputation/Core/Taxonomy.lean
+Hypercomputation/Theorems/NoInternalHypercomputer.lean
+Hypercomputation/Theorems/OracleAudit.lean
+Hypercomputation/Theorems/Taxonomy.lean
+Hypercomputation/Examples/Halting.lean
+Hypercomputation/Examples/RecordTruth.lean
 ArrowOfTime.lean
 ArrowOfTime/Core/RecordFiltration.lean
 ArrowOfTime/Core/Refinement.lean
@@ -802,7 +880,7 @@ This artifact formalizes the core spine of:
 - *Self-Improvement Under Diagonal Constraints* (Paper 32 — SelfImprovement library; 0 sorry)
 - *Self-Awareness as a Resource* (Paper 33 — SelfAwareness library; 0 sorry)
 - *A Sieve Engine for Theory Spaces* (Paper 34 — the Sieve library: theory space, constraints as list, SieveHolds, Residual, monotonicity, pullback/functoriality, ToyDomain; 0 sorry)
-- *Oracles as External Selectors: NEMS Constraints on Hypercomputation and Physical Computability* (Paper 35 — companion paper; Lean library Hypercomputation/ planned, not yet in nems-lean)
+- *Oracles as External Selectors: NEMS Constraints on Hypercomputation and Physical Computability* (Paper 35 — the Hypercomputation library: oracle-as-selector audit, no_internal_hypercomputer_at_strength, internal_hypercomputer_claim_forces_premise_failure, halting and record-truth examples; 0 sorry)
 - *The Arrow of Time from Closure* (Paper 36 — ArrowOfTime library: record filtration, refinement, no_overwrite, irreversibility, selection_barrier_retrodiction, Toy; 0 sorry)
 - *Chronology Under Closure: NEMS Constraints on Admissible Time Travel* (Paper 37 — ChronologyUnderClosure library: record dynamics, record_non_overwrite, selection_barrier_chronology; 0 sorry)
 - *NEMS Constraints on Black Hole Information* (Paper 38 — BlackHoles library: record_consistency_abstract, no_hypercomputing_from_bh; 0 sorry)

@@ -48,3 +48,6 @@ lean_lib «CertificationLogic» where
   -- Paper 50 (capstone). Depends on InstitutionalEpistemics (Role) and SelectorStrength (barrier).
   -- For a standalone CertificationLogic build, run: lake build InstitutionalEpistemics SelectorStrength CertificationLogic
   -- or use full build: lake build
+
+lean_lib «Hypercomputation» where
+  -- Paper 35: Oracle-as-selector audit, no internal hypercomputer, taxonomy
