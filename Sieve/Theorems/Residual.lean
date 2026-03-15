@@ -75,7 +75,7 @@ the sieve on β. (Sieve analogue of interpretation preservation from Closure.) -
 theorem sieve_pullback (f : α → β) (ds : List (Constraint β)) (a : α) :
     SieveHolds α (pullbackConstraints f ds) a ↔ SieveHolds β ds (f a) := by
   unfold pullbackConstraints SieveHolds
-  simp only [List.forall_map]
+  simp only [List.forall_map_iff]
   exact Iff.rfl
 
 end Sieve

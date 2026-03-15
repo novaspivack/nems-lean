@@ -21,6 +21,8 @@ lean_lib «SelfReference» where
 lean_lib «Reflection» where
   -- Paper 28: SRI_R, DiagClosed, restricted_master_fixed_point
 lean_lib «SelectorStrength» where
+lean_lib «Sieve» where
+  -- Paper 34: Theory space, constraints, residual
 lean_lib «SemanticSelfDescription» where
   -- Necessary Incompleteness of Internal Semantic Self-Description
 lean_lib «ArrowOfTime» where
@@ -51,3 +53,18 @@ lean_lib «CertificationLogic» where
 
 lean_lib «Hypercomputation» where
   -- Paper 35: Oracle-as-selector audit, no internal hypercomputer, taxonomy
+
+lean_lib «InternalitySchema» where
+  -- Program I: Internality / Outsourcing Schema
+
+lean_lib «SurvivorCalculus» where
+  -- Program III: Survivor Calculus / Admissibility Cascade
+
+lean_lib «AdmissibleContinuation» where
+  -- Program II: Admissible Continuation Bridge Theory
+
+lean_lib «ForcedAdjudication» where
+  -- Program IV: General Forced Adjudication Role Theory
+
+lean_lib «StructuralNonExhaustibility» where
+  -- Program V: Structural Non-Exhaustibility

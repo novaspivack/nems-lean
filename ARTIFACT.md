@@ -176,7 +176,7 @@ This artifact formalizes the core spine of:
 - **Paper 32:** *Self-Improvement Under Diagonal Constraints* (SelfImprovement; 0 sorry)
 - **Paper 33:** *Self-Awareness as a Resource* (SelfAwareness; 0 sorry)
 - **Paper 34:** *A Sieve Engine for Theory Spaces* (Sieve; 0 sorry)
-- **Paper 35:** *Oracles as External Selectors* (companion; Lean library Hypercomputation/ planned)
+- **Paper 35:** *Oracles as External Selectors* (Hypercomputation; 0 sorry): oracle-as-selector audit, no_internal_hypercomputer_at_strength, internal_hypercomputer_claim_forces_premise_failure, halting and record-truth instances.
 - **Paper 36:** *The Arrow of Time from Closure* (ArrowOfTime; 0 sorry)
 - **Paper 37:** *Chronology Under Closure* (ChronologyUnderClosure; 0 sorry)
 - **Paper 38:** *NEMS Constraints on Black Hole Information* (BlackHoles; 0 sorry)
@@ -184,6 +184,7 @@ This artifact formalizes the core spine of:
 - **Paper 40:** *Institutions Under Diagonal Constraints* (InstitutionalEpistemics; 0 sorry)
 - **Paper 50:** *A Complete Logic of Certification: Soundness, Completeness, and Maximality for Stratified Verification Protocols* (CertificationLogic; 0 sorry): soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary. Build: full `lake build` (see NEMS_LEAN_BUILD_NOTE.md).
 - **Paper 51:** *Necessary Incompleteness of Internal Semantic Self-Description* (SemanticSelfDescription; 0 sorry): no_final_self_theory, no_weak_self_erasure, no_strong_self_erasure, semantic_remainder_master, physical_corollary_no_final_gut. Build: full `lake build` (see NEMS_LEAN_BUILD_NOTE.md).
+- **Paper 82:** *Determinacy Without Outsourcing* — synthesis paper; new Lean modules: `InternalitySchema.Theorems.Foundationality` (foundational_iff_internal_completion, Meta-Principle 2) and `StructuralNonExhaustibility.Theorems.InternalizationNotTotalization` (internalization_not_totalization, Meta-Principle 3). Both 0 sorry.
 
 ## Future Work
 

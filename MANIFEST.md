@@ -562,6 +562,31 @@ CertificationLogic library: **0 sorry**, 0 custom axioms. Depends on Institution
 
 SemanticSelfDescription library: **0 sorry**, 0 custom axioms. Depends on SelectorStrength, Reflection, Learning, SelfAwareness, CertificationLogic. Build: full `lake build` from nems-lean root.
 
+### New Targets Program (new_targets.tex, March 2026)
+
+| Library | Theorem/Def | Statement |
+|---------|-------------|-----------|
+| **InternalitySchema** (Program I) | |
+| `InternalitySchema/Core/SystemTask.lean` | SystemTaskInterface, Outsources | Load-bearing, internally realizable, completed by, internal to |
+| `InternalitySchema/Theorems/OutsourcingBarrier.lean` | `outsourcing_barrier` | LoadBearing ∧ ¬InternallyRealizable ∧ CompletedBy ⇒ ¬InternalTo |
+| `InternalitySchema/Theorems/NEMSRecovery.lean` | `nems_recovery` | Non-cat + no internal selector ⇒ any selector non-internal |
+| `InternalitySchema/Theorems/Foundationality.lean` | `Foundational`, `foundational_iff_internal_completion`, `foundational_implies_no_external_selection` | **Meta-Principle 2:** Foundational ↔ ObsCategorical ∨ ∃ internal selector (Paper 82) |
+| **SurvivorCalculus** (Program III) | |
+| `SurvivorCalculus/Core/Cascade.lean` | Cascade, ResidualClass | Predicate cascade on base space |
+| `SurvivorCalculus/Theorems/MonotoneFiltering.lean` | `residual_inclusion` | R_{k+1} ⊆ R_k |
+| **AdmissibleContinuation** (Program II) | |
+| `AdmissibleContinuation/Core/ContinuationSystem.lean` | ContinuationSystem, ClosureCompatible, BurdenBearing | State/update/record structure |
+| `AdmissibleContinuation/Theorems/ClosureCompatibleContinuation.lean` | `closure_compatible_continuation` | ClosureCompatible ∧ BurdenBearing ⇒ AdmissibleContinuation |
+| **ForcedAdjudication** (Program IV) | |
+| `ForcedAdjudication/Core/AdjudicativeRole.lean` | `forced_adjudicative_role` | PSC + choice ⇒ PT exists (re-export MFRR) |
+| **StructuralNonExhaustibility** (Program V) | |
+| `StructuralNonExhaustibility/Core/ReflexiveSystem.lean` | ReflexiveSystem, NoTotalExhaustion | Schema for no total exhaustive internalization |
+| `StructuralNonExhaustibility/Theorems/NoTotalExhaustion.lean` | `no_total_exhaustion_of` | BarrierHyp ⇒ ¬ TotalExhaustiveInternal |
+| `StructuralNonExhaustibility/Theorems/InternalizationNotTotalization.lean` | `InternalizationNotTotalization`, `internalization_not_totalization` | **Meta-Principle 3:** Under barrier premises, total exhaustive internal completion fails (Paper 82) |
+| `StructuralNonExhaustibility/Bridges/ToSemanticSelfDescription.lean` | Bridge to Paper 51 | no_final_self_theory instance |
+
+**Fixes:** Sieve.Theorems.Residual: `List.forall_map` → `List.forall_map_iff` (Mathlib 4.29). Sieve added to lakefile.
+
 ## Key source files (SHA-256)
 
 To verify integrity, compute `sha256sum` on the following files and compare:

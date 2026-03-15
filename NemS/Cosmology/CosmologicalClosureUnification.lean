@@ -4,6 +4,8 @@ import NemS.Cosmology.Bridges.ToSemanticFloor
 import NemS.Cosmology.Bridges.ToArrowOfTime
 import NemS.Cosmology.Bridges.ToFinality
 import NemS.Cosmology.Bridges.ToFoundationalFinality
+import NemS.Cosmology.Bridges.ToRecordResolution
+import NemS.Cosmology.Bridges.ToHiddenHistoryEntropy
 
 /-!
 # NemS.Cosmology.CosmologicalClosureUnification

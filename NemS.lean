@@ -27,6 +27,7 @@ import NemS.Core.Selectors
 import NemS.Core.SelectorQuotient
 import NemS.Core.Trichotomy
 import NemS.Core.Internality
+import NemS.Core.QuotientSection
 
 -- Reduction
 import NemS.Reduction.Externality
@@ -106,6 +107,10 @@ import NemS.Reflexive.FinalityTheorem
 import NemS.Cosmology.SemanticFloor
 -- Paper 78: Cosmological Closure Unification (Grand Unification)
 import NemS.Cosmology.CosmologicalClosureUnification
+-- EPIC_67_FA: Foundational Admissibility (viability classification)
+import NemS.Cosmology.FoundationalAdmissibility
+-- Paper 80: Classification Cascade (survivor selection)
+import NemS.Cosmology.ClassificationCascade
 
 -- Paper 25: The Unified Rigidity Theorem
 import NemS.Bridge.UnifiedRigidity

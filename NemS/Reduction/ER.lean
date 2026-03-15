@@ -39,5 +39,10 @@ theorem nems_er_implies_detpsc
     F.DeterminacyPSC :=
   fun dep IsInternal hNEMS => er_nems_forces_internal_selector F dep IsInternal hNEMS
 
+/-- DeterminacyPSC holds for every framework: whenever NEMS holds on an enlarged space,
+an internal selector exists. -/
+theorem determinacyPSC_of_framework (F : Framework) : F.DeterminacyPSC :=
+  fun dep IsInternal hNEMS => er_nems_forces_internal_selector F dep IsInternal hNEMS
+
 end Framework
 end NemS
