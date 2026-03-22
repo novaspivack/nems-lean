@@ -2,8 +2,8 @@
 
 **Release:** v2.7.0  
 **Date:** March 2026  
-**Lean version:** leanprover/lean4:v4.29.0-rc3  
-**Mathlib version:** v4.29.0-rc3  
+**Lean version:** leanprover/lean4:v4.29.0-rc6  
+**Mathlib version:** v4.29.0-rc6  
 **Build result:** Current clean build succeeds with the pinned toolchain. See the reproduction section for the exact current build outcome, and see the theorem tables below for current theorem coverage and sorry-status.
 
 **Lean 4.29 upgrade:** Compatibility fixes in `BuschGleason.lean` (tactic/API only; no theorem changes). See `LEAN_4.29_UPGRADE_DISCLOSURE.md`.

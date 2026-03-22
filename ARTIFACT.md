@@ -1,8 +1,8 @@
 # nems-lean Artifact Documentation
 
 **Version:** v2.7.0  
-**Lean:** leanprover/lean4:v4.29.0-rc3  
-**Mathlib:** v4.29.0-rc3  
+**Lean:** leanprover/lean4:v4.29.0-rc6  
+**Mathlib:** v4.29.0-rc6  
 **Build:** 1713 jobs, 0 errors, 9 sorrys (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; see MANIFEST.md), **0 custom axioms**
 
 **Lean 4.29 compatibility:** See `LEAN_4.29_UPGRADE_DISCLOSURE.md` for tactic/API fixes in BuschGleason.lean (no theorem changes).
@@ -224,7 +224,7 @@ If you use this artifact, please cite:
 @misc{SpivackNEMSLean_v2,
   author       = {Nova Spivack},
   title        = {nems-lean: Lean 4 Formalization of the NEMS Core Spine and MFRR Bridge},
-  howpublished = {Software artifact, Lean 4.29.0-rc3 / Mathlib 4.29.0-rc3},
+  howpublished = {Software artifact, Lean 4.29.0-rc6 / Mathlib 4.29.0-rc6},
   year         = {2026},
   note         = {v2.5.0+: 8k+ jobs; 6 sorrys (see MANIFEST); Papers 26–31 abstract-core spine including EpistemicAgency; zero custom axioms.}
 }
