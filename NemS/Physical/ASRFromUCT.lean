@@ -50,6 +50,7 @@ ASR fragment is not computably decidable.
 
 This is the "headline" form: physical universal computation implies
 incompleteness (no total algorithmic ToE on diagonal-capable records). -/
+@[reducible]
 def physUCT_implies_diagonalCapable
     {F : Framework} (uct : PhysUCT F) :
     NemS.MFRR.DiagonalCapable F :=
