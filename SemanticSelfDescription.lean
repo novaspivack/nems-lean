@@ -13,6 +13,7 @@ import SemanticSelfDescription.Theorems.NoSelfErasure
 import SemanticSelfDescription.Theorems.SemanticRemainder
 import SemanticSelfDescription.Theorems.PhysicalCorollary
 import SemanticSelfDescription.Instances.KleenePartrec
+import SemanticSelfDescription.Instances.GodelProvBic
 import SemanticSelfDescription.Theorems.KleenePredicatedSummit
 
 /-!
@@ -48,5 +49,6 @@ at the world level.
 - `Theorems.NoSelfErasure` — weak and strong no-self-erasure
 - `Theorems.SemanticRemainder` — positive remainder theorem
 - `Instances.KleenePartrec` — concrete `Nat.Partrec.Code` frame + `BarrierHypothesesPred` for computable maps
+- `Instances.GodelProvBic` — `ProvBic` / `GodelSystem` frame + **`godelProvBicBarrierHypotheses`** (**SPEC_020_PT1**)
 - `Theorems.KleenePredicatedSummit` — summit-grade statement: predicated Kleene barrier (**`kleene_computational_predicated_summit`**)
 -/

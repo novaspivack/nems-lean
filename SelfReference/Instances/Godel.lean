@@ -55,11 +55,11 @@ structure GodelSystem where
 Together with `Reflection.sri0'_to_sri_r` this yields **`SRI_R ℕ ℕ allRepresentable`** and hence
 **`DiagClosed`** (Paper 28 diagonal-closure side).
 
-**Remaining to obtain a closed `SemanticSelfDescription.BarrierHypotheses` via
-`barrier_hypotheses_from_reflection`:** build a `SelfSemanticFrame` with `Code = ℕ`, supply
-`CodeExtensional` whose `CodeEquiv` matches `ProvBic`, prove `EncodedNontrivial` for that frame, and
-check the `hEquiv` / `hQuoteId` side-conditions of `barrier_hypotheses_from_reflection`. That
-“arithmetical semantics” step is **not** forced by the abstract `GodelSystem` axioms alone.
+**Closed `BarrierHypotheses`:** Once you add **`ProvBicArithmeticalSemantics`** / **`godelProvBicFrame`**
+(see `SemanticSelfDescription/Instances/GodelProvBic.lean`), `godelProvBicBarrierHypotheses` packages
+`barrier_hypotheses_from_reflection` with `toSRI_R` / `diagClosed` / `sri_quote_eq_id`. The
+“arithmetical semantics” witness is **not** forced by the abstract `GodelSystem` axioms alone; it is
+the honest extra input beside this shell.
 -/
 @[reducible]
 def toSRI0' (G : GodelSystem) : SelfReference.SRI0' ℕ ℕ where
