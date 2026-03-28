@@ -553,7 +553,9 @@ CertificationLogic library: **0 sorry**, 0 custom axioms. Depends on Institution
 | `SemanticSelfDescription/Core/SelfTheory.lean` | SelfTheory, FinalSelfTheory, Internal, TotalOn, ExactOn | Final self-theory definition |
 | `SemanticSelfDescription/Core/SelfScope.lean` | SelfScoped, StronglySelfScoped | Self-scoped claims |
 | `SemanticSelfDescription/Core/SelfErasure.lean` | WeakSelfErasing, StrongSelfErasing | Weak and strong self-erasure |
-| `SemanticSelfDescription/Theorems/NoFinalSelfTheory.lean` | `no_final_self_theory` | **Flagship:** BarrierHyp + DiagClosed ⇒ ¬ FinalSelfTheory T |
+| `SemanticSelfDescription/Theorems/NoFinalSelfTheory.lean` | `no_final_self_theory`, `BarrierHypothesesPred`, `toBarrierHypotheses`, `no_final_self_theory'` | **Flagship:** ¬ final internal self-theory from unconditional `hFP`; predicated Rogers + coercion when `∀ F', P F'` |
+| `SemanticSelfDescription/Bridge/AugmentBarrierHypotheses.lean` | `barrierHypotheses_augment_withGlobalConjunct`, `barrierHypothesesPred_augment_withGlobalConjunct` | Global `(U₁)`-style conjunct on `BarrierHypotheses` / `BarrierHypothesesPred` |
+| `SemanticSelfDescription/Instances/KleenePartrec.lean` | `kleenePartrecFrame`, `kleeneCodeEquiv`, `kleeneComputationalBarrierHypotheses` | Concrete `Nat.Partrec.Code` frame; extensional eval-equivalence; **`P = Computable`** |
 | `SemanticSelfDescription/Theorems/NoSelfErasure.lean` | `no_weak_self_erasure`, `no_strong_self_erasure` | Weak and strong self-erasure ruled out |
 | `SemanticSelfDescription/Theorems/SemanticRemainder.lean` | `semantic_remainder_or_nontotal` | Every internal self-theory fails totality or leaves irreducible remainder |
 | `SemanticSelfDescription/Theorems/PhysicalCorollary.lean` | `no_final_internal_gut` | Physical corollary: no final internal GUT |

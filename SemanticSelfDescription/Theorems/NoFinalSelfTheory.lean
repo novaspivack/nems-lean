@@ -39,11 +39,44 @@ A frame satisfies these when:
 
 The fixed-point premise is supplied by Reflection when the frame's Code
 carries an SRI_R with DiagClosed R (e.g. from SelfReference when Obj = Code).
+
+**Computational refinement:** `BarrierHypothesesPred` below packages the same data with a predicate
+`P` recording *which* transformers are assumed to admit code fixed points (e.g. `Computable` on
+`ℕ → ℕ` in the Kleene / `Nat.Partrec.Code` story). The Paper 51 flagship theorem keeps the
+unconditional `BarrierHypotheses` (every transformer).
+-/
+structure BarrierHypothesesPred (F : SelfSemanticFrame W)
+    (P : (F.Code → F.Code) → Prop) : Type where
+  codeExt : CodeExtensional F
+  encoded : EncodedNontrivial F
+  hFP : ∀ F' : F.Code → F.Code, P F' → ∃ d : F.Code, codeExt.CodeEquiv d (F' d)
+
+/--
+Unconditional barrier hypotheses (`P := ⊤`): every `F' : Code → Code` has a code fixed point.
 -/
 structure BarrierHypotheses (F : SelfSemanticFrame W) where
   codeExt    : CodeExtensional F
   encoded    : EncodedNontrivial F
   hFP        : ∀ F' : F.Code → F.Code, ∃ d : F.Code, codeExt.CodeEquiv d (F' d)
+
+def BarrierHypotheses.toPred (bh : BarrierHypotheses F) : BarrierHypothesesPred F fun _ => True where
+  codeExt := bh.codeExt
+  encoded := bh.encoded
+  hFP F' _ := bh.hFP F'
+
+/--
+If **`P F'`** holds for **every** code transformer, a **`BarrierHypothesesPred`** is literally an unconditional
+**`BarrierHypotheses`** (e.g. **`P := fun _ => True`** from **`BarrierHypotheses.toPred`**).
+
+For **`kleeneComputationalBarrierHypotheses`**, **`P = Computable`** — so this coercion **does not** apply
+globally; it is the honest “pred vs full” boundary.
+-/
+def BarrierHypothesesPred.toBarrierHypotheses
+    {P : (F.Code → F.Code) → Prop} (bh : BarrierHypothesesPred F P)
+    (hP : ∀ F' : F.Code → F.Code, P F') : BarrierHypotheses F where
+  codeExt := bh.codeExt
+  encoded := bh.encoded
+  hFP F' := bh.hFP F' (hP F')
 
 /--
 **Flagship theorem: No final internal self-theory.**

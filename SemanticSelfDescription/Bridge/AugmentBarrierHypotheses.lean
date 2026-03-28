@@ -37,4 +37,18 @@ def barrierHypotheses_augment_withGlobalConjunct (bh : BarrierHypotheses F) (P :
     rcases bh.hFP F' with ⟨d, hd⟩
     exact ⟨d, ⟨hd, hP⟩⟩
 
+/--
+**`BarrierHypothesesPred`** variant: same global conjunct **`Q`** / witness **`hQ`**, same transformer predicate **`P`**.
+-/
+def barrierHypothesesPred_augment_withGlobalConjunct
+    {P : (F.Code → F.Code) → Prop} (bh : BarrierHypothesesPred F P) (Q : Prop) (hQ : Q) :
+    BarrierHypothesesPred F P where
+  codeExt :=
+    { CodeEquiv := fun x y => bh.codeExt.CodeEquiv x y ∧ Q
+      decode_ext := fun hxy => bh.codeExt.decode_ext hxy.left }
+  encoded := bh.encoded
+  hFP := fun F' hPF' => by
+    rcases bh.hFP F' hPF' with ⟨d, hd⟩
+    exact ⟨d, ⟨hd, hQ⟩⟩
+
 end SemanticSelfDescription
