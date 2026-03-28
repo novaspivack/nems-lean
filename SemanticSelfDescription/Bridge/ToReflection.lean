@@ -24,6 +24,22 @@ Every abstract `SelfReference.Instances.Godel.GodelSystem` yields `toSRI0'`, `to
 `CodeExtensional` whose `CodeEquiv` matches the same `ProvBic`, and `[EncodedNontrivial F]`.
 The latter “arithmetical semantics” bundle is **not** forced by the abstract `GodelSystem` axioms
 alone; see `SelfReference/Instances/Godel.lean` for the honest scaffolding / remainder note.
+
+## Sharp obstructions (why “pick `Code = ℕ`” is not automatic)
+
+* `SemanticSelfDescription.false_of_encodedNontrivial_indiscrete_CodeEquiv` — if **every** code pair is
+  `CodeEquiv`, then `EncodedNontrivial` is false.
+* `SemanticSelfDescription.false_of_encodedNontrivial_aligns_univ` — same packaging when `CodeEquiv`
+  is aligned with a **universal** binary relation (e.g. `ProvBic := fun _ _ => True`).
+* `SelfReference.Minimality.not_nonempty_sri0'_nat_equiv_eq` — **no** unityped `SRI₀′` on `ℕ` has
+  `Equiv` **coincide** with `Eq`, so you cannot align `CodeEquiv` with **equality** *and* use this
+  reflection/representability chain at **`R = ⊤`**.
+
+Closing a **parameter-free** `bh` via `barrier_hypotheses_from_reflection` therefore needs a
+**concrete** intermediate equivalence (proof-theoretic `ProvBic`, Kleene-style `ExtEq`, …)—**strictly
+between** `Eq` and the universal relation—together with an **`EncodedNontrivial`** **witness** for
+`RealizedTrue` invariant under **that** equivalence, **and** a **concrete** `GodelSystem` /
+`ProgramSystem`-style witness for `run`/`repr`, not the abstract shell alone.
 -/
 
 set_option autoImplicit false
@@ -78,5 +94,17 @@ def barrier_hypotheses_from_reflection
     (hQuoteId : ∀ p : F.Code, sri.quote p = p) :
     BarrierHypotheses F :=
   ⟨codeExt, inferInstance, reflection_supplies_hFP F codeExt R hDiag hEquiv hR hQuoteId⟩
+
+/--
+If `CodeEquiv` is **aligned** with a relation `Rel` that holds for **all** code pairs (“universal” /
+indiscrete side), then **`EncodedNontrivial`** cannot hold — cf. induced `ProvBic := fun _ _ => True`
+Gödel shells once `hEquiv` forces `CodeEquiv` from `ProvBic`.
+-/
+theorem false_of_encodedNontrivial_aligns_univ
+    {W : Type u} (F : SelfSemanticFrame W) (codeExt : CodeExtensional F) [EncodedNontrivial F]
+    (Rel : F.Code → F.Code → Prop)
+    (hEquiv : ∀ a b, codeExt.CodeEquiv a b ↔ Rel a b)
+    (hUniv : ∀ a b, Rel a b) : False :=
+  false_of_encodedNontrivial_indiscrete_CodeEquiv F codeExt fun a b => (hEquiv a b).mpr (hUniv a b)
 
 end SemanticSelfDescription

@@ -549,6 +549,7 @@ CertificationLogic library: **0 sorry**, 0 custom axioms. Depends on Institution
 | File | Definition/Theorem | Statement |
 |------|--------------------|-----------|
 | `SemanticSelfDescription/Core/Claims.lean` | Claim, Code, Decode, RealizedTrue, ClaimEquiv, CodeEquiv | Self-semantic frame vocabulary |
+| `SemanticSelfDescription/Core/Claims.lean` | `false_of_encodedNontrivial_indiscrete_CodeEquiv` | Universal `CodeEquiv` forbids `EncodedNontrivial` |
 | `SemanticSelfDescription/Core/SelfTheory.lean` | SelfTheory, FinalSelfTheory, Internal, TotalOn, ExactOn | Final self-theory definition |
 | `SemanticSelfDescription/Core/SelfScope.lean` | SelfScoped, StronglySelfScoped | Self-scoped claims |
 | `SemanticSelfDescription/Core/SelfErasure.lean` | WeakSelfErasing, StrongSelfErasing | Weak and strong self-erasure |
@@ -557,7 +558,8 @@ CertificationLogic library: **0 sorry**, 0 custom axioms. Depends on Institution
 | `SemanticSelfDescription/Theorems/SemanticRemainder.lean` | `semantic_remainder_or_nontotal` | Every internal self-theory fails totality or leaves irreducible remainder |
 | `SemanticSelfDescription/Theorems/PhysicalCorollary.lean` | `no_final_internal_gut` | Physical corollary: no final internal GUT |
 | `SemanticSelfDescription/Bridge/ToSelectorStrength.lean` | Bridge to Paper 29 barrier | FinalSelfTheory ⇒ total decider |
-| `SemanticSelfDescription/Bridge/ToReflection.lean` | Bridge to Paper 28 | hFP from DiagClosed |
+| `SemanticSelfDescription/Bridge/ToReflection.lean` | Bridge to Paper 28 | hFP from DiagClosed; **`false_of_encodedNontrivial_aligns_univ`** (aligned universal relation ⇒ no `EncodedNontrivial`) |
+| `SelfReference/Minimality/UnitypedNatReprObstruction.lean` | `not_nonempty_sri0'_nat_equiv_eq` | **Unityped `ℕ`:** no `SRI₀′` with `Equiv = Eq` (Lawvere diagonal); clarifies `Code = ℕ` + `barrier_hypotheses_from_reflection` closure tension |
 | `SemanticSelfDescription/Bridge/ToCertificationLogic.lean` | Bridge to Paper 50 | Necessary incompleteness implies certification boundary |
 
 SemanticSelfDescription library: **0 sorry**, 0 custom axioms. Depends on SelectorStrength, Reflection, Learning, SelfAwareness, CertificationLogic. Build: full `lake build` from nems-lean root.

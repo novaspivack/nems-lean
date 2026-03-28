@@ -13,6 +13,7 @@ import SelfReference.Instances.Loeb
 
 -- Minimality
 import SelfReference.Minimality.Countermodels
+import SelfReference.Minimality.UnitypedNatReprObstruction
 import SelfReference.Minimality.StratifiedReflection
 
 

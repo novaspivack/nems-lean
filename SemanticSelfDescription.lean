@@ -37,7 +37,7 @@ at the world level.
 - `Core.SelfScope` — SelfScoped, StronglySelfScoped
 - `Core.SelfErasure` — WeakSelfErasing, StrongSelfErasing, SemanticClosureByTheory
 - `Bridge.ToSelectorStrength` — reduction to barrier
-- `Bridge.ToReflection` — DiagClosed supplies BarrierHypotheses
+- `Bridge.ToReflection` — DiagClosed supplies `BarrierHypotheses` + alignment obstructions (`false_of_encodedNontrivial_aligns_univ`, …)
 - `Bridge.AugmentBarrierHypotheses` — adjoin a global conjunct to `CodeEquiv` (+ reprove `hFP`)
 - `Bridge.ToLearning` — no total self-certifier (Paper 30)
 - `Bridge.ToSelfAwareness` — selector necessity (Paper 33)

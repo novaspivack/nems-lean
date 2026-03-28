@@ -98,4 +98,20 @@ theorem encodedNontrivial_implies_nontrivial
     SelectorStrength.Nontrivial F.selfSemanticTruth :=
   ⟨EncodedNontrivial.code_true, EncodedNontrivial.code_false⟩
 
+/--
+If **every** pair of codes is `CodeEquiv`-equivalent (“indiscrete” code extensionality), then
+`selfSemanticTruth` is constant — so **`EncodedNontrivial`** cannot hold.
+
+This is the honest flip side of **`selfSemanticTruth_extensional`**: nontrivial encoded truth forces
+some pair of **inequivalent** codes.
+-/
+theorem false_of_encodedNontrivial_indiscrete_CodeEquiv
+    {W : Type u} (F : SelfSemanticFrame W) (codeExt : CodeExtensional F) [ne : EncodedNontrivial F]
+    (hUniv : ∀ a b : F.Code, codeExt.CodeEquiv a b) : False := by
+  obtain ⟨c₁, hc₁⟩ := ne.code_true
+  obtain ⟨c₂, hc₂⟩ := ne.code_false
+  have :=
+    (selfSemanticTruth_extensional F codeExt (hUniv c₁ c₂)).1 hc₁
+  exact hc₂ this
+
 end SemanticSelfDescription
