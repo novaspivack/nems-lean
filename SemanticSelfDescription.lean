@@ -15,6 +15,7 @@ import SemanticSelfDescription.Theorems.PhysicalCorollary
 import SemanticSelfDescription.Instances.KleenePartrec
 import SemanticSelfDescription.Instances.GodelProvBic
 import SemanticSelfDescription.Theorems.KleenePredicatedSummit
+import SemanticSelfDescription.Theorems.SummitComparison
 
 /-!
 # SemanticSelfDescription — Necessary Incompleteness of Internal Semantic Self-Description
@@ -51,4 +52,5 @@ at the world level.
 - `Instances.KleenePartrec` — concrete `Nat.Partrec.Code` frame + `BarrierHypothesesPred` for computable maps
 - `Instances.GodelProvBic` — `ProvBic` / `GodelSystem` frame + **`godelProvBicBarrierHypotheses`** (**SPEC_020_PT1**)
 - `Theorems.KleenePredicatedSummit` — summit-grade statement: predicated Kleene barrier (**`kleene_computational_predicated_summit`**)
+- `Theorems.SummitComparison` — Kleene vs **`ProvBic`** integration (**`SPEC_021_SC1`**)
 -/

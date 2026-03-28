@@ -24,7 +24,9 @@ The **optional stronger route** (proof-theoretic middle equivalence, stronger re
 **separate** ascent; it should not be smuggled by collapsing **`BarrierHypothesesPred`** into
 **`BarrierHypotheses`** without that extra input.
 
-See also **`StructuralNonExhaustibility.Bridges.ToSemanticSelfDescription`** (**`reflexiveSystem_ofSelfSemanticFramePred`**)
+See also **`SemanticSelfDescription.Theorems.SummitComparison`** (**strict separation** vs proof-theoretic
+**`BarrierHypotheses`**: **`not_forall_kleeneComputableTransformerPred`**, **`kleenePredicated_toBarrierHypotheses_side_condition_false`**),
+**`StructuralNonExhaustibility.Bridges.ToSemanticSelfDescription`** (**`reflexiveSystem_ofSelfSemanticFramePred`**),
 and **`StructuredNonexhaustibility.KleenePredicatedResidualSummit`** (reflexive enriched **R₄** endpoint).
 -/
 
