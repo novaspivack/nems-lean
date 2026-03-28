@@ -21,6 +21,12 @@ implication from abstract paper U₁–U₃ packaging to **`BarrierHypotheses`**
 external mathematics** (e.g.base **`bh`** + **repr augmentation** via
 `SemanticSelfDescription.Bridge.AugmentBarrierHypotheses` in the reflexive project).
 
+**Predicated summit (Kleene / Rogers):** **`reflexiveSystem_ofSelfSemanticFramePred`** sets
+**`BarrierHyp := Nonempty (BarrierHypothesesPred F P)`**. This matches computational routes that only assume
+Rogers fixed points for a **class** of transformers **`P`** (e.g. **`Computable`**). **`NoTotalExhaustion`**
+for that shell recovers from **`no_final_self_theory'`** only after **`∀ F', P F'`**, via
+**`BarrierHypothesesPred.toBarrierHypotheses`**.
+
 **Schema recovery:** `reflexiveSystem_ofSelfSemanticFrame_noTotalExhaustion` is **`NoTotalExhaustion`**
 for this shell — Lemma **`no_final_self_theory'`**.
 -/
@@ -48,6 +54,33 @@ def reflexiveSystem_ofSelfSemanticFrame (F : SemanticSelfDescription.SelfSemanti
   TotalExhaustiveInternal :=
     ∃ T : SemanticSelfDescription.InternalSelfTheory F, SemanticSelfDescription.FinalSelfTheory T
   BarrierHyp := Nonempty (SemanticSelfDescription.BarrierHypotheses F)
+
+/--
+**Predicated** Program V shell: **`BarrierHyp`** is nonemptiness of **`BarrierHypothesesPred F P`**.
+
+**Universe note:** match **`BarrierHypothesesPred`** (Mathlib / Paper 51 wiring uses **`Code : Type 0`** for this bundle).
+-/
+def reflexiveSystem_ofSelfSemanticFramePred
+    (F : SemanticSelfDescription.SelfSemanticFrame.{u, 0} W)
+    (P : (F.Code → F.Code) → Prop) : ReflexiveSystem.{u, 0} where
+  System := W
+  Claim := F.Code
+  SelfInvolving := F.selfSemanticTruth
+  TotalExhaustiveInternal :=
+    ∃ T : SemanticSelfDescription.InternalSelfTheory F, SemanticSelfDescription.FinalSelfTheory T
+  BarrierHyp := Nonempty (SemanticSelfDescription.BarrierHypothesesPred (W := W) F P)
+
+theorem reflexiveSystem_ofSelfSemanticFramePred_noTotalExhaustion_of_forall
+    (F : SemanticSelfDescription.SelfSemanticFrame.{u, 0} W)
+    (P : (F.Code → F.Code) → Prop)
+    (hP : ∀ F' : F.Code → F.Code, P F') :
+    (reflexiveSystem_ofSelfSemanticFramePred F P).NoTotalExhaustion := by
+  intro hB hTot
+  refine Nonempty.elim hB fun bh => ?_
+  have bhTot :
+      SemanticSelfDescription.BarrierHypotheses F :=
+    SemanticSelfDescription.BarrierHypothesesPred.toBarrierHypotheses (F := F) (P := P) bh hP
+  exact SemanticSelfDescription.no_final_self_theory' (F := F) bhTot hTot
 
 theorem reflexiveSystem_ofSelfSemanticFrame_noTotalExhaustion
     (F : SemanticSelfDescription.SelfSemanticFrame W) :
