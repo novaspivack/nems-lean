@@ -18,7 +18,8 @@ carry genuine **semantic self-description** content (not the trivial `BarrierHyp
 **Sync (EPIC_012):** an `EngineNemsBarrierSync` still requires an **engine proof** that each
 `U123BarrierData` point implies `Nonempty (BarrierHypotheses F)`. There is **no** definitional
 implication from abstract paper U₁–U₃ packaging to **`BarrierHypotheses`**; that step is **honest
-external mathematics** (e.g. a reflection / diagonal-closure bridge) when you instantiate **`sync`**.
+external mathematics** (e.g.base **`bh`** + **repr augmentation** via
+`SemanticSelfDescription.Bridge.AugmentBarrierHypotheses` in the reflexive project).
 
 **Schema recovery:** `reflexiveSystem_ofSelfSemanticFrame_noTotalExhaustion` is **`NoTotalExhaustion`**
 for this shell — Lemma **`no_final_self_theory'`**.

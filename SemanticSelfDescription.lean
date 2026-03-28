@@ -4,6 +4,7 @@ import SemanticSelfDescription.Core.SelfScope
 import SemanticSelfDescription.Core.SelfErasure
 import SemanticSelfDescription.Bridge.ToSelectorStrength
 import SemanticSelfDescription.Bridge.ToReflection
+import SemanticSelfDescription.Bridge.AugmentBarrierHypotheses
 import SemanticSelfDescription.Bridge.ToLearning
 import SemanticSelfDescription.Bridge.ToSelfAwareness
 import SemanticSelfDescription.Bridge.ToCertificationLogic
@@ -37,6 +38,7 @@ at the world level.
 - `Core.SelfErasure` — WeakSelfErasing, StrongSelfErasing, SemanticClosureByTheory
 - `Bridge.ToSelectorStrength` — reduction to barrier
 - `Bridge.ToReflection` — DiagClosed supplies BarrierHypotheses
+- `Bridge.AugmentBarrierHypotheses` — adjoin a global conjunct to `CodeEquiv` (+ reprove `hFP`)
 - `Bridge.ToLearning` — no total self-certifier (Paper 30)
 - `Bridge.ToSelfAwareness` — selector necessity (Paper 33)
 - `Bridge.ToCertificationLogic` — certification boundary (Paper 50)
