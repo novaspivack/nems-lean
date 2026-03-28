@@ -1,3 +1,4 @@
+import Reflection.Core.SRI_R
 import SelfReference.Core.FixedPoint
 import SelfReference.Consequences.DiagonalBarrier
 
@@ -44,6 +45,56 @@ structure GodelSystem where
   repr_fn_spec : ∀ (F : ℕ → ℕ) (c : ℕ), ProvBic (subst (repr_fn F) c) (F c)
   subst_cong : ∀ {φ ψ : ℕ} (c : ℕ), ProvBic φ ψ → ProvBic (subst φ c) (subst ψ c)
   eval_quote_ax : ∀ n, ProvBic (subst n n) n
+
+/--
+**Gödel system → SRI₀′** (unityped numerals).
+
+`Equiv := ProvBic`, `run := subst`, `quote := id`, `repr := repr_fn`, and `repr_spec` is exactly
+`repr_fn_spec`.
+
+Together with `Reflection.sri0'_to_sri_r` this yields **`SRI_R ℕ ℕ allRepresentable`** and hence
+**`DiagClosed`** (Paper 28 diagonal-closure side).
+
+**Remaining to obtain a closed `SemanticSelfDescription.BarrierHypotheses` via
+`barrier_hypotheses_from_reflection`:** build a `SelfSemanticFrame` with `Code = ℕ`, supply
+`CodeExtensional` whose `CodeEquiv` matches `ProvBic`, prove `EncodedNontrivial` for that frame, and
+check the `hEquiv` / `hQuoteId` side-conditions of `barrier_hypotheses_from_reflection`. That
+“arithmetical semantics” step is **not** forced by the abstract `GodelSystem` axioms alone.
+-/
+@[reducible]
+def toSRI0' (G : GodelSystem) : SelfReference.SRI0' ℕ ℕ where
+  Equiv := G.ProvBic
+  equiv_refl := G.prov_refl
+  equiv_symm := fun h => G.prov_symm h
+  equiv_trans := fun h₁ h₂ => G.prov_trans h₁ h₂
+  quote := id
+  run := G.subst
+  repr := G.repr_fn
+  repr_spec := G.repr_fn_spec
+
+/--
+Induced **`SRI_R`** with **`R = allRepresentable`** (every `ℕ → ℕ` transformer is in the class).
+-/
+@[reducible]
+def toSRI_R (G : GodelSystem) :
+    Reflection.SRI_R ℕ ℕ (Reflection.allRepresentable (Obj := ℕ) (Code := ℕ)) :=
+  @Reflection.sri0'_to_sri_r ℕ ℕ (toSRI0' G)
+
+/--
+Diagonal closure for the Gödel-derived **`SRI_R`**: **`R = ⊤`** is always diagonally closed.
+
+The explicit **`SRI_R`** argument is needed because `toSRI_R G` is data (not a global `instance`).
+-/
+theorem diagClosed (G : GodelSystem) :
+    @Reflection.DiagClosed ℕ ℕ (Reflection.allRepresentable (Obj := ℕ) (Code := ℕ)) (toSRI_R G) :=
+  @Reflection.diagClosed_allRepresentable ℕ ℕ (toSRI_R G)
+
+/--
+`quote` in `toSRI0'` (hence in `toSRI_R`) is **`id`**, matching the **`hQuoteId`** side condition of
+`SemanticSelfDescription.barrier_hypotheses_from_reflection`.
+-/
+theorem sri_quote_eq_id (G : GodelSystem) (p : ℕ) : (toSRI_R G).quote p = p :=
+  rfl
 
 /-- **Gödel's Diagonal Lemma** proved directly from the diagonal construction.
 

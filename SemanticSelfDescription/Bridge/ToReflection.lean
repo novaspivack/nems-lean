@@ -14,6 +14,16 @@ fixed-point premise hFP required by BarrierHypotheses is supplied by Reflection'
 restricted_master_fixed_point.
 
 This completes the chain: Reflection (DiagClosed) → BarrierHypotheses → no_final_self_theory.
+
+## Gödel systems → **the same** reflection side (numeral **`Code = ℕ`**)
+
+Every abstract `SelfReference.Instances.Godel.GodelSystem` yields `toSRI0'`, `toSRI_R`, and
+`Godel.diagClosed` on `ℕ`, with `quote = id` (`Godel.sri_quote_eq_id`). That is exactly the
+`SRI_R` / `DiagClosed` / `hQuoteId` input pattern expected by `reflection_supplies_hFP` and
+`barrier_hypotheses_from_reflection` once you also provide a semantic frame `F` with `F.Code = ℕ`,
+`CodeExtensional` whose `CodeEquiv` matches the same `ProvBic`, and `[EncodedNontrivial F]`.
+The latter “arithmetical semantics” bundle is **not** forced by the abstract `GodelSystem` axioms
+alone; see `SelfReference/Instances/Godel.lean` for the honest scaffolding / remainder note.
 -/
 
 set_option autoImplicit false
