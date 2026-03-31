@@ -46,6 +46,7 @@ structure ProgramSystem where
   smn_self : ∀ e, ExtEq (smn e e) e
 
 /-- Construct a CSRI from a program system. -/
+@[reducible]
 def kleeneCSRI (P : ProgramSystem) : CSRI ℕ where
   Equiv       := P.ExtEq
   equiv_refl  := P.extEq_refl
