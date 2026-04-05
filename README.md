@@ -1,10 +1,10 @@
 # nems-lean
 
-Lean 4 formalization of the **NEMS (No External Model Selection)** framework—the core logical spine of the NEMS/PSC suite and its machine-checked bridge to MFRR (Mathematical Foundations of Reflexive Reality).
+Lean 4 formalization of the **NEMS (No External Model Selection)** framework — the core logical spine of the NEMS suite and its machine-checked bridge to reflexive reality.
 
 ## What This Repo Is
 
-nems-lean formalizes the foundational theorems of the NEMS programme: the trichotomy of foundational theories, the diagonal barrier (no total effective adjudicator on diagonal-capable fragments), the closure/audit toolkit, and the bridge to transputation and MFRR. It covers Papers 26–51 of the NEMS suite, including SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, InstitutionalEpistemics, CertificationLogic, SemanticSelfDescription, and physics-arc libraries (ArrowOfTime, BlackHoles, GPTClosure, LawCalibration, etc.).
+nems-lean formalizes the foundational theorems of the NEMS programme: the trichotomy of foundational theories, the diagonal barrier (no total effective adjudicator on diagonal-capable fragments), the closure/audit toolkit, and the bridge to transputation. It covers Papers 26–51 of the NEMS suite, including SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, InstitutionalEpistemics, CertificationLogic, SemanticSelfDescription, and physics-arc libraries (ArrowOfTime, BlackHoles, GPTClosure, LawCalibration, etc.).
 
 ## Build
 
@@ -12,10 +12,11 @@ nems-lean formalizes the foundational theorems of the NEMS programme: the tricho
 
 ```bash
 lake update
+lake exe cache get   # download pre-built Mathlib .olean files (strongly recommended)
 lake build
 ```
 
-**Note:** Build from the repo root. Do not build individual libraries in isolation (e.g. `lake build CertificationLogic` alone)—cross-library resolution can fail.
+**Note:** Build from the repo root. Do not build individual libraries in isolation — cross-library resolution can fail.
 
 ## Documentation
 
@@ -27,8 +28,8 @@ lake build
 
 ## Related Repos
 
-- **[ugp-lean](https://github.com/novaspivack/ugp-lean)** — Lean 4 formalization of the Universal Generative Principle (UGP) and Generative Triple Evolution (GTE). RSUC, sieve, orbit, Quarter-Lock, and gauge couplings. Certified in ugp-lean; bridges to Paper 25 (Unified Rigidity).
-- **NEMS papers** — The LaTeX papers live in the Particle Derivations workspace (`Physics_Papers/NEMS_PAPERS/`). nems-lean is the mechanized spine referenced by those papers.
+- **[ugp-lean](https://github.com/novaspivack/ugp-lean)** — Lean 4 formalization of the Universal Generative Principle (UGP). Bridges to Paper 25 (Unified Rigidity).
+- **NEMS papers** — The companion papers (Papers 00–92 of the NEMS Suite) are published on Zenodo. See [novaspivack.com/research](https://www.novaspivack.com/research) for the full index.
 
 ## License
 
