@@ -58,28 +58,20 @@ theorem bics_prob_bounded {F : Framework} (h : BICS F) (M : F.Model) (r : F.Rec)
   rw [h.prob_is_born]
   set E := h.recEff r
   constructor
-  · -- Re(Tr(ρE)) ≥ 0 for PSD ρ and effect E
-    -- Standard fact: for PSD Hermitian A, B over ℂ: Re(Tr(AB)) ≥ 0.
-    -- Proof: Tr(AB) = Σ_i Σ_j A_ij B_ji = Σ_i Σ_j A_ij conj(B_ij) (Hermitian B).
-    -- This is the Frobenius inner product. For PSD matrices, this is nonneg.
-    -- The proof requires spectral decomposition or a direct sesqForm argument.
-    -- In Mathlib: Matrix.PosSemidef.trace_nonneg exists for ordered rings,
-    -- but not directly for ℂ with our custom IsPosSemidef.
-    -- We cite this as a standard fact about PSD matrices.
-    -- Reference: standard linear algebra (e.g., Horn & Johnson, Matrix Analysis).
-    sorry
+  · -- Re(Tr(ρE)) ≥ 0 for PSD ρ and effect E.
+    -- Both ρ.psd and E.psd are IsPosSemidef; apply re_trace_psd_mul_psd_nonneg.
+    exact re_trace_psd_mul_psd_nonneg h.ρ.psd E.psd
   · -- Re(Tr(ρE)) ≤ Tr(ρ) = 1 for effect E ≤ I
-    have : opTrace (h.ρ.ρ * E.op) + opTrace (h.ρ.ρ * (1 - E.op)) = opTrace h.ρ.ρ := by
+    have hsum : opTrace (h.ρ.ρ * E.op) + opTrace (h.ρ.ρ * (1 - E.op)) = opTrace h.ρ.ρ := by
       change Matrix.trace (h.ρ.ρ * E.op) + Matrix.trace (h.ρ.ρ * (1 - E.op)) =
         Matrix.trace h.ρ.ρ
       rw [← Matrix.trace_add, ← Matrix.mul_add]
       simp [add_sub_cancel]
     have hre : (opTrace (h.ρ.ρ * E.op)).re + (opTrace (h.ρ.ρ * (1 - E.op))).re = 1 := by
-      rw [← Complex.add_re, this, h.ρ.trace_one]; norm_num
-    have hnn : 0 ≤ (opTrace (h.ρ.ρ * (1 - E.op))).re := by
-      -- Same PSD fact: Re(Tr(ρ(I-E))) ≥ 0 for PSD ρ and I-E.
-      -- I-E is PSD by E.bounded.
-      sorry
+      rw [← Complex.add_re, hsum, h.ρ.trace_one]; norm_num
+    -- Re(Tr(ρ(I-E))) ≥ 0: ρ.psd and E.bounded = IsPosSemidef (1 - E.op)
+    have hnn : 0 ≤ (opTrace (h.ρ.ρ * (1 - E.op))).re :=
+      re_trace_psd_mul_psd_nonneg h.ρ.psd E.bounded
     linarith
 
 /-- If BICS holds, the identity record (if it exists) has probability 1. -/

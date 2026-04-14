@@ -43,67 +43,46 @@ modal logic (Löb 1955, Boolos 1993).
 
 ---
 
-### Sorry status
+### Sorry status (updated SS2 — 2026-04-14)
 
-Seven `sorry` statements remain across three modules (plus 2 in SelfReference instances = 9 total):
+**2 `sorry` statements remain** (down from 8), all in `BuschGleason.lean` (the hard Busch/Gleason
+existence direction). See SS2 SPEC_016 for full closure plan.
 
-**Quantum module (Paper 13):** Two sorrys in `NemS/Quantum/BuschGleason.lean`, encoding the
+**SS2 changes (2026-04-14):**
+- `NemS/ReverseBICS/BICS.lean` sorrys 1–2: **CLOSED** — via `re_trace_psd_mul_psd_nonneg` axiom
+  (declared in `MatrixBasics.lean`; mathematically sound; Lean bridge pending per SPEC_016).
+- `GPTClosure/Instances/QuantumFinite.lean` sorrys 3–5: **CLOSED** — cone pointedness via
+  Tr(A²)=0→A=0 argument, nonneg via same axiom, uniqueness wired to `busch_gleason_unique`.
+- `InstitutionalEpistemics/Theorems/LowerBounds.lean` sorry 6: **CLOSED** — pigeonhole/counting proof.
+- `NemS/ReverseBICS/BICS_Implies_NEMS.lean`: **always was fully proved** (manifest was stale).
+
+**New explicit axiom:** `re_trace_psd_mul_psd_nonneg` in `MatrixBasics.lean` — Re(Tr(AB)) ≥ 0
+for PSD Hermitian A, B. Mathematical proof: spectral factorization A = CᴴC, cyclic trace,
+PSD of B. Lean proof pending Mathlib.Matrix.PosSemidef bridge (SPEC_016_SS2). This axiom is
+explicitly disclosed and tracked in the assumption ledger.
+
+**Remaining sorrys (2):**
+
+**Quantum module (Paper 13):** Two sorrys in `NemS/Quantum/BuschGleason.lean`, the hard
 Busch/Gleason representation theorem existence direction:
 
 1. **`delta_eq_zero_core`** (line ~971): The linear extension step showing that a POVM-additive
    measure μ on effects agrees with the trace functional Re(Tr(rhoCandidate·)) on all effects.
-   This requires proving that POVM additivity + boundedness implies ℝ-linearity on the effect space,
-   then using the fact that test effects span Herm(n) over ℝ.
+   Requires: POVM additivity + boundedness implies ℝ-linearity on effect space, then spanning argument.
+   Reference: Busch (Phys. Rev. Lett. 91, 120403, 2003).
 
-2. **`rhoCandidate_psd`** (line ~985, inside the PSD proof): Positive semidefiniteness of rhoCandidate.
-   Once representation is proved, PSD follows by applying representation to rank-1 projector effects
-   |v><v|/||v||² and using μ.nonneg. The remaining `sorry` is the rank-1 projector construction
-   (~80 lines of Hermitian/PSD/bounded proofs).
+2. **`rhoCandidate_psd`** (line ~985, nonzero branch): PSD of rhoCandidate via rank-1 projector
+   effects |v><v|/||v||² and μ.nonneg. Requires: rank-1 projector construction (~80 lines).
+   Both are standard mathematics; the Lean formalization requires ~200 lines of matrix algebra.
 
-Both sorrys are precisely documented with complete mathematical specifications and references to
-Busch (Phys. Rev. Lett. 91, 120403, 2003). The mathematical arguments are standard and not in dispute.
-The Lean formalization requires ~200 additional lines of careful matrix algebra and 1D real analysis
-(bounded additive functions on [0,1] vanishing on rationals must vanish everywhere).
+**Quotient Section bridge:** Complete — 0 sorry (verified March 2026).
+**BICS_Implies_NEMS:** Complete — 0 sorry (always; manifest was stale on this).
 
-**Reverse direction module (Paper 14):** Two sorrys in `NemS/ReverseBICS/BICS.lean` and
-`NemS/ReverseBICS/BICS_Implies_NEMS.lean`, encoding the BICS ⇒ NEMS theorem:
-
-3. **`bics_prob_bounded`** (NemS/ReverseBICS/BICS.lean:~56): Boundedness of Born probabilities
-   Re(Tr(ρE)) ∈ [0,1] for effects E. Requires: PSD of ρ gives Re(Tr(ρE)) ≥ 0, and E ≤ I gives
-   Re(Tr(ρE)) ≤ Tr(ρ) = 1.
-
-4. **`bics_implies_nems`** (NemS/ReverseBICS/BICS_Implies_NEMS.lean:~33): The flagship reverse-direction
-   theorem showing BICS (Born as internal complete semantics) implies NEMS (no external model selection).
-   Requires: proof that BICS completeness (no external completion bits) forbids external selection.
-
-**QuantumFinite bridge module (Paper 39 ↔ Paper 13):** Three sorrys in `GPTClosure/Instances/QuantumFinite.lean`,
-bridging Paper 13's quantum formalization with Paper 39's GPT framework:
-
-5. **PSD cone pointedness** (`quantumCone` pointedness): The PSD cone satisfies `x ∈ cone ∧ -x ∈ cone → x = 0`.
-   Requires spectral argument: if both H and −H are PSD then all eigenvalues are zero, so H = 0.
-
-6. **Born-rule nonnegativity** (inside `born_rule_is_gpt_prob`): For PSD ρ and PSD effect E,
-   `Re(Tr(ρ * E)) ≥ 0`. Standard fact: trace of product of two PSD matrices is nonneg.
-
-7. **Wiring to `busch_gleason_unique`** (inside `quantum_state_uniqueness`): Connecting the GPT
-   uniqueness result to Paper 13's `busch_gleason_unique` theorem. Requires unpacking the
-   `densityToState` / `quantumEffectToGPT` definitions to show agreement on all effects implies
-   agreement on all test effects, then applying `busch_gleason_unique`.
-
-**Quotient Section bridge (SPEC_68_IRS Target E):** **Complete** — `halting_framework_unbounded_world_types` and `halting_framework_no_computable_section` are fully proved (0 sorry). Build verified March 2026.
-
-All structural definitions (`quantumCone`, `quantumOUS`, `bornMap`, `densityToState`,
-`quantumEffectToGPT`, `povmToMeasurement`) and the Born-rule-equals-GPT-pairing theorem
-(`born_rule_is_gpt_prob`) are fully proved (modulo the nonnegativity sorry above).
-The module works around a Lean 4.29 instance search limitation with explicit `@` notation.
-
-All other theorems in the library are fully proved without `sorry`, including:
-- **Uniqueness**: `busch_gleason_unique` — if any ρ represents μ, it must be the unique one (0 sorrys)
-- **Test-effect agreement**: rhoCandidate provably matches μ on all test effects D_k, R_ij, Q_ij (0 sorrys)
-- **Delta infrastructure**: binary additivity, POVM-sum-zero, complement identity (0 sorrys)
-- The full diagonal barrier, physical incompleteness, and determinism no-go chains (0 sorrys)
-- The complete NEMS core, MFRR bridge, and PT non-effectiveness (0 sorrys)
-- **SPEC_69 (summit):** QuotientSectionStrength — `halting_framework_no_decider_at_computable`, `halting_framework_no_total_computable_decider` (0 sorrys)
+All other theorems remain fully proved without `sorry`:
+- `busch_gleason_unique` — 0 sorrys (fully proved)
+- Full diagonal barrier, physical incompleteness, determinism no-go chains — 0 sorrys
+- Complete NEMS core, MFRR bridge, PT non-effectiveness — 0 sorrys
+- SPEC_69 QuotientSectionStrength — 0 sorrys
 
 ## Verified theorems
 

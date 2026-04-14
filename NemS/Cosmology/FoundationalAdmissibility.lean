@@ -11,7 +11,7 @@ import NemS.Reduction.ER
 /-!
 # NemS.Cosmology.FoundationalAdmissibility
 
-**EPIC_67_FA: Foundational Admissibility classification.**
+**Foundational Admissibility classification.**
 
 Defines when a unified closure framework is foundationally viable and closure-compatible.
 Proves: ¬ClosureCompatible ⇒ viability failure (contrapositive of schema ⇒ viable).
@@ -40,7 +40,7 @@ def FoundationallyViable (U : UnifiedClosureFramework) : Prop :=
 def ClosureCompatible (U : UnifiedClosureFramework) : Prop :=
   Nonempty (CosmologicalClosureSchema U)
 
-/-- **Foundational Admissibility Theorem (EPIC_67_FA).**
+/-- **Foundational Admissibility Theorem.**
 
 Closure compatibility implies foundational viability.
 Proof: from cosmological_closure_unification. -/
@@ -51,7 +51,7 @@ theorem foundational_admissibility
   obtain ⟨hc⟩ := h
   exact cosmological_closure_unification hc
 
-/-- **Converse (EPIC_67_FA):** FoundationallyViable ⇒ ClosureCompatible.
+/-- **Converse:** FoundationallyViable ⇒ ClosureCompatible.
 
 Foundational viability implies closure compatibility. Constructs the schema from the
 three viable components: admissible initiality supplies diagonal + universe; internal

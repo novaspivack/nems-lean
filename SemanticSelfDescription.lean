@@ -50,7 +50,7 @@ at the world level.
 - `Theorems.NoSelfErasure` — weak and strong no-self-erasure
 - `Theorems.SemanticRemainder` — positive remainder theorem
 - `Instances.KleenePartrec` — concrete `Nat.Partrec.Code` frame + `BarrierHypothesesPred` for computable maps
-- `Instances.GodelProvBic` — `ProvBic` / `GodelSystem` frame + **`godelProvBicBarrierHypotheses`** (**SPEC_020_PT1**)
+- `Instances.GodelProvBic` — `ProvBic` / `GodelSystem` frame + **`godelProvBicBarrierHypotheses`** **(Gödel ProvBic frame)**
 - `Theorems.KleenePredicatedSummit` — summit-grade statement: predicated Kleene barrier (**`kleene_computational_predicated_summit`**)
-- `Theorems.SummitComparison` — Kleene vs **`ProvBic`** integration (**`SPEC_021_SC1`**)
+- `Theorems.SummitComparison` — Kleene vs **`ProvBic`** integration **(Kleene vs ProvBic comparison)**
 -/

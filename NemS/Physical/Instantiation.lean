@@ -47,7 +47,7 @@ theorem haltingFramework_RT_not_computable :
     ¬ ComputablePred haltingPhysUCT.RT :=
   physUCT_implies_RT_not_computable haltingPhysUCT
 
-/-! ### Semantic glue (SPEC_025) — existential **`Truth`** grid ↔ existential **`RT`** -/
+/-! ### Semantic glue — existential **`Truth`** grid ↔ existential **`RT`** -/
 
 /-- On the halting grid, “some `Truth` instance” is the same as “some `PhysUCT.RT` code,” via `Nat.pair` /
   `unpair` (same `eval … Dom` content). -/

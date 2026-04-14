@@ -14,7 +14,7 @@ This module packages **precise** comparison statements between:
 * the **Kleene / Rogers** line (**`kleene_computational_predicated_summit`**, **`BarrierHypothesesPred`** with
   **`P = kleeneComputableTransformerPred`** / **`Computable`**), and
 * the **`ProvBic`** line (**`godelProvBicBarrierHypotheses`**, unconditional **`BarrierHypotheses`**), on a
-  *different* unityped numerals frame (**SPEC_019_PS1** vs **SPEC_020_PT1**).
+  *different* unityped numerals frame (**Kleene predicated frame** vs **Gödel ProvBic frame**).
 
 Key facts (no hand-waving):
 
@@ -28,7 +28,7 @@ Key facts (no hand-waving):
    proof-theoretic full summit, displaying what extra input **`ProvBicArithmeticalSemantics`** buys
    beyond the abstract **`GodelSystem`** shell.
 
-Cross-refs: **`KleenePredicatedSummit`**, **`GodelProvBic`**, **SPEC_021_SC1** (parent repo).
+Cross-refs: **`KleenePredicatedSummit`**, **`GodelProvBic`**, **(summit comparison)** (parent repo).
 -/
 
 set_option autoImplicit false

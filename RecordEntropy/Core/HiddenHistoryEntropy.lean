@@ -11,7 +11,7 @@ set_option autoImplicit false
 /-!
 # RecordEntropy.Core.HiddenHistoryEntropy
 
-**EPIC_66_SL2 Track 2: Fiber-based hidden-history entropy.**
+**Fiber-based hidden-history entropy.**
 
 For RecordFiltration, WorldTypeAt t = Quotient (obsEqAtSetoid t). Each element
 is an equivalence class. The **fiber** of a class c at stage t is

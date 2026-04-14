@@ -15,7 +15,7 @@ carry genuine **semantic self-description** content (not the trivial `BarrierHyp
 - **`BarrierHyp := Nonempty (BarrierHypotheses F)`** matches the packaged barrier hypotheses used in
   **`no_final_self_theory'`** — **inhabited** hypotheses, not a raw unconstrained `Prop`.
 
-**Sync (EPIC_012):** an `EngineNemsBarrierSync` still requires an **engine proof** that each
+**Sync requirement:** an `EngineNemsBarrierSync` still requires an **engine proof** that each
 `U123BarrierData` point implies `Nonempty (BarrierHypotheses F)`. There is **no** definitional
 implication from abstract paper U₁–U₃ packaging to **`BarrierHypotheses`**; that step is **honest
 external mathematics** (e.g.base **`bh`** + **repr augmentation** via

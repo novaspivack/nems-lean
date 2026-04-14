@@ -7,7 +7,7 @@ open SelfReference.Instances.NEMS
 /-!
 # NemS.Diagonal.QuotientSectionStrength
 
-**SPEC_69_DSL — Flagship concrete instance: no computable decider on the halting framework.**
+**Flagship concrete instance: no computable decider on the halting framework.**
 
 This module proves that on the halting framework, no computable total decider exists
 for any nontrivial extensional predicate. This is the "fully instantiated computable

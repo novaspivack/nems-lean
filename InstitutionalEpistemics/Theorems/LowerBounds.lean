@@ -33,10 +33,53 @@ theorem k_role_lower_bound (P : KPartition Instance k) (roles : ℕ) (cov : Role
     roles ≥ k := by
   by_contra hk
   rw [Nat.not_le] at hk
-  have card_roles : Fintype.card (Role roles) = roles := by
-    have e : Role roles ≃ Fin roles := { toFun := fun r => r.idx, invFun := Role.mk, left_inv := fun _ => rfl, right_inv := fun _ => rfl }
-    rw [Fintype.card_congr e]; exact Fintype.card_fin roles
-  have card_k : Fintype.card (Fin k) = k := Fintype.card_fin k
-  have : Fintype.card (Role roles) < Fintype.card (Fin k) := by rw [card_roles, card_k]; exact hk
-  -- Pigeonhole: ≥k parts need coverage, each role covers only one part (hone) ⇒ need ≥k roles.
-  sorry
+  -- Each role r is assigned to some part f(r) : Fin k (by hone).
+  -- If roles < k, then f : Role roles → Fin k cannot be surjective (by |domain| < |codomain|).
+  -- So some part i : Fin k is uncovered by all roles.
+  -- But P.nonempty i gives an instance x ∈ P.parts i,
+  -- and h (fullCoverage) says x must be in the range of some role's coverage.
+  -- By hone, that role's coverage lies in some part i', so x ∈ P.parts i ∩ P.parts i'.
+  -- By P.disjoint (i ≠ i'), P.parts i ∩ P.parts i' = ∅. Contradiction.
+  -- Build the assignment function: for each role r, choose the part it maps to.
+  choose f hf using hone
+  -- f : Role roles → Fin k, where ∀ r, cov r ⊆ P.parts (f r).
+  -- Since roles < k, f cannot be surjective.
+  have hcard_lt : Fintype.card (Role roles) < Fintype.card (Fin k) := by
+    simp [Fintype.card_fin]
+    have e : Role roles ≃ Fin roles :=
+      { toFun := fun r => r.idx, invFun := Role.mk,
+        left_inv := fun _ => rfl, right_inv := fun _ => rfl }
+    rw [Fintype.card_congr e, Fintype.card_fin]
+    exact hk
+  -- There exists a part not in the range of f.
+  obtain ⟨i, hi⟩ := Fintype.exists_not_mem_finset
+    (Finset.image f Finset.univ) (by
+      rw [Finset.card_image_le.trans_lt (by simp; exact hcard_lt) |>.le.lt_iff_ne.ne.symm]
+      · simp [Fintype.card_fin])
+  -- Part i is not covered by any role.
+  -- Get an instance in P.parts i.
+  obtain ⟨x, hx⟩ := P.nonempty i
+  -- By full coverage, x is covered by some role r.
+  have hcov := h.symm
+  have hx_in : x ∈ Finset.univ := Finset.mem_univ x
+  rw [← FullCoverage] at hcov
+  simp [FullCoverage] at h
+  have : x ∈ (Finset.univ.biUnion fun r : Role roles => cov r) := by
+    rw [h]; exact Finset.mem_univ x
+  simp at this
+  obtain ⟨r, _, hxr⟩ := this
+  -- r covers x, and r is assigned to part f r.
+  have hxfr : x ∈ P.parts (f r) := hf r hxr
+  -- But f r ≠ i since i is not in the range of f.
+  have hfr_ne : f r ≠ i := by
+    intro heq
+    apply hi
+    simp [Finset.mem_image]
+    exact ⟨r, Finset.mem_univ _, heq⟩
+  -- x ∈ P.parts i and x ∈ P.parts (f r), with f r ≠ i.
+  -- By disjointness: P.parts i ∩ P.parts (f r) = ∅, so x cannot be in both.
+  have hdisj := P.disjoint i (f r) hfr_ne
+  have : x ∈ (P.parts i ∩ P.parts (f r) : Finset Instance) := by
+    simp [Finset.mem_inter, hx, hxfr]
+  rw [hdisj] at this
+  exact Finset.not_mem_empty _ this

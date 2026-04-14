@@ -15,7 +15,7 @@ set_option autoImplicit false
 Two-bit filtration (ArrowOfTime.Toy): Fintype instances for WorldTypeAt 0 and 1,
 monotonicity, strict growth at t=0, and barrier predicate nontrivial.
 
-**EPIC_66_SL2 Track 2:** Toy fiber structure — at t=0: 2 classes of size 2 each;
+**Toy fiber structure (fiber-based hidden entropy track)** — at t=0: 2 classes of size 2 each;
 at t=1: 4 classes of size 1 each. Fiber sizes decrease under refinement.
 -/
 
@@ -63,7 +63,7 @@ theorem toy_no_total_decider_entropy
     ¬ SelectorStrength.DecidableAt Sbool (entropyClaim filt 0) :=
   no_total_decider_entropy filt 0 Sbool Sα hAnti hFP
 
--- ========== EPIC_66_SL2 Track 2: Fiber-based hidden-history entropy ==========
+-- ========== Fiber-based hidden-history entropy (fiber-based hidden entropy track) ==========
 
 /-- At t=0, each class has fiber size 2 (two worlds per class: same first bit). -/
 theorem toy_fiberSize_at_0 (c : filt.WorldTypeAt 0) :

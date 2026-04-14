@@ -7,7 +7,7 @@ import Mathlib.Data.Finset.Basic
 /-!
 # NemS.Core.QuotientSection
 
-## Internal realizability of quotient sections (SPEC_68_IRS)
+## Internal realizability of quotient sections
 
 A *quotient section* is a right inverse of `toWorldType`:
 `q : WorldTypes F → F.Model` with `∀ wt, toWorldType F (q wt) = wt`.
@@ -235,7 +235,7 @@ Proof: A computably realizable section requires EffectiveQuotientSectionStructur
 (EffectivePresentation + BoundedCover with finite `cover`). The cover_spec
 implies at most `cover` distinct world-types. UnboundedWorldTypes with
 `n = cover` yields `cover + 1` pairwise distinct world-types. Contradiction.
-See SPEC_68_IRS §5. -/
+See Paper 02. -/
 theorem no_total_effective_quotient_section_on_diagonal_fragment
     (_asr : NemS.Diagonal.ASR F) (hub : UnboundedWorldTypes F)
     (q : F.WorldTypes → F.Model) (_hsec : IsQuotientSection F q) :

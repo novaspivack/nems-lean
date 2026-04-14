@@ -98,7 +98,79 @@ def quantumCone : @ConePredicate (Op n) acgOp modROp :=
         simp only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
         ring_nf
         exact mul_nonneg hc (hA.2 v))
-    (fun _A _hA _hneg => by sorry)
+    (fun A hA hNeg => by
+      -- Pointed cone: A PSD and -A PSD implies A = 0.
+      -- Proof: Re(sesqForm A v) ≥ 0 (from hA) and Re(sesqForm (-A) v) ≥ 0 (from hNeg)
+      -- gives ∀ v, Re(sesqForm A v) = 0. Then A = 0 by basis evaluation + Hermitian.
+      -- STEP 1: ∀ v, Re(sesqForm A v) = 0.
+      have hzero : ∀ v : Fin n → ℂ, (sesqForm A v).re = 0 := fun v => by
+        have h1 : 0 ≤ (sesqForm A v).re := hA.2 v
+        have h2 : 0 ≤ (sesqForm (-A) v).re := hNeg.2 v
+        have h2' : (sesqForm A v).re ≤ 0 := by
+          have : (sesqForm (-A) v).re = -(sesqForm A v).re := by
+            simp [sesqForm, Finset.sum_neg_distrib, mul_neg, Complex.neg_re]
+          linarith [this ▸ h2]
+        linarith
+      -- STEP 2: For each basis vector eᵢ, sesqForm A eᵢ = Aᵢᵢ (diagonal entry).
+      -- And Aᵢᵢ is real (Hermitian). So Aᵢᵢ.re = 0 and Aᵢᵢ.im = 0, giving Aᵢᵢ = 0.
+      -- STEP 3: For off-diagonal: sesqForm A (eᵢ + eⱼ).re = Aᵢᵢ.re + Aⱼⱼ.re + 2*Re(Aᵢⱼ)
+      --         = 2*Re(Aᵢⱼ) = 0. Similarly Im via eᵢ + i*eⱼ.
+      -- LEAN PROOF via Tr(A²) = 0 (cleaner for Lean):
+      -- For PSD A: Re(Tr(A*A)) ≥ 0 via axiom re_trace_psd_mul_psd_nonneg.
+      -- For PSD -A: Re(Tr((-A)*A)) ≥ 0. But Tr((-A)*A) = -Tr(A²), so Re(Tr(A²)) ≤ 0.
+      -- So Tr(A²) has Re = 0. For Hermitian A: (A*A)ᵢᵢ = ∑ⱼ Aᵢⱼ * Aⱼᵢ = ∑ⱼ |Aᵢⱼ|².
+      -- All |Aᵢⱼ|² ≥ 0 and sum of Re((A*A)ᵢᵢ) = 0, so each |Aᵢⱼ|² = 0, so Aᵢⱼ = 0.
+      have hA2_re_zero : (opTrace (A * A)).re = 0 := by
+        have hnn : (0 : ℝ) ≤ (opTrace (A * A)).re :=
+          re_trace_psd_mul_psd_nonneg hA hA
+        have hnn2 : (0 : ℝ) ≤ (opTrace ((-A) * A)).re :=
+          re_trace_psd_mul_psd_nonneg hNeg hA
+        have : (opTrace ((-A) * A)).re = -(opTrace (A * A)).re := by
+          simp [opTrace, Matrix.trace_neg, neg_mul]
+        linarith [this ▸ hnn2]
+      -- From Re(Tr(A²)) = 0, extract each entry = 0.
+      apply Matrix.ext; intro i j
+      -- (A*A)ᵢⱼ = ∑ₖ Aᵢₖ Aₖⱼ. For Hermitian A: Aₖⱼ = conj(Aⱼₖ).
+      -- Diagonal (A*A)ᵢᵢ = ∑ₖ Aᵢₖ * conj(Aᵢₖ) = ∑ₖ |Aᵢₖ|² ≥ 0.
+      -- Re(Tr(A²)) = ∑ᵢ Re((A²)ᵢᵢ) = ∑ᵢ ∑ₖ |Aᵢₖ|² = 0.
+      -- So ∀ i k, |Aᵢₖ|² = 0, so Aᵢₖ = 0.
+      -- We show Aᵢⱼ = 0 via: |Aᵢⱼ|² ≤ Re(Tr(A²)) = 0.
+      -- Actually |Aᵢⱼ|² ≤ (A*A)ᵢᵢ (diagonal dominance for PSD) then ≤ Tr(A²) = 0.
+      -- Lean proof: via Finset.sum_eq_zero and nonneg contribution.
+      have h_entry_sq : Complex.normSq (A i j) = 0 := by
+        have h_bound : Complex.normSq (A i j) ≤ (opTrace (A * A)).re := by
+          -- |Aᵢⱼ|² is one term in the sum ∑ᵢ ∑ₖ |Aᵢₖ|².
+          -- Re(Tr(A²)) = ∑ᵢ ∑ₖ Re(Aᵢₖ * Aₖᵢ) = ∑ᵢ ∑ₖ Re(Aᵢₖ * conj(Aᵢₖ)) = ∑ᵢ ∑ₖ |Aᵢₖ|².
+          -- Each term is nonneg, so |Aᵢⱼ|² ≤ total sum.
+          simp only [opTrace, Matrix.trace, Matrix.diag, Matrix.mul_apply]
+          rw [show (∑ x : Fin n, (∑ x_1 : Fin n, A x x_1 * A x_1 x)).re =
+              ∑ p : Fin n, ∑ q : Fin n, (A p q * A q p).re from by
+            simp [Complex.re_sum]]
+          apply Finset.single_le_sum (fun p _ => Finset.sum_nonneg (fun q _ => by
+            -- (A p q * A q p).re ≥ 0 since A q p = conj(A p q) (Hermitian)
+            have := hA.1.apply p q
+            simp only [Matrix.IsHermitian, Matrix.conjTranspose_apply] at hA
+            have hconjpq : A q p = starRingEnd ℂ (A p q) := by
+              have := congr_fun (congr_fun hA.1 q) p
+              simp [Matrix.conjTranspose_apply, starRingEnd] at this
+              exact this.symm
+            rw [hconjpq]
+            simp [Complex.normSq_apply, Complex.mul_re, Complex.star_def,
+                  Complex.conj_re, Complex.conj_im]
+            nlinarith [sq_nonneg (A p q).re, sq_nonneg (A p q).im]))
+            (Finset.mem_univ i) _ (Finset.mem_univ j)
+          -- Individual term at (i, j):
+          have hconjij : A j i = starRingEnd ℂ (A i j) := by
+            have := congr_fun (congr_fun hA.1 j) i
+            simp [Matrix.conjTranspose_apply, starRingEnd] at this
+            exact this.symm
+          rw [hconjij]
+          simp [Complex.normSq_apply, Complex.mul_re, Complex.star_def,
+                Complex.conj_re, Complex.conj_im]
+        have hnn : 0 ≤ Complex.normSq (A i j) := Complex.normSq_nonneg _
+        linarith [hA2_re_zero ▸ h_bound]
+      -- From normSq = 0, conclude A i j = 0.
+      exact Complex.normSq_eq_zero.mp h_entry_sq
 
 -- ============================================================
 -- The quantum ordered unit space
@@ -148,7 +220,7 @@ def densityToState (ρ : DensityOp n) :
     @OrderedUnitSpace.State (Op n) acgOp modROp quantumOUS :=
   @OrderedUnitSpace.State.mk (Op n) acgOp modROp quantumOUS
     (bornMap ρ)
-    (fun _A _hA => by sorry)
+    (fun A hA => re_trace_psd_mul_psd_nonneg ρ.psd hA)
     (by show (opTrace (ρ.ρ * 1)).re = 1
         rw [Matrix.mul_one]
         have h := ρ.trace_one
@@ -208,7 +280,45 @@ theorem quantum_state_uniqueness (ρ₁ ρ₂ : DensityOp n)
     (h : ∀ E : NemS.Quantum.Effect n,
       (opTrace (ρ₁.ρ * E.op)).re = (opTrace (ρ₂.ρ * E.op)).re) :
     ρ₁.ρ = ρ₂.ρ := by
-  sorry
+  -- Build an EffectMeasure from ρ₁ and apply busch_gleason_unique.
+  -- μ(E) = Re(Tr(ρ₁.ρ * E.op)) satisfies: normalized (Tr(ρ)=1), POVM additive, nonneg, le_one.
+  let m : EffectMeasure n := {
+    μ := fun E => (opTrace (ρ₁.ρ * E.op)).re
+    normalized := by
+      simp [opTrace, Effect.one, Matrix.mul_one]
+      exact_mod_cast ρ₁.trace_one
+    povm_additive := by
+      intro k P
+      have : ∑ i, opTrace (ρ₁.ρ * (P.effects i).op) = opTrace (ρ₁.ρ * 1) := by
+        rw [← Matrix.mul_sum]
+        congr 1
+        have := P.sum_eq_one
+        simp only [Matrix.sum_apply] at this ⊢
+        ext i j
+        simp [Finset.sum_apply, this]
+      have hre : (∑ i, opTrace (ρ₁.ρ * (P.effects i).op)).re = 1 := by
+        rw [this]
+        simp [opTrace, Matrix.mul_one]
+        exact_mod_cast ρ₁.trace_one
+      simp only [Complex.re_sum] at hre
+      exact hre
+    nonneg := fun E => re_trace_psd_mul_psd_nonneg ρ₁.psd E.psd
+    le_one := by
+      intro E
+      have hbound : (opTrace (ρ₁.ρ * E.op)).re + (opTrace (ρ₁.ρ * (1 - E.op))).re = 1 := by
+        have hsum : opTrace (ρ₁.ρ * E.op) + opTrace (ρ₁.ρ * (1 - E.op)) = opTrace ρ₁.ρ := by
+          rw [← Matrix.mul_add]; simp [opTrace]
+        have : (opTrace (ρ₁.ρ * E.op) + opTrace (ρ₁.ρ * (1 - E.op))).re = 1 := by
+          rw [hsum]; simp [opTrace]; exact_mod_cast ρ₁.trace_one
+        simp [Complex.add_re] at this; exact this
+      have hnn : 0 ≤ (opTrace (ρ₁.ρ * (1 - E.op))).re :=
+        re_trace_psd_mul_psd_nonneg ρ₁.psd E.bounded
+      linarith
+  }
+  -- Apply busch_gleason_unique: both ρ₁ and ρ₂ represent m.
+  apply busch_gleason_unique m ρ₁ ρ₂
+  · intro E; rfl
+  · intro E; exact (h E).symm
 
 end
 

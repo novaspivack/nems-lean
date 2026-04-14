@@ -18,9 +18,9 @@ in `SelfReference/Instances/Godel.lean`: a predicate on `ℕ` that respects `Pro
 With that, we build `godelProvBicFrame`, prove `EncodedNontrivial` and `CodeExtensional`, and obtain
 full **`BarrierHypotheses`** via `barrier_hypotheses_from_reflection`.
 
-**Contrast:** the predicated Kleene / computability summit (**SPEC_019_PS1**, `KleenePredicatedSummit`) stays
+**Contrast:** the predicated Kleene / computability summit (**Kleene predicated frame**, `KleenePredicatedSummit`) stays
 the **frozen** baseline for **`BarrierHypothesesPred`**; this module is the honest **`BarrierHypotheses`**
-closure point for the **`ProvBic`** / proof-theoretic route (**SPEC_020_PT1** / **EPIC_013**).
+closure point for the **`ProvBic`** / proof-theoretic route (**Gödel ProvBic frame**).
 -/
 
 set_option autoImplicit false

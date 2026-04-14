@@ -107,7 +107,7 @@ import NemS.Reflexive.FinalityTheorem
 import NemS.Cosmology.SemanticFloor
 -- Paper 78: Cosmological Closure Unification (Grand Unification)
 import NemS.Cosmology.CosmologicalClosureUnification
--- EPIC_67_FA: Foundational Admissibility (viability classification)
+-- Foundational Admissibility (viability classification)
 import NemS.Cosmology.FoundationalAdmissibility
 -- Paper 80: Classification Cascade (survivor selection)
 import NemS.Cosmology.ClassificationCascade

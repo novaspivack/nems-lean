@@ -5,11 +5,11 @@ import ArrowOfTime.Theorems.ArrowRefinement
 /-!
 # NemS.Cosmology.Bridges.ToHiddenHistoryEntropy
 
-**Bridge: Unified filtration ⇒ Fiber-based hidden-history entropy (EPIC_66_SL2, Track 2).**
+**Bridge: Unified filtration ⇒ Fiber-based hidden-history entropy (fiber-based hidden entropy track).**
 
 Wires the fiber-size refinement theorem to the unified closure framework.
 
-**Two entropy directions (EPIC_66_SL2):**
+**Two entropy directions (fiber-based hidden entropy track):**
 - **Record resolution** (ToRecordResolution): card(WorldTypeAt t) INCREASES under refinement.
 - **Fiber-based hidden multiplicity**: fiberSize(c) DECREASES under refinement — each t-class
   splits into smaller (t+1)-classes. When StrictGrowthAt t, the decrease is strict for
