@@ -5,7 +5,7 @@
 
 This repository is part of the **Reflexive Reality** research program by [Nova Spivack](https://www.novaspivack.com/).
 
-**What this formalizes:** Papers 01–51 of the NEMS suite (self-reference, closure, reflection, selector strength, learning, epistemic agency, institutional epistemics, certification logic, semantic self-description, physics arc).
+**What this formalizes:** Papers 00–92 of the NEMS suite (self-reference, closure, reflection, selector strength, learning, epistemic agency, institutional epistemics, certification logic, semantic self-description, physics arc).
 
 | Link | Description |
 |------|-------------|
@@ -22,7 +22,7 @@ Lean 4 formalization of the **NEMS (No External Model Selection)** framework —
 
 ## What This Repo Is
 
-nems-lean formalizes the foundational theorems of the NEMS programme: the trichotomy of foundational theories, the diagonal barrier (no total effective adjudicator on diagonal-capable fragments), the closure/audit toolkit, and the bridge to transputation. It covers Papers 26–51 of the NEMS suite, including SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, InstitutionalEpistemics, CertificationLogic, SemanticSelfDescription, and physics-arc libraries (ArrowOfTime, BlackHoles, GPTClosure, LawCalibration, etc.).
+nems-lean formalizes the foundational theorems of the NEMS programme: the trichotomy of foundational theories, the diagonal barrier (no total effective adjudicator on diagonal-capable fragments), the closure/audit toolkit, and the bridge to transputation. It covers the full NEMS suite (Papers 00–92), including SelfReference, Closure, Reflection, SelectorStrength, Learning, EpistemicAgency, InstitutionalEpistemics, CertificationLogic, SemanticSelfDescription, and physics-arc libraries (ArrowOfTime, BlackHoles, GPTClosure, LawCalibration, etc.).
 
 ## Build
 

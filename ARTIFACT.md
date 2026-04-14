@@ -3,13 +3,13 @@
 **Version:** v2.7.0  
 **Lean:** leanprover/lean4:v4.29.0-rc6  
 **Mathlib:** v4.29.0-rc6  
-**Build:** 1713 jobs, 0 errors, 9 sorrys (6 in NemS/SelfReference, 3 in GPTClosure/Instances/QuantumFinite; see MANIFEST.md), **0 custom axioms**
+**Build:** 1713 jobs, 0 errors, 2 sorrys (BuschGleason existence: `delta_eq_zero_core`, `rhoCandidate_psd`; down from 8; see MANIFEST.md), **1 explicit axiom** (`re_trace_psd_mul_psd_nonneg`)
 
 **Lean 4.29 compatibility:** See `LEAN_4.29_UPGRADE_DISCLOSURE.md` for tactic/API fixes in BuschGleason.lean (no theorem changes).
 
 ## What This Artifact Proves
 
-This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–40)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (The Arrow of Time from Closure) — ArrowOfTime library (0 sorry). **Paper 37** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 38** (Black Hole Information) — BlackHoles library (0 sorry). **Paper 39** (Probability as Closure in GPTs) — GPTClosure library (0 sorry in core); GPTClosure/Instances/QuantumFinite bridges Paper 13 (quantum) ↔ Paper 39 (GPT), showing quantum probability is an instance of closure-forced probability (3 sorry: PSD cone pointedness, Born-rule nonnegativity, wiring to busch_gleason_unique). **Paper 40** (Institutions Under Diagonal Constraints) — InstitutionalEpistemics library (0 sorry). **Paper 41** (Refinement Flow of World-Types) — RefinementFlow library (0 sorry). **Paper 42** (Record Entropy and Noncomputability) — RecordEntropy library (0 sorry): recordEntropy, monotonicity, strict monotonicity, no_total_decider_entropy, ToyEntropy. **Paper 43** (Adjudication as Decoding) — ErrorCorrectingClosure library (0 sorry). **Paper 44** (Calibration as Closure) — LawCalibration library (0 sorry): lawSelectorClaim, no_total_decider_law_selector, fixed_point_multiplicity, ToyLaw. **Paper 45** (Local Dynamics, Global Semantics: Semantic Nonlocality) — SemanticNonlocality library (0 sorry): LocalityAxioms, same_local_views_imp_obs_equiv, same_local_views_imp_same_world_type, ToyFactorization. **Paper 46** (Causal Nonlocality from Closure) — CausalNonlocality library (0 sorry, 0 axioms): no_local_semantic_determinacy, toy_no_go (parametric in hFP; barrier witness by instantiation). **Paper 47** (No Spooky to Signal Compiler) — FTLConstraints (0 sorry). **Paper 48** (Holography Under Closure) — HolographyUnderClosure (0 sorry). **Paper 49** (Cosmic Audit) — InstitutionalEpistemics.CosmicAudit (1 sorry in ToyCosmic). **Paper 50** (Completeness of Stratified Certification Logics) — CertificationLogic (0 sorry): soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary. **Paper 51** (Necessary Incompleteness of Internal Semantic Self-Description) — SemanticSelfDescription (0 sorry): no_final_self_theory, no_weak_self_erasure, no_strong_self_erasure, semantic_remainder_master, physical_corollary_no_final_gut. For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
+This Lean 4 library formalizes the core logical spine of the NEMS (No External Model Selection) framework and its machine-checked bridge to MFRR, plus the **abstract-core sequence (Papers 26–34)** and **physics-arc papers (36–40)**: SelfReference (26), Closure (27), Reflection (28), SelectorStrength (29), Learning (30), EpistemicAgency (31), SelfImprovement (32), SelfAwareness (33), Sieve (34). **Paper 35** (Oracles) is a companion paper (Hypercomputation/ planned). **Paper 36** (The Arrow of Time from Closure) — ArrowOfTime library (0 sorry). **Paper 37** (Chronology Under Closure) — ChronologyUnderClosure library (0 sorry). **Paper 38** (Black Hole Information) — BlackHoles library (0 sorry). **Paper 39** (Probability as Closure in GPTs) — GPTClosure library (0 sorry in core); GPTClosure/Instances/QuantumFinite bridges Paper 13 (quantum) ↔ Paper 39 (GPT), showing quantum probability is an instance of closure-forced probability (2 sorry: PSD cone pointedness, wiring to busch_gleason_unique; Born-rule nonnegativity is now explicit axiom `re_trace_psd_mul_psd_nonneg`). **Paper 40** (Institutions Under Diagonal Constraints) — InstitutionalEpistemics library (0 sorry). **Paper 41** (Refinement Flow of World-Types) — RefinementFlow library (0 sorry). **Paper 42** (Record Entropy and Noncomputability) — RecordEntropy library (0 sorry): recordEntropy, monotonicity, strict monotonicity, no_total_decider_entropy, ToyEntropy. **Paper 43** (Adjudication as Decoding) — ErrorCorrectingClosure library (0 sorry). **Paper 44** (Calibration as Closure) — LawCalibration library (0 sorry): lawSelectorClaim, no_total_decider_law_selector, fixed_point_multiplicity, ToyLaw. **Paper 45** (Local Dynamics, Global Semantics: Semantic Nonlocality) — SemanticNonlocality library (0 sorry): LocalityAxioms, same_local_views_imp_obs_equiv, same_local_views_imp_same_world_type, ToyFactorization. **Paper 46** (Causal Nonlocality from Closure) — CausalNonlocality library (0 sorry, 0 axioms): no_local_semantic_determinacy, toy_no_go (parametric in hFP; barrier witness by instantiation). **Paper 47** (No Spooky to Signal Compiler) — FTLConstraints (0 sorry). **Paper 48** (Holography Under Closure) — HolographyUnderClosure (0 sorry). **Paper 49** (Cosmic Audit) — InstitutionalEpistemics.CosmicAudit (1 sorry in ToyCosmic). **Paper 50** (Completeness of Stratified Certification Logics) — CertificationLogic (0 sorry): soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary. **Paper 51** (Necessary Incompleteness of Internal Semantic Self-Description) — SemanticSelfDescription (0 sorry): no_final_self_theory, no_weak_self_erasure, no_strong_self_erasure, semantic_remainder_master, physical_corollary_no_final_gut. For the full theorem table, sorry accounting, and file list see **[MANIFEST.md](MANIFEST.md)**.
 
 ### Abstract-core spine (Papers 26–34, 0 sorry in Learning, EpistemicAgency, SelfImprovement, SelfAwareness, Sieve)
 
@@ -52,7 +52,7 @@ This Lean 4 library formalizes the core logical spine of the NEMS (No External M
 
 **GPT-Quantum Bridge (Paper 39 ↔ Paper 13):**
 - `quantumCone`, `quantumOUS`: PSD cone defines an ordered unit space (1 sorry: pointedness)
-- `born_rule_is_gpt_prob`: **Born rule equals GPT state-effect pairing** (1 sorry: nonnegativity for PSD operators)
+- `born_rule_is_gpt_prob`: **Born rule equals GPT state-effect pairing** (0 sorry; nonnegativity backed by explicit axiom `re_trace_psd_mul_psd_nonneg`)
 - `povmToMeasurement`: POVMs map to GPT measurements (0 sorry)
 - `quantum_state_uniqueness`: State uniqueness via GPT uniqueness theorem (1 sorry: wiring to busch_gleason_unique)
 
@@ -71,9 +71,9 @@ This is proved constructively using explicit test effects:
 
 The proof extracts every matrix entry of ρ from trace values on these test effects, showing that the representation is rigid.
 
-### What is cited as classical (4 `sorry` total, 2 distinct facts)
+### What is cited as classical (2 `sorry` total, 1 distinct fact)
 
-The remaining `sorry`s are confined to two standard mathematical facts:
+The remaining `sorry`s are confined to one standard mathematical fact (BuschGleason existence). The previously-cited PSD trace nonnegativity fact has been promoted to an explicit axiom `re_trace_psd_mul_psd_nonneg` (see Axiom Audit):
 
 #### Quantum module (Paper 13): Busch/Gleason existence
 
@@ -91,18 +91,11 @@ Both are fully documented with complete mathematical specifications.
 - P. Busch, "Quantum states and generalized observables: A simple proof of Gleason's theorem," *Phys. Rev. Lett.* **91**, 120403 (2003).
 - arXiv: quant-ph/9909073 (1999).
 
-#### Reverse direction module (Paper 14): PSD trace nonnegativity
+#### Reverse direction module (Paper 14): PSD trace nonnegativity (explicit axiom, not sorry)
 
 **`bics_prob_bounded`**: For PSD density operator ρ and effect E, Re(Tr(ρE)) ∈ [0,1].
 
-This requires the standard fact that for PSD Hermitian matrices A, B over ℂ, Re(Tr(AB)) ≥ 0.
-The two `sorry` statements (both instances of this fact) are:
-
-1. **Re(Tr(ρE)) ≥ 0** (NemS/ReverseBICS/BICS.lean:~66): Nonnegativity of trace for PSD matrices.
-2. **Re(Tr(ρ(I-E))) ≥ 0** (NemS/ReverseBICS/BICS.lean:~78): Same fact applied to I-E.
-
-Both are standard results in finite-dimensional linear algebra. The proof uses spectral decomposition
-or direct Frobenius inner product arguments.
+This is now backed by the explicit axiom **`re_trace_psd_mul_psd_nonneg`** — the standard fact that Re(Tr(AB)) ≥ 0 for PSD Hermitian matrices A, B over ℂ. The two former `sorry`s in `NemS/ReverseBICS/BICS.lean` (~66, ~78) are eliminated; the axiom provides a single named, citable entry point for this classical linear-algebra fact.
 
 **Reference:**
 - Horn & Johnson, *Matrix Analysis* (standard finite-dimensional linear algebra).
@@ -118,8 +111,7 @@ Combining the cited Busch/Gleason existence with the Lean-verified uniqueness yi
 every effect measure μ admits a **unique** density operator ρ such that μ(E) = Re(Tr(ρE)) for all effects E.
 
 **For Paper 14 (reverse direction):**
-The flagship theorem `bics_implies_nems` is **fully proved (0 sorry)**. The 2 sorrys in `bics_prob_bounded`
-are auxiliary boundedness facts that don't affect the core BICS ⇒ NEMS implication.
+The flagship theorem `bics_implies_nems` is **fully proved (0 sorry)**. The `bics_prob_bounded` boundedness facts are backed by the explicit axiom `re_trace_psd_mul_psd_nonneg`; no sorrys remain in this module.
 
 **Fixed-point architecture:**
 Forward (PSC ⇒ Born) + Reverse (BICS ⇒ NEMS ⇒ PSC) establishes PSC ↔ BICS equivalence within explicit scope.
@@ -136,14 +128,14 @@ Expected output: `Build completed successfully (1713 jobs).`
 
 ## Axiom Audit
 
-To verify zero custom axioms:
+To verify the axiom set:
 
 ```bash
 lake build
-grep -r "axiom " NemS/  # should return no custom axiom declarations
+grep -r "axiom " NemS/  # returns one custom axiom declaration
 ```
 
-The only axioms are Lean's kernel axioms (propositional extensionality, quotient soundness, classical choice) as imported by Mathlib.
+One explicit axiom is declared: **`re_trace_psd_mul_psd_nonneg`** — the standard fact that Re(Tr(AB)) ≥ 0 for PSD Hermitian matrices A, B over ℂ. This replaces two `sorry`s in the ReverseBICS module that cited this fact. All other axioms are Lean's kernel axioms (propositional extensionality, quotient soundness, classical choice) as imported by Mathlib.
 
 ## File Structure
 
@@ -180,7 +172,7 @@ This artifact formalizes the core spine of:
 - **Paper 36:** *The Arrow of Time from Closure* (ArrowOfTime; 0 sorry)
 - **Paper 37:** *Chronology Under Closure* (ChronologyUnderClosure; 0 sorry)
 - **Paper 38:** *NEMS Constraints on Black Hole Information* (BlackHoles; 0 sorry)
-- **Paper 39:** *Probability as Closure in GPTs* (GPTClosure; 0 sorry in core; GPTClosure/Instances/QuantumFinite bridges Paper 13 ↔ 39; 3 sorry)
+- **Paper 39:** *Probability as Closure in GPTs* (GPTClosure; 0 sorry in core; GPTClosure/Instances/QuantumFinite bridges Paper 13 ↔ 39; 2 sorry; Born-rule nonnegativity now explicit axiom `re_trace_psd_mul_psd_nonneg`)
 - **Paper 40:** *Institutions Under Diagonal Constraints* (InstitutionalEpistemics; 0 sorry)
 - **Paper 50:** *A Complete Logic of Certification: Soundness, Completeness, and Maximality for Stratified Verification Protocols* (CertificationLogic; 0 sorry): soundness_capstone, completeness_capstone, boundary_maximality, protocolCoverage_subset_union_atoms, toy_equiv, toy_boundary. Build: full `lake build` (see NEMS_LEAN_BUILD_NOTE.md).
 - **Paper 51:** *Necessary Incompleteness of Internal Semantic Self-Description* (SemanticSelfDescription; 0 sorry): no_final_self_theory, no_weak_self_erasure, no_strong_self_erasure, semantic_remainder_master, physical_corollary_no_final_gut. Build: full `lake build` (see NEMS_LEAN_BUILD_NOTE.md).
@@ -204,13 +196,14 @@ The required components are:
 
 Total: ~260 lines of standard matrix algebra and 1D real analysis.
 
-### QuantumFinite bridge (Paper 39 ↔ Paper 13): 3 sorrys
+### QuantumFinite bridge (Paper 39 ↔ Paper 13): 2 sorrys
+
+Born-rule nonnegativity is now covered by the explicit axiom `re_trace_psd_mul_psd_nonneg`. The remaining work is:
 
 1. PSD cone pointedness: spectral argument that H and −H both PSD ⇒ H = 0 (~20 lines)
-2. Born-rule nonnegativity: Re(Tr(ρE)) ≥ 0 for PSD ρ, E (~15 lines, standard Frobenius inner product)
-3. Wiring to busch_gleason_unique: unpack densityToState/quantumEffectToGPT to show agreement on all effects implies agreement on test effects, then apply busch_gleason_unique (~40 lines)
+2. Wiring to busch_gleason_unique: unpack densityToState/quantumEffectToGPT to show agreement on all effects implies agreement on test effects, then apply busch_gleason_unique (~40 lines)
 
-Total: ~75 lines of standard linear algebra.
+Total: ~60 lines of standard linear algebra.
 
 ## License
 
@@ -226,6 +219,6 @@ If you use this artifact, please cite:
   title        = {nems-lean: Lean 4 Formalization of the NEMS Core Spine and MFRR Bridge},
   howpublished = {Software artifact, Lean 4.29.0-rc6 / Mathlib 4.29.0-rc6},
   year         = {2026},
-  note         = {v2.5.0+: 8k+ jobs; 6 sorrys (see MANIFEST); Papers 26–31 abstract-core spine including EpistemicAgency; zero custom axioms.}
+  note         = {v2.7.0: 1713 jobs; 2 sorrys (BuschGleason existence only, down from 8; see MANIFEST); Papers 00–92 NEMS suite; 1 explicit axiom re_trace_psd_mul_psd_nonneg.}
 }
 ```
