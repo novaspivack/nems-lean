@@ -26,7 +26,7 @@ nems-lean formalizes the foundational theorems of the NEMS programme: the tricho
 
 ## Build
 
-**Requirements:** Lean 4.29.0-rc6, Mathlib v4.29.0-rc6
+**Requirements:** Lean 4.29.0-rc6, Mathlib v4.29.1
 
 ```bash
 lake update

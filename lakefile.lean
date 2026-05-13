@@ -5,7 +5,7 @@ package «nems-lean» where
   -- GPTClosure (Paper 39), InstitutionalEpistemics (Paper 40)
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.29.0-rc6"
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.29.1"
 
 @[default_target]
 lean_lib «GPTClosure» where

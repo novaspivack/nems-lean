@@ -1,8 +1,8 @@
 # nems-lean Artifact Documentation
 
 **Version:** v2.7.0  
-**Lean:** leanprover/lean4:v4.29.0-rc6  
-**Mathlib:** v4.29.0-rc6  
+**Lean:** leanprover/lean4:v4.29.1  
+**Mathlib:** v4.29.1  
 **Build:** 1713 jobs, 0 errors, 2 sorrys (BuschGleason existence: `delta_eq_zero_core`, `rhoCandidate_psd`; down from 8; see MANIFEST.md), **1 explicit axiom** (`re_trace_psd_mul_psd_nonneg`)
 
 **Lean 4.29 compatibility:** See `LEAN_4.29_UPGRADE_DISCLOSURE.md` for tactic/API fixes in BuschGleason.lean (no theorem changes).

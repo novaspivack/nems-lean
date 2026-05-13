@@ -1,4 +1,4 @@
-# Lean 4.29 / Mathlib v4.29.0-rc3 Upgrade — Disclosure
+# Lean 4.29 / Mathlib v4.29.1 Upgrade — Disclosure
 
 **Date:** March 2026  
 **Scope:** nems-lean full codebase  
