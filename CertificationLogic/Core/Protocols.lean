@@ -254,30 +254,30 @@ theorem protocolCoverage_subset_union_atoms {Instance : Type*} [Fintype Instance
   induction P with
   | atom r =>
     intro x hx
-    rw [protocolCoverage, coverage_atom, CertificationLogic.mem_coverage] at hx
-    exact ⟨r, Finset.mem_singleton_self r, hx⟩
+    rcases (CertificationLogic.mem_coverage (eval (Prot.atom r) R) x).1
+      (by simpa [protocolCoverage, coverage_atom] using hx) with hx'
+    exact Exists.intro r (And.intro (Finset.mem_singleton_self r) hx')
   | union P Q hP hQ =>
     intro x hx
-    rw [protocolCoverage, coverage_union, CertificationLogic.mem_coverage, atoms,
-      Finset.mem_biUnion, Finset.mem_union] at hx ⊢
-    rcases (eval_union_ne_abstain_iff R P Q x).1 hx with hxP | hxQ
-    · exact Or.inl (hP (by rwa [CertificationLogic.mem_coverage]))
-    · exact Or.inr (hQ (by rwa [CertificationLogic.mem_coverage]))
+    simp only [atoms, Finset.biUnion_union, Finset.mem_union]
+    have hxU : eval (Prot.union P Q) R x ≠ CertificationLogic.Verdict.abstain := by
+      simpa [protocolCoverage, CertificationLogic.mem_coverage] using hx
+    rcases (eval_union_ne_abstain_iff R P Q x).1 hxU with hxP | hxQ
+    · exact Or.inl (hP (by simpa [protocolCoverage, CertificationLogic.mem_coverage] using hxP))
+    · exact Or.inr (hQ (by simpa [protocolCoverage, CertificationLogic.mem_coverage] using hxQ))
   | inter P Q hP hQ =>
     intro x hx
+    simp only [atoms, Finset.biUnion_union, Finset.mem_union]
     have hxU := protocolCoverage_inter_subset_union R P Q hx
     rcases Finset.mem_union.mp hxU with hxP | hxQ
-    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
-      exact Or.inl (hP hxP)
-    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
-      exact Or.inr (hQ hxQ)
+    · exact Or.inl (hP hxP)
+    · exact Or.inr (hQ hxQ)
   | prefer P Q hP hQ =>
     intro x hx
+    simp only [atoms, Finset.biUnion_union, Finset.mem_union]
     have hxU := protocolCoverage_prefer_subset_union R P Q hx
     rcases Finset.mem_union.mp hxU with hxP | hxQ
-    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
-      exact Or.inl (hP hxP)
-    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
-      exact Or.inr (hQ hxQ)
+    · exact Or.inl (hP hxP)
+    · exact Or.inr (hQ hxQ)
 
 end CertificationLogic
