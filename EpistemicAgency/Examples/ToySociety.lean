@@ -49,19 +49,29 @@ def toyV2 : Verifier toyDomain := fun i =>
 def toyC1 : Finset (Fin 4) := {0, 1}
 def toyC2 : Finset (Fin 4) := {2, 3}
 
+private lemma mem_toyC1 (c : Fin 4) : c ∈ toyC1 ↔ c.val = 0 ∨ c.val = 1 := by
+  fin_cases c <;> simp [toyC1, Finset.mem_insert, Finset.mem_singleton]
+
+private lemma mem_toyC2 (c : Fin 4) : c ∈ toyC2 ↔ c.val = 2 ∨ c.val = 3 := by
+  fin_cases c <;> simp [toyC2, Finset.mem_insert, Finset.mem_singleton]
+
 lemma toySound1 : SoundOnCover toyDomain toyV1 toyC1 := by
   constructor
   · intro c hc
-    fin_cases c <;> simp [toyC1] at hc <;> simp [toyV1, toyTruth] <;> try rfl
+    rw [mem_toyC1] at hc
+    fin_cases c <;> simp [toyV1, toyTruth, hc] <;> try rfl
   · intro c hc
-    fin_cases c <;> simp [toyC1, toyV1] at hc ⊢
+    rw [mem_toyC1] at hc
+    fin_cases c <;> simp [toyV1, hc]
 
 lemma toySound2 : SoundOnCover toyDomain toyV2 toyC2 := by
   constructor
   · intro c hc
-    fin_cases c <;> simp [toyC2] at hc <;> simp [toyV2, toyTruth] <;> try rfl
+    rw [mem_toyC2] at hc
+    fin_cases c <;> simp [toyV2, toyTruth, hc] <;> try rfl
   · intro c hc
-    fin_cases c <;> simp [toyC2, toyV2] at hc ⊢
+    rw [mem_toyC2] at hc
+    fin_cases c <;> simp [toyV2, hc]
 
 /-- Toy society: two verifiers with complementary covers. -/
 def toySociety : Society toyDomain := [(toyV1, toyC1), (toyV2, toyC2)]
@@ -79,14 +89,14 @@ lemma toySocietySound : SocietySound toySociety := by
 lemma toySocietyCover_full : societyCover toySociety = Finset.univ := by
   ext i
   simp only [societyCover, toySociety, List.foldl_cons, List.foldl_nil, Finset.mem_union,
-    toyC1, toyC2, Finset.mem_insert, Finset.mem_singleton, Finset.mem_univ, or_true]
+    toyC1, toyC2, mem_toyC1, mem_toyC2, Finset.mem_univ, or_true]
   fin_cases i <;> simp
 
 /-- Strict improvement: society covers all claims; each individual covers only two. -/
 theorem toy_strict_improvement (i : Fin 4) :
     i ∈ societyCover toySociety ∧ (i ∉ toyC1 ∨ i ∉ toyC2) := by
-  rw [toySocietyCover_full]
-  fin_cases i <;> simp [toyC1, toyC2]
+  rw [toySocietyCover_full, mem_toyC1, mem_toyC2]
+  fin_cases i <;> simp
 
 /-- Diversity: the two covers are different and incomparable. -/
 theorem toy_diversity_necessary : ¬ ∃ C, Homogeneous toySociety C := by
@@ -94,11 +104,9 @@ theorem toy_diversity_necessary : ¬ ∃ C, Homogeneous toySociety C := by
   have h1 := hHom (toyV1, toyC1) (List.mem_cons.mpr (Or.inl rfl))
   have h2 := hHom (toyV2, toyC2) (List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl))))
   have : toyC1 = toyC2 := h1.trans h2.symm
-  have h0 : (⟨0, by omega⟩ : Fin 4) ∈ toyC1 := Finset.mem_insert_self _ _
+  have h0 : (0 : Fin 4) ∈ toyC1 := Finset.mem_insert_self _ _
   rw [this] at h0
-  simp only [toyC2, Finset.mem_insert, Finset.mem_singleton] at h0
-  rcases h0 with h | h
-  · have heq := congr_arg Fin.val h; simp at heq
-  · have heq := congr_arg Fin.val h; simp at heq
+  rw [mem_toyC2] at h0
+  simp at h0
 
 end EpistemicAgency
