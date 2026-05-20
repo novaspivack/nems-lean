@@ -68,3 +68,15 @@ lean_lib «ForcedAdjudication» where
 
 lean_lib «StructuralNonExhaustibility» where
   -- Program V: Structural Non-Exhaustibility
+
+lean_lib «BlackHoles» where
+
+lean_lib «ChronologyUnderClosure» where
+
+lean_lib «EpistemicAgency» where
+
+lean_lib «Learning» where
+
+lean_lib «SelfAwareness» where
+
+lean_lib «SelfImprovement» where
