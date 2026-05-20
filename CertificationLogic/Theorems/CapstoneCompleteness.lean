@@ -23,8 +23,8 @@ variable {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
 variable {n : ℕ} [DecidableEq (Role n)]
 
 /-- Protocol coverage sets are derivable (structural recursion on P; the "normal form" content). -/
-theorem derivable_coverage {Stratum : Type*} (cov : CovMap) (S : Stratum)
-    (P : Prot n) (R : RoleAssign Instance n) (hR : ConsistentWith cov R) :
+theorem derivable_coverage {Stratum : Type*} (cov : Role n → Finset Instance) (S : Stratum)
+    (P : Prot n) (R : Role n → Verifier Instance) (hR : ConsistentWith cov R) :
     Derivable cov (axFromCov cov) S (protocolCoverage R P) := by
   induction P with
   | atom r =>
@@ -43,8 +43,8 @@ theorem derivable_coverage {Stratum : Type*} (cov : CovMap) (S : Stratum)
       (protocolCoverage R (Prot.prefer P Q)) (Derivable.union S _ _ hP hQ) hsub
 
 /-- **T50.2 Completeness (capstone):** Every certifiable claim set is derivable. -/
-theorem completeness_capstone {Stratum : Type*} (cov : CovMap) (S : Stratum)
-    (C : Formula) (h : CertifiableAt cov S C) :
+theorem completeness_capstone {Stratum : Type*} (cov : Role n → Finset Instance) (S : Stratum)
+    (C : Finset Instance) (h : CertifiableAt cov S C) :
     Derivable cov (axFromCov cov) S C := by
   obtain ⟨P, R, hR, hC⟩ := h
   exact Derivable.subset S (protocolCoverage R P) C (derivable_coverage cov S P R hR) hC
