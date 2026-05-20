@@ -14,11 +14,11 @@ set_option autoImplicit false
 namespace CertificationLogic
 
 variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance]
-variable (n : ℕ) [DecidableEq (InstitutionalEpistemics.Role n)]
+variable (n : ℕ) [DecidableEq (Role n)]
 
 /-- Protocol term: atoms (roles) and combinators. -/
 inductive Prot (n : ℕ)
-  | atom (r : InstitutionalEpistemics.Role n)
+  | atom (r : Role n)
   | union (P Q : Prot n)
   | inter (P Q : Prot n)
   | prefer (P Q : Prot n)
@@ -26,7 +26,7 @@ inductive Prot (n : ℕ)
 variable {Instance n}
 
 /-- The set of role atoms that appear in a protocol (for normal-form reasoning). -/
-def atoms (P : Prot n) : Finset (InstitutionalEpistemics.Role n) :=
+def atoms (P : Prot n) : Finset (Role n) :=
   match P with
   | Prot.atom r => {r}
   | Prot.union P Q => atoms P ∪ atoms Q
@@ -35,7 +35,7 @@ def atoms (P : Prot n) : Finset (InstitutionalEpistemics.Role n) :=
   end
 
 /-- Role assignment: each role has a verifier. -/
-def RoleAssign : Type _ := InstitutionalEpistemics.Role n → CertificationLogic.Verifier Instance
+def RoleAssign : Type _ := Role n → CertificationLogic.Verifier Instance
 
 /-- Evaluate protocol to a verifier. -/
 def eval (P : Prot n) (R : RoleAssign) : CertificationLogic.Verifier Instance :=
@@ -66,7 +66,7 @@ def protocolCoverage (R : RoleAssign) (P : Prot n) : Finset Instance :=
   CertificationLogic.coverage (eval P R)
 
 /-- Atomic protocol coverage equals the verifier's non-abstain set. -/
-theorem coverage_atom (R : RoleAssign) (r : InstitutionalEpistemics.Role n) :
+theorem coverage_atom (R : RoleAssign) (r : Role n) :
     protocolCoverage R (Prot.atom r) = CertificationLogic.coverage (R r) := rfl
 
 /-- Union coverage: instances where either branch is non-abstain. -/

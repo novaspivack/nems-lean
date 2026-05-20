@@ -9,6 +9,8 @@ Separation examples: when R = allRepresentable we recover full MFP-1.
 
 set_option autoImplicit false
 
+universe u v
+
 namespace Reflection
 
 namespace Hierarchy
