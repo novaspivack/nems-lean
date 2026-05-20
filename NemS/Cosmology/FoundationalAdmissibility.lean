@@ -27,6 +27,7 @@ namespace Cosmology
 open NemS.Cosmology
 open NemS.Cosmology.Bridges
 open NemS.Framework
+open NemS.Adjudication
 
 /-- **Foundationally viable:** A framework satisfies all three grand-unification components:
 admissible initiality (semantic floor), structural irreversibility, internal realized history. -/

@@ -5,6 +5,8 @@ import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Union
+import Mathlib.Data.Finset.BooleanAlgebra
+import Mathlib.Data.Fintype.Lattice
 
 variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance] (k : ℕ)
 
@@ -52,34 +54,32 @@ theorem k_role_lower_bound (P : KPartition Instance k) (roles : ℕ) (cov : Role
     rw [Fintype.card_congr e, Fintype.card_fin]
     exact hk
   -- There exists a part not in the range of f.
-  obtain ⟨i, hi⟩ := Fintype.exists_not_mem_finset
-    (Finset.image f Finset.univ) (by
-      rw [Finset.card_image_le.trans_lt (by simp; exact hcard_lt) |>.le.lt_iff_ne.ne.symm]
-      · simp [Fintype.card_fin])
+  have himg_ne : Finset.image f Finset.univ ≠ Finset.univ := by
+    rw [← Finset.card_lt_iff_ne_univ]
+    exact lt_of_le_of_lt Finset.card_image_le hcard_lt
+  obtain ⟨i, hi⟩ : ∃ i : Fin k, i ∉ Finset.image f Finset.univ := by
+    classical
+    by_contra hall
+    push_neg at hall
+    exact himg_ne (Finset.eq_univ_iff_forall.mpr hall)
   -- Part i is not covered by any role.
   -- Get an instance in P.parts i.
   obtain ⟨x, hx⟩ := P.nonempty i
   -- By full coverage, x is covered by some role r.
-  have hcov := h.symm
-  have hx_in : x ∈ Finset.univ := Finset.mem_univ x
-  rw [← FullCoverage] at hcov
-  simp [FullCoverage] at h
-  have : x ∈ (Finset.univ.biUnion fun r : Role roles => cov r) := by
-    rw [h]; exact Finset.mem_univ x
-  simp at this
-  obtain ⟨r, _, hxr⟩ := this
+  have hx_cov : x ∈ (Finset.univ.biUnion fun r : Role roles => cov r) :=
+    h.symm ▸ (Finset.mem_univ x : x ∈ Finset.univ)
+  rw [Finset.mem_biUnion] at hx_cov
+  obtain ⟨r, _, hxr⟩ := hx_cov
   -- r covers x, and r is assigned to part f r.
   have hxfr : x ∈ P.parts (f r) := hf r hxr
   -- But f r ≠ i since i is not in the range of f.
   have hfr_ne : f r ≠ i := by
     intro heq
-    apply hi
-    simp [Finset.mem_image]
-    exact ⟨r, Finset.mem_univ _, heq⟩
+    exact hi (Finset.mem_image.mpr ⟨r, Finset.mem_univ r, heq⟩)
   -- x ∈ P.parts i and x ∈ P.parts (f r), with f r ≠ i.
   -- By disjointness: P.parts i ∩ P.parts (f r) = ∅, so x cannot be in both.
-  have hdisj := P.disjoint i (f r) hfr_ne
+  have hdisj := P.disjoint i (f r) hfr_ne.symm
   have : x ∈ (P.parts i ∩ P.parts (f r) : Finset Instance) := by
     simp [Finset.mem_inter, hx, hxfr]
   rw [hdisj] at this
-  exact Finset.not_mem_empty _ this
+  exact (Finset.notMem_empty x) this
