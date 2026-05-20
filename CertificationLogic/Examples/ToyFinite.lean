@@ -43,20 +43,20 @@ theorem toy_full_coverage :
       canonicalRoleAssign, toyCov, eval]
 
 /-- **Toy soundness:** derivable implies certifiable. -/
-theorem toy_soundness (C : Finset toyInstance)
-    (h : @ProtocolDerivable Unit toyCov (axFromCov toyCov) () C) :
-    @CertifiableAt Unit toyCov () C :=
+theorem toy_finite_soundness (C : Finset toyInstance)
+    (h : ProtocolDerivable toyCov (axFromCov toyCov) () C) :
+    ProtocolCertifiableAt toyCov () C :=
   soundness_capstone toyCov () C h
 
 /-- **Toy completeness:** certifiable implies derivable. -/
-theorem toy_completeness (C : Finset toyInstance)
-    (h : @CertifiableAt Unit toyCov () C) :
-    @ProtocolDerivable Unit toyCov (axFromCov toyCov) () C :=
+theorem toy_finite_completeness (C : Finset toyInstance)
+    (h : ProtocolCertifiableAt toyCov () C) :
+    ProtocolDerivable toyCov (axFromCov toyCov) () C :=
   completeness_capstone toyCov () C h
 
-/-- **Toy equivalence:** ⊢ C ↔ CertifiableAt(C). -/
-theorem toy_equiv (C : Finset toyInstance) :
-    @ProtocolDerivable Unit toyCov (axFromCov toyCov) () C ↔ @CertifiableAt Unit toyCov () C :=
-  ⟨toy_soundness C, toy_completeness C⟩
+/-- **Toy equivalence:** ⊢ C ↔ ProtocolCertifiableAt(C). -/
+theorem toy_finite_equiv (C : Finset toyInstance) :
+    ProtocolDerivable toyCov (axFromCov toyCov) () C ↔ ProtocolCertifiableAt toyCov () C :=
+  ⟨toy_finite_soundness C, toy_finite_completeness C⟩
 
 end CertificationLogic.Examples

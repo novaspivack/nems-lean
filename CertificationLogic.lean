@@ -9,7 +9,7 @@ import CertificationLogic.Core.CertifiableAt
 import CertificationLogic.Theorems.CapstoneSoundness
 import CertificationLogic.Theorems.CapstoneCompleteness
 import CertificationLogic.Theorems.Maximality
--- import CertificationLogic.Examples.ToyFinite
+import CertificationLogic.Examples.ToyFinite
 import CertificationLogic.Examples.ToyBoundary
 
 /-!
