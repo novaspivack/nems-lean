@@ -20,8 +20,6 @@ universe u v
 
 variable {World : Type u} {Obs : Type v} (Filt : RecordFiltration World Obs)
 
-open ArrowOfTime.Theorems.Irreversibility
-
 /-- **Closure Arrow Theorem.**
 
 Under a record filtration (Paper 36), any stage-preserving involution R fixes
