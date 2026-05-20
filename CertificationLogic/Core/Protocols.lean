@@ -254,30 +254,43 @@ theorem protocolCoverage_subset_union_atoms {Instance : Type*} [Fintype Instance
   induction P with
   | atom r =>
     intro x hx
-    rcases (CertificationLogic.mem_coverage (eval (Prot.atom r) R) x).1
-      (by simpa [protocolCoverage, coverage_atom] using hx) with hx'
-    exact Exists.intro r (And.intro (Finset.mem_singleton_self r) hx')
+    rw [Finset.mem_biUnion, atoms]
+    exact ⟨r, Finset.mem_singleton_self r, by simpa [protocolCoverage, coverage_atom] using hx⟩
   | union P Q hP hQ =>
     intro x hx
-    simp only [atoms, Finset.biUnion_union, Finset.mem_union]
+    rw [Finset.mem_biUnion, atoms]
     have hxU : eval (Prot.union P Q) R x ≠ CertificationLogic.Verdict.abstain := by
       simpa [protocolCoverage, CertificationLogic.mem_coverage] using hx
     rcases (eval_union_ne_abstain_iff R P Q x).1 hxU with hxP | hxQ
-    · exact Or.inl (hP (by simpa [protocolCoverage, CertificationLogic.mem_coverage] using hxP))
-    · exact Or.inr (hQ (by simpa [protocolCoverage, CertificationLogic.mem_coverage] using hxQ))
+    · rcases Finset.mem_biUnion.mp (hP (by simpa [protocolCoverage, CertificationLogic.mem_coverage] using hxP)) with
+        ⟨r, hr, hxcov⟩
+      refine ⟨r, ?_, hxcov⟩
+      simp [Finset.mem_union, hr]
+    · rcases Finset.mem_biUnion.mp (hQ (by simpa [protocolCoverage, CertificationLogic.mem_coverage] using hxQ)) with
+        ⟨r, hr, hxcov⟩
+      refine ⟨r, ?_, hxcov⟩
+      simp [Finset.mem_union, hr]
   | inter P Q hP hQ =>
     intro x hx
-    simp only [atoms, Finset.biUnion_union, Finset.mem_union]
+    rw [Finset.mem_biUnion, atoms]
     have hxU := protocolCoverage_inter_subset_union R P Q hx
     rcases Finset.mem_union.mp hxU with hxP | hxQ
-    · exact Or.inl (hP hxP)
-    · exact Or.inr (hQ hxQ)
+    · rcases Finset.mem_biUnion.mp (hP hxP) with ⟨r, hr, hxcov⟩
+      refine ⟨r, ?_, hxcov⟩
+      simp [Finset.mem_union, hr]
+    · rcases Finset.mem_biUnion.mp (hQ hxQ) with ⟨r, hr, hxcov⟩
+      refine ⟨r, ?_, hxcov⟩
+      simp [Finset.mem_union, hr]
   | prefer P Q hP hQ =>
     intro x hx
-    simp only [atoms, Finset.biUnion_union, Finset.mem_union]
+    rw [Finset.mem_biUnion, atoms]
     have hxU := protocolCoverage_prefer_subset_union R P Q hx
     rcases Finset.mem_union.mp hxU with hxP | hxQ
-    · exact Or.inl (hP hxP)
-    · exact Or.inr (hQ hxQ)
+    · rcases Finset.mem_biUnion.mp (hP hxP) with ⟨r, hr, hxcov⟩
+      refine ⟨r, ?_, hxcov⟩
+      simp [Finset.mem_union, hr]
+    · rcases Finset.mem_biUnion.mp (hQ hxQ) with ⟨r, hr, hxcov⟩
+      refine ⟨r, ?_, hxcov⟩
+      simp [Finset.mem_union, hr]
 
 end CertificationLogic
