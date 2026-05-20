@@ -140,9 +140,7 @@ private theorem eval_inter_abstain_iff_of_abstain_agreement
   all_goals (
     have hPf := hP; rw [vp, hp'] at hPf
     have hQf := hQ; rw [vq, hq'] at hQf
-    simp [eval, Prot.inter, vp, vq, hp', hq'] at hPf hQf
-    if h1 : hPf then exact h1.elim else if h2 : hQf then exact h2.elim else
-      (constructor <;> simp [eval, Prot.inter, vp, vq, hp', hq']))
+    simp [eval, Prot.inter, vp, vq, hp', hq'] at hPf hQf ⊢)
 
 private theorem eval_prefer_abstain_iff_of_abstain_agreement
     {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
@@ -161,9 +159,7 @@ private theorem eval_prefer_abstain_iff_of_abstain_agreement
   all_goals (
     have hPf := hP; rw [vp, hp'] at hPf
     have hQf := hQ; rw [vq, hq'] at hQf
-    simp [eval, Prot.prefer, vp, vq, hp', hq'] at hPf hQf
-    if h1 : hPf then exact h1.elim else if h2 : hQf then exact h2.elim else
-      (constructor <;> simp [eval, Prot.prefer, vp, vq, hp', hq']))
+    simp [eval, Prot.prefer, vp, vq, hp', hq'] at hPf hQf ⊢)
 
 /-- When R and R' have the same coverage per role, protocol coverage is equal. -/
 theorem protocolCoverage_eq_of_same_coverage {Instance : Type*} [Fintype Instance]
@@ -175,9 +171,22 @@ theorem protocolCoverage_eq_of_same_coverage {Instance : Type*} [Fintype Instanc
   induction P with
   | atom r =>
     ext x
-    simp [protocolCoverage, coverage_atom, h r, CertificationLogic.mem_coverage]
+    rw [show protocolCoverage R (Prot.atom r) = coverage (R r) from rfl,
+      show protocolCoverage R' (Prot.atom r) = coverage (R' r) from rfl,
+      h r, CertificationLogic.mem_coverage]
   | union P Q ihP ihQ =>
-    simp [protocolCoverage, coverage_union, ihP, ihQ]
+    ext x
+    simp only [protocolCoverage, coverage_union, CertificationLogic.mem_coverage,
+      eval_union_ne_abstain_iff]
+    constructor
+    · intro hor
+      rcases hor with hP | hQ
+      · exact Or.inl ((eval_ne_abstain_iff_of_coverage_eq R R' h P x ihP).1 hP)
+      · exact Or.inr ((eval_ne_abstain_iff_of_coverage_eq R R' h Q x ihQ).1 hQ)
+    · intro hor
+      rcases hor with hP | hQ
+      · exact Or.inl ((eval_ne_abstain_iff_of_coverage_eq R R' h P x ihP).2 hP)
+      · exact Or.inr ((eval_ne_abstain_iff_of_coverage_eq R R' h Q x ihQ).2 hQ)
   | inter P Q ihP ihQ =>
     ext x
     simp only [protocolCoverage, CertificationLogic.mem_coverage]
@@ -245,30 +254,30 @@ theorem protocolCoverage_subset_union_atoms {Instance : Type*} [Fintype Instance
   induction P with
   | atom r =>
     intro x hx
-    have hx' : R r x ≠ CertificationLogic.Verdict.abstain :=
-      (CertificationLogic.mem_coverage (eval (Prot.atom r) R) x).1
-        (by simpa [protocolCoverage, coverage_atom] using hx)
-    exact ⟨r, Finset.mem_singleton_self r, hx'⟩
+    rw [protocolCoverage, coverage_atom, CertificationLogic.mem_coverage] at hx
+    exact ⟨r, Finset.mem_singleton_self r, hx⟩
   | union P Q hP hQ =>
     intro x hx
-    simp [protocolCoverage, coverage_union, CertificationLogic.mem_coverage, atoms,
+    rw [protocolCoverage, coverage_union, CertificationLogic.mem_coverage, atoms,
       Finset.mem_biUnion, Finset.mem_union] at hx ⊢
     rcases (eval_union_ne_abstain_iff R P Q x).1 hx with hxP | hxQ
-    · exact Or.inl (hP (by simpa [CertificationLogic.mem_coverage] using hxP))
-    · exact Or.inr (hQ (by simpa [CertificationLogic.mem_coverage] using hxQ))
+    · exact Or.inl (hP (by rwa [CertificationLogic.mem_coverage]))
+    · exact Or.inr (hQ (by rwa [CertificationLogic.mem_coverage]))
   | inter P Q hP hQ =>
     intro x hx
     have hxU := protocolCoverage_inter_subset_union R P Q hx
-    simp [atoms, Finset.mem_biUnion, Finset.mem_union] at hxU ⊢
-    rcases hxU with hxP | hxQ
-    · exact Or.inl (hP hxP)
-    · exact Or.inr (hQ hxQ)
+    rcases Finset.mem_union.mp hxU with hxP | hxQ
+    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
+      exact Or.inl (hP hxP)
+    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
+      exact Or.inr (hQ hxQ)
   | prefer P Q hP hQ =>
     intro x hx
     have hxU := protocolCoverage_prefer_subset_union R P Q hx
-    simp [atoms, Finset.mem_biUnion, Finset.mem_union] at hxU ⊢
-    rcases hxU with hxP | hxQ
-    · exact Or.inl (hP hxP)
-    · exact Or.inr (hQ hxQ)
+    rcases Finset.mem_union.mp hxU with hxP | hxQ
+    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
+      exact Or.inl (hP hxP)
+    · simp [atoms, Finset.mem_biUnion, Finset.mem_union]
+      exact Or.inr (hQ hxQ)
 
 end CertificationLogic
