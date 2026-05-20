@@ -12,7 +12,7 @@ Soundness: ⊢_S C → CertifiableAt(cov, S, C) for protocol-based semantics.
 set_option autoImplicit false
 
 variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance]
-variable (n : ℕ) [DecidableEq (InstitutionalEpistemics.Role n)]
+variable (n : ℕ) [DecidableEq (Role n)]
 
 namespace CertificationLogic
 

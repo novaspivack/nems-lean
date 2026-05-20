@@ -10,7 +10,7 @@ Formulas as claim sets (Finset Instance). Derivable rules mirroring protocol com
 set_option autoImplicit false
 
 variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance]
-variable (n : ℕ) [DecidableEq (InstitutionalEpistemics.Role n)]
+variable (n : ℕ) [DecidableEq (Role n)]
 
 namespace CertificationLogic
 
@@ -18,7 +18,7 @@ namespace CertificationLogic
 def Formula (_Instance : Type*) : Type := Finset Instance
 
 /-- Coverage map: each role covers a set of instances. -/
-def CovMap : Type := InstitutionalEpistemics.Role n → Finset Instance
+def CovMap : Type := Role n → Finset Instance
 
 variable {Instance n}
 

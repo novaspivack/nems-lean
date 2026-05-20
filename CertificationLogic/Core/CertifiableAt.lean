@@ -11,7 +11,7 @@ Semantic CertifiableAt: exists admissible protocol at strength S covering claim 
 set_option autoImplicit false
 
 variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance]
-variable (n : ℕ) [DecidableEq (InstitutionalEpistemics.Role n)]
+variable (n : ℕ) [DecidableEq (Role n)]
 
 namespace CertificationLogic
 
