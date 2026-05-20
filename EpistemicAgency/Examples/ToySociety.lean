@@ -73,12 +73,6 @@ private lemma not_mem_toyC2_of_zero (h : Fin 4) (hh : h.val = 0) : h ∉ toyC2 :
 private lemma not_mem_toyC2_of_one (h : Fin 4) (hh : h.val = 1) : h ∉ toyC2 := by
   intro hc; rw [mem_toyC2] at hc; simp [hh] at hc
 
-private lemma not_mem_toyC2_of_two (h : Fin 4) (hh : h.val = 2) : h ∉ toyC2 := by
-  intro hc; rw [mem_toyC2] at hc; simp [hh] at hc
-
-private lemma not_mem_toyC2_of_three (h : Fin 4) (hh : h.val = 3) : h ∉ toyC2 := by
-  intro hc; rw [mem_toyC2] at hc; simp [hh] at hc
-
 lemma toySound1 : SoundOnCover toyDomain toyV1 toyC1 := by
   constructor
   · intro c hc
@@ -87,12 +81,12 @@ lemma toySound1 : SoundOnCover toyDomain toyV1 toyC1 := by
     | ⟨1, h1⟩ => simp [toyC1, Finset.mem_insert, Finset.mem_singleton, toyV1, toyTruth] at hc ⊢; rfl
     | ⟨2, h2⟩ => exact absurd hc (not_mem_toyC1_of_two ⟨2, h2⟩ rfl)
     | ⟨3, h3⟩ => exact absurd hc (not_mem_toyC1_of_three ⟨3, h3⟩ rfl)
-  · intro c hc
+  · intro c hnot
     match c with
-    | ⟨0, h0⟩ => intro hnot; exact absurd hnot mem_toyC1_zero
-    | ⟨1, h1⟩ => intro hnot; exact absurd hnot mem_toyC1_one
-    | ⟨2, _⟩ => intro _; simp [mem_toyC1, toyV1]
-    | ⟨3, _⟩ => intro _; simp [mem_toyC1, toyV1]
+    | ⟨0, h0⟩ => exfalso; exact hnot (by simpa using mem_toyC1_zero)
+    | ⟨1, h1⟩ => exfalso; exact hnot (by simpa using mem_toyC1_one)
+    | ⟨2, _⟩ => simp [mem_toyC1, toyV1]
+    | ⟨3, _⟩ => simp [mem_toyC1, toyV1]
 
 lemma toySound2 : SoundOnCover toyDomain toyV2 toyC2 := by
   constructor
@@ -102,12 +96,12 @@ lemma toySound2 : SoundOnCover toyDomain toyV2 toyC2 := by
     | ⟨1, h1⟩ => exact absurd hc (not_mem_toyC2_of_one ⟨1, h1⟩ rfl)
     | ⟨2, h2⟩ => simp [toyC2, Finset.mem_insert, Finset.mem_singleton, toyV2, toyTruth] at hc ⊢; rfl
     | ⟨3, h3⟩ => simp [toyC2, Finset.mem_insert, Finset.mem_singleton, toyV2, toyTruth] at hc ⊢; rfl
-  · intro c hc
+  · intro c hnot
     match c with
-    | ⟨0, _⟩ => intro _; simp [mem_toyC2, toyV2]
-    | ⟨1, _⟩ => intro _; simp [mem_toyC2, toyV2]
-    | ⟨2, h2⟩ => intro hnot; exact absurd hnot (by simp [toyC2, Finset.mem_insert, Finset.mem_singleton])
-    | ⟨3, h3⟩ => intro hnot; exact absurd hnot (by simp [toyC2, Finset.mem_insert, Finset.mem_singleton])
+    | ⟨0, _⟩ => simp [mem_toyC2, toyV2]
+    | ⟨1, _⟩ => simp [mem_toyC2, toyV2]
+    | ⟨2, h2⟩ => exfalso; exact hnot ((mem_toyC2 ⟨2, h2⟩).2 (Or.inl rfl))
+    | ⟨3, h3⟩ => exfalso; exact hnot ((mem_toyC2 ⟨3, h3⟩).2 (Or.inr rfl))
 
 /-- Toy society: two verifiers with complementary covers. -/
 def toySociety : Society toyDomain := [(toyV1, toyC1), (toyV2, toyC2)]
@@ -122,33 +116,34 @@ lemma toySocietySound : SocietySound toySociety := by
     · contradiction
 
 private lemma mem_societyCover_zero : (0 : Fin 4) ∈ societyCover toySociety := by
-  rw [mem_societyCover_iff]
+  apply (mem_societyCover_iff (soc := toySociety) (c := (0 : Fin 4))).2
   exact ⟨⟨toyV1, toyC1⟩, List.mem_cons.mpr (Or.inl rfl), mem_toyC1_zero⟩
 
 private lemma mem_societyCover_one : (1 : Fin 4) ∈ societyCover toySociety := by
-  rw [mem_societyCover_iff]
+  apply (mem_societyCover_iff (soc := toySociety) (c := (1 : Fin 4))).2
   exact ⟨⟨toyV1, toyC1⟩, List.mem_cons.mpr (Or.inl rfl), mem_toyC1_one⟩
 
 private lemma mem_societyCover_two : (2 : Fin 4) ∈ societyCover toySociety := by
-  rw [mem_societyCover_iff]
+  apply (mem_societyCover_iff (soc := toySociety) (c := (2 : Fin 4))).2
   exact ⟨⟨toyV2, toyC2⟩, List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl))),
-    by simp [toyC2, Finset.mem_insert, Finset.mem_singleton]⟩
+    show (2 : Fin 4) ∈ toyC2 from by decide⟩
 
 private lemma mem_societyCover_three : (3 : Fin 4) ∈ societyCover toySociety := by
-  rw [mem_societyCover_iff]
+  apply (mem_societyCover_iff (soc := toySociety) (c := (3 : Fin 4))).2
   exact ⟨⟨toyV2, toyC2⟩, List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl))),
-    by simp [toyC2, Finset.mem_insert, Finset.mem_singleton]⟩
+    show (3 : Fin 4) ∈ toyC2 from by decide⟩
 
 /-- Society cover is all four claims. -/
 lemma toySocietyCover_full : societyCover toySociety = Finset.univ := by
   ext i
-  constructor
-  · intro _; exact Finset.mem_univ i
-  · fin_cases i
-    · exact mem_societyCover_zero
-    · exact mem_societyCover_one
-    · exact mem_societyCover_two
-    · exact mem_societyCover_three
+  simp only [Finset.mem_univ, mem_societyCover_iff, iff_true]
+  fin_cases i
+  · exact ⟨⟨toyV1, toyC1⟩, List.mem_cons.mpr (Or.inl rfl), mem_toyC1_zero⟩
+  · exact ⟨⟨toyV1, toyC1⟩, List.mem_cons.mpr (Or.inl rfl), mem_toyC1_one⟩
+  · exact ⟨⟨toyV2, toyC2⟩, List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl))),
+      show (2 : Fin 4) ∈ toyC2 from by decide⟩
+  · exact ⟨⟨toyV2, toyC2⟩, List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl))),
+      show (3 : Fin 4) ∈ toyC2 from by decide⟩
 
 /-- Strict improvement: society covers all claims; each individual covers only two. -/
 theorem toy_strict_improvement (i : Fin 4) :
