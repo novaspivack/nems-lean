@@ -13,9 +13,6 @@ set_option autoImplicit false
 
 namespace CertificationLogic
 
-variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance]
-variable (n : ℕ) [DecidableEq (Role n)]
-
 /-- Protocol term: atoms (roles) and combinators. -/
 inductive Prot (n : ℕ)
   | atom (r : Role n)
@@ -24,7 +21,7 @@ inductive Prot (n : ℕ)
   | prefer (P Q : Prot n)
 
 /-- The set of role atoms that appear in a protocol (for normal-form reasoning). -/
-def atoms (P : Prot n) : Finset (Role n) :=
+def atoms {n : ℕ} (P : Prot n) : Finset (Role n) :=
   match P with
   | Prot.atom r => {r}
   | Prot.union P Q => atoms P ∪ atoms Q
@@ -32,10 +29,13 @@ def atoms (P : Prot n) : Finset (Role n) :=
   | Prot.prefer P Q => atoms P ∪ atoms Q
 
 /-- Role assignment: each role has a verifier. -/
-abbrev RoleAssign : Type _ := Role n → CertificationLogic.Verifier Instance
+abbrev RoleAssign (Instance : Type*) (n : ℕ) : Type _ :=
+  Role n → CertificationLogic.Verifier Instance
 
 /-- Evaluate protocol to a verifier. -/
-def eval (P : Prot n) (R : Role n → CertificationLogic.Verifier Instance) :
+def eval {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+    {n : ℕ} [DecidableEq (Role n)] (P : Prot n)
+    (R : Role n → CertificationLogic.Verifier Instance) :
     CertificationLogic.Verifier Instance :=
   match P with
   | Prot.atom r => R r
@@ -60,56 +60,47 @@ def eval (P : Prot n) (R : Role n → CertificationLogic.Verifier Instance) :
       | (CertificationLogic.Verdict.abstain, v) => v
 
 /-- Coverage of evaluated protocol. -/
-def protocolCoverage (R : Role n → CertificationLogic.Verifier Instance) (P : Prot n) :
+def protocolCoverage {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+    {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P : Prot n) :
     Finset Instance :=
   CertificationLogic.coverage (eval P R)
 
 /-- Atomic protocol coverage equals the verifier's non-abstain set. -/
-theorem coverage_atom (R : Role n → CertificationLogic.Verifier Instance) (r : Role n) :
+theorem coverage_atom {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+    {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (r : Role n) :
     protocolCoverage R (Prot.atom r) = CertificationLogic.coverage (R r) := rfl
 
 /-- Union coverage: instances where either branch is non-abstain. -/
-theorem coverage_union (R : RoleAssign) (P Q : Prot n) :
+theorem coverage_union {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+    {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P Q : Prot n) :
     protocolCoverage R (Prot.union P Q) =
     protocolCoverage R P ∪ protocolCoverage R Q := by
   ext x
-  simp only [protocolCoverage, CertificationLogic.coverage, Finset.mem_union,
-    Finset.mem_filter, Finset.mem_univ, true_and]
-  constructor
-  · intro h
-    by_cases he : eval P R x = CertificationLogic.Verdict.abstain
-    · right
-      simp only [CertificationLogic.coverage]
-      intro heq
-      have : eval (Prot.union P Q) R x = CertificationLogic.Verdict.abstain := by
-        simp only [eval]
-        split_ifs with h1 h2
-        · exact heq
-        · omega
-        · rfl
-      exact h this
-    · left
-      simp only [CertificationLogic.coverage]
-      exact he
-  · intro h
-    simp only [CertificationLogic.coverage]
-    cases h with
-    | inl hp => exact fun heq => hp (by rw [← heq])
-    | inr hq => exact fun heq => hq (by rw [← heq])
+  simp only [protocolCoverage, CertificationLogic.mem_coverage, Finset.mem_union, eval]
+  by_cases hP : eval P R x = CertificationLogic.Verdict.abstain <;>
+    by_cases hQ : eval Q R x = CertificationLogic.Verdict.abstain <;>
+    split_ifs <;> simp [*]
 
 /-- For union, coverage includes both constituents. -/
-theorem coverage_union_left (R : RoleAssign) (P Q : Prot n) :
+theorem coverage_union_left {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+    {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P Q : Prot n) :
     protocolCoverage R P ⊆ protocolCoverage R (Prot.union P Q) := by
   rw [coverage_union]; exact Finset.subset_union_left (protocolCoverage R P) _
 
-theorem coverage_union_right (R : RoleAssign) (P Q : Prot n) :
+theorem coverage_union_right {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+    {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P Q : Prot n) :
     protocolCoverage R Q ⊆ protocolCoverage R (Prot.union P Q) := by
   rw [coverage_union]; exact Finset.subset_union_right _ (protocolCoverage R Q)
 
 /-- When R and R' have the same coverage per role, protocol coverage is equal. -/
-theorem protocolCoverage_eq_of_same_coverage
-    (R : Role n → CertificationLogic.Verifier Instance)
-    (R' : Role n → CertificationLogic.Verifier Instance)
+theorem protocolCoverage_eq_of_same_coverage {Instance : Type*} [Fintype Instance]
+    [DecidableEq Instance] {n : ℕ} [DecidableEq (Role n)]
+    (R R' : Role n → CertificationLogic.Verifier Instance)
     (h : ∀ r, CertificationLogic.coverage (R r) = CertificationLogic.coverage (R' r))
     (P : Prot n) :
     protocolCoverage R P = protocolCoverage R' P := by
@@ -143,7 +134,9 @@ theorem protocolCoverage_eq_of_same_coverage
     · exact hQ
 
 /-- Inter coverage is contained in the union of the two branches. -/
-theorem protocolCoverage_inter_subset_union (R : RoleAssign) (P Q : Prot n) :
+theorem protocolCoverage_inter_subset_union {Instance : Type*} [Fintype Instance]
+    [DecidableEq Instance] {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P Q : Prot n) :
     protocolCoverage R (Prot.inter P Q) ⊆ protocolCoverage R P ∪ protocolCoverage R Q := by
   intro x hx
   simp only [protocolCoverage, CertificationLogic.coverage, Finset.mem_union,
@@ -153,7 +146,9 @@ theorem protocolCoverage_inter_subset_union (R : RoleAssign) (P Q : Prot n) :
   · left; exact heP
 
 /-- Prefer coverage is contained in the union of the two branches. -/
-theorem protocolCoverage_prefer_subset_union (R : RoleAssign) (P Q : Prot n) :
+theorem protocolCoverage_prefer_subset_union {Instance : Type*} [Fintype Instance]
+    [DecidableEq Instance] {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P Q : Prot n) :
     protocolCoverage R (Prot.prefer P Q) ⊆ protocolCoverage R P ∪ protocolCoverage R Q := by
   intro x hx
   simp only [protocolCoverage, CertificationLogic.coverage, Finset.mem_union,
@@ -166,7 +161,9 @@ theorem protocolCoverage_prefer_subset_union (R : RoleAssign) (P Q : Prot n) :
   the coverage of P is contained in the union of coverages of the roles that appear in P.
   Completeness uses this: every protocol witness normalizes to a derivation built from
   Ax (per atom), Union, and Subset (inter/prefer do not increase coverage beyond that). -/
-theorem protocolCoverage_subset_union_atoms (R : RoleAssign) (P : Prot n) :
+theorem protocolCoverage_subset_union_atoms {Instance : Type*} [Fintype Instance]
+    [DecidableEq Instance] {n : ℕ} [DecidableEq (Role n)]
+    (R : Role n → CertificationLogic.Verifier Instance) (P : Prot n) :
     protocolCoverage R P ⊆ (atoms P).biUnion (fun r => CertificationLogic.coverage (R r)) := by
   induction P with
   | atom r =>
