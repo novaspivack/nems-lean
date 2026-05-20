@@ -99,7 +99,7 @@ theorem coverage_union_left {Instance : Type*} [Fintype Instance] [DecidableEq I
     protocolCoverage R P ⊆ protocolCoverage R (Prot.union P Q) := by
   intro x hx
   simp only [protocolCoverage, CertificationLogic.mem_coverage] at hx ⊢
-  exact eval_union_ne_abstain_iff.mpr (Or.inl hx)
+  exact (eval_union_ne_abstain_iff R P Q x).2 (Or.inl hx)
 
 theorem coverage_union_right {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
     {n : ℕ} [DecidableEq (Role n)]
@@ -107,7 +107,7 @@ theorem coverage_union_right {Instance : Type*} [Fintype Instance] [DecidableEq 
     protocolCoverage R Q ⊆ protocolCoverage R (Prot.union P Q) := by
   intro x hx
   simp only [protocolCoverage, CertificationLogic.mem_coverage] at hx ⊢
-  exact eval_union_ne_abstain_iff.mpr (Or.inr hx)
+  exact (eval_union_ne_abstain_iff R P Q x).2 (Or.inr hx)
 
 /-- When R and R' have the same coverage per role, protocol coverage is equal. -/
 theorem protocolCoverage_eq_of_same_coverage {Instance : Type*} [Fintype Instance]
@@ -121,7 +121,9 @@ theorem protocolCoverage_eq_of_same_coverage {Instance : Type*} [Fintype Instanc
     ext x
     simp [protocolCoverage, coverage_atom, h r, CertificationLogic.mem_coverage]
   | union P Q ihP ihQ =>
-    simp [protocolCoverage, coverage_union, ihP, ihQ]
+    ext x
+    simp [protocolCoverage, coverage_union, ihP, ihQ, CertificationLogic.mem_coverage,
+      eval_union_ne_abstain_iff]
   | inter P Q ihP ihQ =>
     ext x
     by_cases hP : eval P R x = CertificationLogic.Verdict.abstain <;>
@@ -147,7 +149,7 @@ theorem eval_inter_ne_abstain_imp {Instance : Type*} [Fintype Instance] [Decidab
       eval Q R x ≠ CertificationLogic.Verdict.abstain := by
   simp [eval] at h
   rcases hp : eval P R x with (_ | _ | _) <;> rcases hq : eval Q R x with (_ | _ | _) <;>
-    simp at h ⊢ <;> tauto
+    simp at h ⊢ <;> first | (left; assumption) | (right; assumption) | (exact h (by simp [eval, hp, hq]))
 
 /-- Evaluating a prefer protocol inherits non-abstain from the preferred branch. -/
 theorem eval_prefer_ne_abstain_imp {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
@@ -158,7 +160,7 @@ theorem eval_prefer_ne_abstain_imp {Instance : Type*} [Fintype Instance] [Decida
       eval Q R x ≠ CertificationLogic.Verdict.abstain := by
   simp [eval] at h
   rcases hp : eval P R x with (_ | _ | _) <;> rcases hq : eval Q R x with (_ | _ | _) <;>
-    simp at h ⊢ <;> tauto
+    simp at h ⊢ <;> first | (left; assumption) | (right; assumption) | (exact h (by simp [eval, hp, hq]))
 
 /-- Inter coverage is contained in the union of the two branches. -/
 theorem protocolCoverage_inter_subset_union {Instance : Type*} [Fintype Instance]
@@ -189,25 +191,21 @@ theorem protocolCoverage_subset_union_atoms {Instance : Type*} [Fintype Instance
   induction P with
   | atom r =>
     intro x hx
-    rw [protocolCoverage, coverage_atom, CertificationLogic.mem_coverage] at hx
-    rw [CertificationLogic.mem_coverage, atoms, Finset.mem_biUnion, Finset.mem_singleton]
-    exact ⟨r, hx, rfl⟩
+    simp [protocolCoverage, coverage_atom, CertificationLogic.mem_coverage, atoms,
+      Finset.mem_biUnion, Finset.mem_singleton] at hx ⊢
+    exact ⟨r, Finset.mem_singleton_self r, by simpa using hx⟩
   | union P Q hP hQ =>
     intro x hx
     simp only [protocolCoverage, coverage_union, CertificationLogic.mem_coverage, atoms,
       Finset.mem_biUnion, Finset.mem_union] at hx ⊢
-    rcases eval_union_ne_abstain_iff.mp hx with hxP | hxQ
-    · exact hP (by rwa [CertificationLogic.mem_coverage])
-    · exact hQ (by rwa [CertificationLogic.mem_coverage])
+    rcases (eval_union_ne_abstain_iff R P Q x).1 hx with hxP | hxQ
+    · exact hP (by simpa [CertificationLogic.mem_coverage] using hxP)
+    · exact hQ (by simpa [CertificationLogic.mem_coverage] using hxQ)
   | inter P Q hP hQ =>
     intro x hx
-    have hx' := protocolCoverage_inter_subset_union R P Q hx
-    simp [atoms, Finset.mem_biUnion, Finset.mem_union] at hx' ⊢
-    exact hx'
+    exact Finset.Subset.trans (protocolCoverage_inter_subset_union R P Q) (Finset.union_subset_union hP hQ) hx
   | prefer P Q hP hQ =>
     intro x hx
-    have hx' := protocolCoverage_prefer_subset_union R P Q hx
-    simp [atoms, Finset.mem_biUnion, Finset.mem_union] at hx' ⊢
-    exact hx'
+    exact Finset.Subset.trans (protocolCoverage_prefer_subset_union R P Q) (Finset.union_subset_union hP hQ) hx
 
 end CertificationLogic

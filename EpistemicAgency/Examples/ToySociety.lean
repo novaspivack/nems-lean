@@ -58,20 +58,32 @@ private lemma mem_toyC2 (c : Fin 4) : c ∈ toyC2 ↔ c.val = 2 ∨ c.val = 3 :=
 lemma toySound1 : SoundOnCover toyDomain toyV1 toyC1 := by
   constructor
   · intro c hc
-    rw [mem_toyC1] at hc
-    fin_cases c <;> simp [toyV1, toyTruth, hc] <;> try rfl
+    fin_cases c
+    · simp [mem_toyC1] at hc; simp [toyV1, toyTruth]; rfl
+    · simp [mem_toyC1] at hc; simp [toyV1, toyTruth]; rfl
+    · simp [mem_toyC1] at hc
+    · simp [mem_toyC1] at hc
   · intro c hc
-    rw [mem_toyC1] at hc
-    fin_cases c <;> simp [toyV1, hc]
+    fin_cases c
+    · simp [mem_toyC1] at hc
+    · simp [mem_toyC1] at hc
+    · simp [mem_toyC1, toyV1]
+    · simp [mem_toyC1, toyV1]
 
 lemma toySound2 : SoundOnCover toyDomain toyV2 toyC2 := by
   constructor
   · intro c hc
-    rw [mem_toyC2] at hc
-    fin_cases c <;> simp [toyV2, toyTruth, hc] <;> try rfl
+    fin_cases c
+    · simp [mem_toyC2] at hc
+    · simp [mem_toyC2] at hc
+    · simp [mem_toyC2] at hc; simp [toyV2, toyTruth]; rfl
+    · simp [mem_toyC2] at hc; simp [toyV2, toyTruth]; rfl
   · intro c hc
-    rw [mem_toyC2] at hc
-    fin_cases c <;> simp [toyV2, hc]
+    fin_cases c
+    · simp [mem_toyC2] at hc
+    · simp [mem_toyC2] at hc
+    · simp [mem_toyC2, toyV2]
+    · simp [mem_toyC2, toyV2]
 
 /-- Toy society: two verifiers with complementary covers. -/
 def toySociety : Society toyDomain := [(toyV1, toyC1), (toyV2, toyC2)]
@@ -88,15 +100,14 @@ lemma toySocietySound : SocietySound toySociety := by
 /-- Society cover is all four claims. -/
 lemma toySocietyCover_full : societyCover toySociety = Finset.univ := by
   ext i
-  simp only [societyCover, toySociety, List.foldl_cons, List.foldl_nil, Finset.mem_union,
-    toyC1, toyC2, mem_toyC1, mem_toyC2, Finset.mem_univ, or_true]
+  simp [societyCover, toySociety, mem_toyC1, mem_toyC2, Finset.mem_univ, or_true]
   fin_cases i <;> simp
 
 /-- Strict improvement: society covers all claims; each individual covers only two. -/
 theorem toy_strict_improvement (i : Fin 4) :
     i ∈ societyCover toySociety ∧ (i ∉ toyC1 ∨ i ∉ toyC2) := by
-  rw [toySocietyCover_full, mem_toyC1, mem_toyC2]
-  fin_cases i <;> simp
+  fin_cases i <;> simp [toySocietyCover_full, mem_toyC1, mem_toyC2, societyCover, toySociety,
+    List.foldl_cons, List.foldl_nil, Finset.mem_union, Finset.mem_univ, or_true]
 
 /-- Diversity: the two covers are different and incomparable. -/
 theorem toy_diversity_necessary : ¬ ∃ C, Homogeneous toySociety C := by
