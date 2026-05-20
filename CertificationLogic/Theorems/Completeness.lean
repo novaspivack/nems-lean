@@ -10,14 +10,16 @@ set_option autoImplicit false
 
 variable (Formula : Type _)
 variable (Stratum : Type _)
-variable (ax : CertificationLogic.Ax Formula Stratum)
+variable (ax : CertificationLogic.Judgment.Ax Formula Stratum)
 
 namespace CertificationLogic
 
+open Judgment
+
 /-- **T50.2 Completeness:** Every certifiable formula is derivable at that stratum. -/
 theorem completeness (S : Stratum) (φ : Formula) (h : CertifiableAt Formula Stratum ax S φ) :
-    Derivable Formula Stratum ax S φ :=
-  match h with
-  | CertifiableAt.ax S φ h' => Derivable.ax S φ h'
+    Derivable Formula Stratum ax S φ := by
+  cases h with
+  | ax S φ h' => exact Derivable.ax S φ h'
 
 end CertificationLogic

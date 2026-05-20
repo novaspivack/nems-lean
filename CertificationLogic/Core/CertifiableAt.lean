@@ -38,7 +38,7 @@ theorem protocolCoverage_eq_of_ConsistentWith (cov : Role n → Finset Instance)
 /-- **CertifiableAt**(cov, S, C): semantic—exists protocol P and role assignment R
   consistent with cov such that C ⊆ protocolCoverage R P.
   (Stratum S abstract; for single-stratum, use Unit.) -/
-def CertifiableAt {Stratum : Type*} (cov : Role n → Finset Instance) (_S : Stratum)
+def ProtocolCertifiableAt {Stratum : Type*} (cov : Role n → Finset Instance) (_S : Stratum)
     (C : Finset Instance) : Prop :=
   ∃ (P : Prot n) (R : Role n → Verifier Instance),
     ConsistentWith cov R ∧ C ⊆ protocolCoverage R P

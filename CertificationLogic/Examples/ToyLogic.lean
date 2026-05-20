@@ -13,6 +13,8 @@ set_option autoImplicit false
 
 namespace CertificationLogic.Examples
 
+open CertificationLogic.Judgment
+
 /-- Toy formula space: two atoms. -/
 def ToyFormula := Fin 2
 
@@ -20,21 +22,21 @@ def ToyFormula := Fin 2
 def ToyStratum := Unit
 
 /-- Axioms: only formula 0 is an axiom at the single stratum. -/
-def toyAx : CertificationLogic.Ax ToyFormula ToyStratum :=
+def toyAx : Ax ToyFormula ToyStratum :=
   fun _ φ => φ.val = 0
 
-theorem toy_soundness (φ : ToyFormula) (h : CertificationLogic.Derivable ToyFormula ToyStratum toyAx () φ) :
-    CertificationLogic.CertifiableAt ToyFormula ToyStratum toyAx () φ :=
+theorem toy_soundness (φ : ToyFormula) (h : Derivable ToyFormula ToyStratum toyAx () φ) :
+    CertifiableAt ToyFormula ToyStratum toyAx () φ :=
   CertificationLogic.soundness ToyFormula ToyStratum toyAx () φ h
 
-theorem toy_completeness (φ : ToyFormula) (h : CertificationLogic.CertifiableAt ToyFormula ToyStratum toyAx () φ) :
-    CertificationLogic.Derivable ToyFormula ToyStratum toyAx () φ :=
+theorem toy_completeness (φ : ToyFormula) (h : CertifiableAt ToyFormula ToyStratum toyAx () φ) :
+    Derivable ToyFormula ToyStratum toyAx () φ :=
   CertificationLogic.completeness ToyFormula ToyStratum toyAx () φ h
 
 /-- Equivalence: ⊢ φ ↔ CertifiableAt(φ) in the toy. -/
 theorem toy_equiv (φ : ToyFormula) :
-    CertificationLogic.Derivable ToyFormula ToyStratum toyAx () φ ↔
-      CertificationLogic.CertifiableAt ToyFormula ToyStratum toyAx () φ :=
+    Derivable ToyFormula ToyStratum toyAx () φ ↔
+      CertifiableAt ToyFormula ToyStratum toyAx () φ :=
   ⟨fun h => toy_soundness φ h, fun h => toy_completeness φ h⟩
 
 end CertificationLogic.Examples

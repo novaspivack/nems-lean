@@ -10,9 +10,11 @@ set_option autoImplicit false
 
 variable (Formula : Type _)
 variable (Stratum : Type _)
-variable (ax : CertificationLogic.Ax Formula Stratum)
+variable (ax : CertificationLogic.Judgment.Ax Formula Stratum)
 
 namespace CertificationLogic
+
+open Judgment
 
 /-- **T50.1 Soundness:** Every derivable formula is certifiable at that stratum. -/
 theorem soundness (S : Stratum) (φ : Formula) (h : Derivable Formula Stratum ax S φ) :

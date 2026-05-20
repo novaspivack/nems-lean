@@ -6,7 +6,7 @@ import Mathlib.Data.Finset.Basic
 /-!
 # CertificationLogic.Theorems.CapstoneCompleteness — Paper 50 Capstone, T50.2
 
-Completeness: CertifiableAt(cov, S, C) → ⊢_S C via protocol normal form.
+Completeness: ProtocolCertifiableAt(cov, S, C) → ⊢_S C via protocol normal form.
 
 **Nontriviality:** The proof calculus (⊢_S) does not mention protocols directly. Completeness
 requires a **normal-form theorem**: every semantic witness (protocol P with consistent R) can be
@@ -25,28 +25,28 @@ variable {n : ℕ} [DecidableEq (Role n)]
 /-- Protocol coverage sets are derivable (structural recursion on P; the "normal form" content). -/
 theorem derivable_coverage {Stratum : Type*} (cov : Role n → Finset Instance) (S : Stratum)
     (P : Prot n) (R : Role n → Verifier Instance) (hR : ConsistentWith cov R) :
-    Derivable cov (axFromCov cov) S (protocolCoverage R P) := by
+    ProtocolDerivable cov (axFromCov cov) S (protocolCoverage R P) := by
   induction P with
   | atom r =>
     rw [coverage_atom, hR r]
-    exact Derivable.ax S (cov r) ⟨r, Finset.Subset.refl _⟩
+    exact ProtocolDerivable.ax S (cov r) ⟨r, Finset.Subset.refl _⟩
   | union P Q hP hQ =>
     rw [coverage_union]
-    exact Derivable.union S _ _ hP hQ
+    exact ProtocolDerivable.union S _ _ hP hQ
   | inter P Q hP hQ =>
     have hsub := protocolCoverage_inter_subset_union R P Q
-    exact Derivable.subset S (protocolCoverage R P ∪ protocolCoverage R Q)
-      (protocolCoverage R (Prot.inter P Q)) (Derivable.union S _ _ hP hQ) hsub
+    exact ProtocolDerivable.subset S (protocolCoverage R P ∪ protocolCoverage R Q)
+      (protocolCoverage R (Prot.inter P Q)) (ProtocolDerivable.union S _ _ hP hQ) hsub
   | prefer P Q hP hQ =>
     have hsub := protocolCoverage_prefer_subset_union R P Q
-    exact Derivable.subset S (protocolCoverage R P ∪ protocolCoverage R Q)
-      (protocolCoverage R (Prot.prefer P Q)) (Derivable.union S _ _ hP hQ) hsub
+    exact ProtocolDerivable.subset S (protocolCoverage R P ∪ protocolCoverage R Q)
+      (protocolCoverage R (Prot.prefer P Q)) (ProtocolDerivable.union S _ _ hP hQ) hsub
 
 /-- **T50.2 Completeness (capstone):** Every certifiable claim set is derivable. -/
 theorem completeness_capstone {Stratum : Type*} (cov : Role n → Finset Instance) (S : Stratum)
-    (C : Finset Instance) (h : CertifiableAt cov S C) :
-    Derivable cov (axFromCov cov) S C := by
+    (C : Finset Instance) (h : ProtocolCertifiableAt cov S C) :
+    ProtocolDerivable cov (axFromCov cov) S C := by
   obtain ⟨P, R, hR, hC⟩ := h
-  exact Derivable.subset S (protocolCoverage R P) C (derivable_coverage cov S P R hR) hC
+  exact ProtocolDerivable.subset S (protocolCoverage R P) C (derivable_coverage cov S P R hR) hC
 
 end CertificationLogic

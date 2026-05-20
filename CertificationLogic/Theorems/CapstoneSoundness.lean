@@ -6,7 +6,7 @@ import Mathlib.Data.Finset.Basic
 /-!
 # CertificationLogic.Theorems.CapstoneSoundness — Paper 50 Capstone, T50.1
 
-Soundness: ⊢_S C → CertifiableAt(cov, S, C) for protocol-based semantics.
+Soundness: ⊢_S C → ProtocolCertifiableAt(cov, S, C) for protocol-based semantics.
 -/
 
 set_option autoImplicit false
@@ -18,8 +18,8 @@ variable {n : ℕ} [DecidableEq (Role n)]
 
 /-- **T50.1 Soundness (capstone):** Every derivable claim set is certifiable. -/
 theorem soundness_capstone {Stratum : Type*} (cov : Role n → Finset Instance) (S : Stratum)
-    (C : Finset Instance) (h : Derivable cov (axFromCov cov) S C) :
-    CertifiableAt cov S C := by
+    (C : Finset Instance) (h : ProtocolDerivable cov (axFromCov cov) S C) :
+    ProtocolCertifiableAt cov S C := by
   induction h with
   | ax S C hax =>
     obtain ⟨r, hC⟩ := hax
