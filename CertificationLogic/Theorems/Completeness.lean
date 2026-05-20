@@ -19,7 +19,8 @@ open Judgment
 /-- **T50.2 Completeness:** Every certifiable formula is derivable at that stratum. -/
 theorem completeness (S : Stratum) (φ : Formula) (h : CertifiableAt Formula Stratum ax S φ) :
     Derivable Formula Stratum ax S φ := by
-  cases h with
-  | ax S φ h' => exact Derivable.ax S φ h'
+  cases h
+  apply Derivable.ax
+  assumption
 
 end CertificationLogic
