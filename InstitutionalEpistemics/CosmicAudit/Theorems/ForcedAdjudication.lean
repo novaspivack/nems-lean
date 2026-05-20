@@ -1,4 +1,4 @@
-import CosmicAudit.Core.ForcedNetwork
+import InstitutionalEpistemics.CosmicAudit.Core.ForcedNetwork
 
 /-! Paper 49, T49.1: Forced distributed adjudication (no universal judge under DiagBarrier). -/
 
