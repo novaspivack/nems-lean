@@ -52,34 +52,16 @@ def toyC2 : Finset (Fin 4) := {2, 3}
 lemma toySound1 : SoundOnCover toyDomain toyV1 toyC1 := by
   constructor
   · intro c hc
-    fin_cases c <;> simp [toyC1] at hc <;> simp [toyV1]
-    · rfl
-    · rfl
-    · cases hc with | inl h | inr h => (have := congr_arg Fin.val h; omega)
-    · cases hc with | inl h | inr h => (have := congr_arg Fin.val h; omega)
+    fin_cases c <;> simp [toyC1] at hc <;> simp [toyV1, toyTruth] <;> try rfl
   · intro c hc
-    simp only [toyC1, Finset.mem_insert, Finset.mem_singleton] at hc
-    fin_cases c <;> simp only [toyV1]
-    · exact (hc (Or.inl rfl)).elim
-    · exact (hc (Or.inr rfl)).elim
+    fin_cases c <;> simp [toyC1, toyV1] at hc ⊢
 
 lemma toySound2 : SoundOnCover toyDomain toyV2 toyC2 := by
   constructor
   · intro c hc
-    fin_cases c <;> simp [toyC2] at hc <;> simp [toyV2]
-    · rcases hc with h | h
-      · have heq := congr_arg Fin.val h; simp at heq
-      · have heq := congr_arg Fin.val h; simp at heq
-    · rcases hc with h | h
-      · have heq := congr_arg Fin.val h; simp at heq
-      · have heq := congr_arg Fin.val h; simp at heq
-    · rfl
-    · rfl
+    fin_cases c <;> simp [toyC2] at hc <;> simp [toyV2, toyTruth] <;> try rfl
   · intro c hc
-    simp only [toyC2, Finset.mem_insert, Finset.mem_singleton] at hc
-    fin_cases c <;> simp [toyV2]
-    · exact hc (Or.inl (rfl : (⟨2, by omega⟩ : Fin 4) = (2 : Fin 4)))
-    · exact hc (Or.inr (rfl : (⟨3, by omega⟩ : Fin 4) = (3 : Fin 4)))
+    fin_cases c <;> simp [toyC2, toyV2] at hc ⊢
 
 /-- Toy society: two verifiers with complementary covers. -/
 def toySociety : Society toyDomain := [(toyV1, toyC1), (toyV2, toyC2)]
@@ -97,14 +79,13 @@ lemma toySocietySound : SocietySound toySociety := by
 lemma toySocietyCover_full : societyCover toySociety = Finset.univ := by
   ext i
   simp only [societyCover, toySociety, List.foldl_cons, List.foldl_nil, Finset.mem_union,
-    toyC1, toyC2, Finset.mem_insert, Finset.mem_singleton, Finset.mem_univ]
+    toyC1, toyC2, Finset.mem_insert, Finset.mem_singleton, Finset.mem_univ, or_true]
   fin_cases i <;> simp
 
 /-- Strict improvement: society covers all claims; each individual covers only two. -/
 theorem toy_strict_improvement (i : Fin 4) :
     i ∈ societyCover toySociety ∧ (i ∉ toyC1 ∨ i ∉ toyC2) := by
   rw [toySocietyCover_full]
-  simp only [Finset.mem_univ]
   fin_cases i <;> simp [toyC1, toyC2]
 
 /-- Diversity: the two covers are different and incomparable. -/

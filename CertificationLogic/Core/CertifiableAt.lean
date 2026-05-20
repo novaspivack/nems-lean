@@ -21,11 +21,11 @@ variable {Instance n}
 
 /-- Role assignment R is consistent with coverage map cov when each R r has
   coverage exactly cov r. -/
-def ConsistentWith (cov : CovMap Instance n) (R : Protocols.RoleAssign) : Prop :=
+def ConsistentWith (cov : CovMap Instance n) (R : Protocols.RoleAssign Instance n) : Prop :=
   ∀ r, CertificationLogic.coverage (R r) = cov r
 
 /-- Canonical role assignment from a coverage map. -/
-def canonicalRoleAssign (cov : CovMap Instance n) : Protocols.RoleAssign :=
+def canonicalRoleAssign (cov : CovMap Instance n) : Protocols.RoleAssign Instance n :=
   fun r => CertificationLogic.canonicalVerifier (cov r)
 
 theorem ConsistentWith_canonical (cov : CovMap Instance n) :
@@ -33,7 +33,8 @@ theorem ConsistentWith_canonical (cov : CovMap Instance n) :
   fun r => CertificationLogic.coverage_canonicalVerifier (cov r)
 
 /-- Any consistent R has the same protocol coverage as the canonical assignment. -/
-theorem protocolCoverage_eq_of_ConsistentWith (cov : CovMap Instance n) (R : Protocols.RoleAssign)
+theorem protocolCoverage_eq_of_ConsistentWith (cov : CovMap Instance n)
+    (R : Protocols.RoleAssign Instance n)
     (hR : ConsistentWith cov R) (P : Protocols.Prot n) :
     Protocols.protocolCoverage R P = Protocols.protocolCoverage (canonicalRoleAssign cov) P :=
   Protocols.protocolCoverage_eq_of_same_coverage R (canonicalRoleAssign cov)
@@ -44,7 +45,7 @@ theorem protocolCoverage_eq_of_ConsistentWith (cov : CovMap Instance n) (R : Pro
   (Stratum S abstract; for single-stratum, use Unit.) -/
 def CertifiableAt {Stratum : Type*} (cov : CovMap Instance n) (_S : Stratum)
     (C : Formula Instance) : Prop :=
-  ∃ (P : Protocols.Prot n) (R : Protocols.RoleAssign),
+  ∃ (P : Protocols.Prot n) (R : Protocols.RoleAssign Instance n),
     ConsistentWith cov R ∧ C ⊆ Protocols.protocolCoverage R P
 
 end CertificationLogic

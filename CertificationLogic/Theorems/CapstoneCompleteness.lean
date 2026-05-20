@@ -28,7 +28,7 @@ variable {Instance n}
 
 /-- Protocol coverage sets are derivable (structural recursion on P; the "normal form" content). -/
 theorem derivable_coverage {Stratum : Type*} (cov : CovMap Instance n) (S : Stratum)
-    (P : Protocols.Prot n) (R : Protocols.RoleAssign) (hR : ConsistentWith cov R) :
+    (P : Protocols.Prot n) (R : Protocols.RoleAssign Instance n) (hR : ConsistentWith cov R) :
     Derivable cov (axFromCov cov) S (Protocols.protocolCoverage R P) := by
   induction P with
   | atom r =>

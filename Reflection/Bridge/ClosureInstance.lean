@@ -37,5 +37,6 @@ instantiated for `(Code → Obj)`, the class of internal transformers
 is a candidate R. If that class is diagonally closed, the Diagonal
 Closure Theorem applies. Bounded-cover and canonicalization (Closure)
 correspond to stronger R levels. -/
+theorem closure_instance_bridge_documented : True := trivial
 
 end Reflection
