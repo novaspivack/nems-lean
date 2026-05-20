@@ -17,40 +17,36 @@ Subset of the union of branches). Thus completeness is a theorem, not a definiti
 
 set_option autoImplicit false
 
-variable (Instance : Type*) [Fintype Instance] [DecidableEq Instance]
-variable (n : ℕ) [DecidableEq (Role n)]
-
 namespace CertificationLogic
 
-open CertificationLogic.Protocols
-
-variable {Instance n}
+variable {Instance : Type*} [Fintype Instance] [DecidableEq Instance]
+variable {n : ℕ} [DecidableEq (Role n)]
 
 /-- Protocol coverage sets are derivable (structural recursion on P; the "normal form" content). -/
-theorem derivable_coverage {Stratum : Type*} (cov : CovMap Instance n) (S : Stratum)
-    (P : Protocols.Prot n) (R : Protocols.RoleAssign Instance n) (hR : ConsistentWith cov R) :
-    Derivable cov (axFromCov cov) S (Protocols.protocolCoverage R P) := by
+theorem derivable_coverage {Stratum : Type*} (cov : CovMap) (S : Stratum)
+    (P : Prot n) (R : RoleAssign Instance n) (hR : ConsistentWith cov R) :
+    Derivable cov (axFromCov cov) S (protocolCoverage R P) := by
   induction P with
   | atom r =>
-    rw [Protocols.coverage_atom, hR r]
+    rw [coverage_atom, hR r]
     exact Derivable.ax S (cov r) ⟨r, Finset.Subset.refl _⟩
   | union P Q hP hQ =>
-    rw [Protocols.coverage_union]
+    rw [coverage_union]
     exact Derivable.union S _ _ hP hQ
   | inter P Q hP hQ =>
-    have hsub := Protocols.protocolCoverage_inter_subset_union R P Q
-    exact Derivable.subset S (Protocols.protocolCoverage R P ∪ Protocols.protocolCoverage R Q)
-      (Protocols.protocolCoverage R (Prot.inter P Q)) (Derivable.union S _ _ hP hQ) hsub
+    have hsub := protocolCoverage_inter_subset_union R P Q
+    exact Derivable.subset S (protocolCoverage R P ∪ protocolCoverage R Q)
+      (protocolCoverage R (Prot.inter P Q)) (Derivable.union S _ _ hP hQ) hsub
   | prefer P Q hP hQ =>
-    have hsub := Protocols.protocolCoverage_prefer_subset_union R P Q
-    exact Derivable.subset S (Protocols.protocolCoverage R P ∪ Protocols.protocolCoverage R Q)
-      (Protocols.protocolCoverage R (Prot.prefer P Q)) (Derivable.union S _ _ hP hQ) hsub
+    have hsub := protocolCoverage_prefer_subset_union R P Q
+    exact Derivable.subset S (protocolCoverage R P ∪ protocolCoverage R Q)
+      (protocolCoverage R (Prot.prefer P Q)) (Derivable.union S _ _ hP hQ) hsub
 
 /-- **T50.2 Completeness (capstone):** Every certifiable claim set is derivable. -/
-theorem completeness_capstone {Stratum : Type*} (cov : CovMap Instance n) (S : Stratum)
-    (C : Formula Instance) (h : CertifiableAt cov S C) :
+theorem completeness_capstone {Stratum : Type*} (cov : CovMap) (S : Stratum)
+    (C : Formula) (h : CertifiableAt cov S C) :
     Derivable cov (axFromCov cov) S C := by
   obtain ⟨P, R, hR, hC⟩ := h
-  exact Derivable.subset S (Protocols.protocolCoverage R P) C (derivable_coverage cov S P R hR) hC
+  exact Derivable.subset S (protocolCoverage R P) C (derivable_coverage cov S P R hR) hC
 
 end CertificationLogic
