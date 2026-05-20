@@ -1,6 +1,6 @@
 import CertificationLogic.Core.InstanceSemantics
 import InstitutionalEpistemics.Core.Roles
-import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Union
 
 /-!
 # CertificationLogic.Core.Protocols — Paper 50 Capstone
@@ -32,7 +32,6 @@ def atoms (P : Prot n) : Finset (Role n) :=
   | Prot.union P Q => atoms P ∪ atoms Q
   | Prot.inter P Q => atoms P ∪ atoms Q
   | Prot.prefer P Q => atoms P ∪ atoms Q
-  end
 
 /-- Role assignment: each role has a verifier. -/
 def RoleAssign : Type _ := Role n → CertificationLogic.Verifier Instance
