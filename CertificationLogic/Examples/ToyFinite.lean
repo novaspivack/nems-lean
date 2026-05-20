@@ -34,25 +34,25 @@ def toyCov : Role toyN → Finset toyInstance := fun r =>
 
 /-- Full protocol coverage = union = all four. -/
 theorem toy_full_coverage :
-    @protocolCoverage toyInstance toyN _ _ (canonicalRoleAssign toyCov)
+    protocolCoverage (canonicalRoleAssign toyCov)
       (Prot.union (Prot.atom (Role.mk ⟨0, by decide⟩)) (Prot.atom (Role.mk ⟨1, by decide⟩))) =
       Finset.univ := by
   ext a
   fin_cases a <;>
     simp [protocolCoverage, coverage_union, coverage_atom, mem_coverage, canonicalVerifier,
-      canonicalRoleAssign, toyCov, Verdict, eval, Prot.union, Prot.atom]
+      canonicalRoleAssign, toyCov, eval]
 
 /-- **Toy soundness:** derivable implies certifiable. -/
 theorem toy_soundness (C : Finset toyInstance)
     (h : @Derivable Unit toyCov (axFromCov toyCov) () C) :
     @CertifiableAt Unit toyCov () C :=
-  @soundness_capstone toyInstance toyN _ _ _ _ toyCov () C h
+  soundness_capstone toyCov () C h
 
 /-- **Toy completeness:** certifiable implies derivable. -/
 theorem toy_completeness (C : Finset toyInstance)
     (h : @CertifiableAt Unit toyCov () C) :
     @Derivable Unit toyCov (axFromCov toyCov) () C :=
-  @completeness_capstone toyInstance toyN _ _ _ _ toyCov () C h
+  completeness_capstone toyCov () C h
 
 /-- **Toy equivalence:** ⊢ C ↔ CertifiableAt(C). -/
 theorem toy_equiv (C : Finset toyInstance) :
