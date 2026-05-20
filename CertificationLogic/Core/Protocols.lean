@@ -23,8 +23,6 @@ inductive Prot (n : ℕ)
   | inter (P Q : Prot n)
   | prefer (P Q : Prot n)
 
-variable {Instance n}
-
 /-- The set of role atoms that appear in a protocol (for normal-form reasoning). -/
 def atoms (P : Prot n) : Finset (Role n) :=
   match P with
@@ -34,10 +32,11 @@ def atoms (P : Prot n) : Finset (Role n) :=
   | Prot.prefer P Q => atoms P ∪ atoms Q
 
 /-- Role assignment: each role has a verifier. -/
-def RoleAssign : Type _ := Role n → CertificationLogic.Verifier Instance
+abbrev RoleAssign : Type _ := Role n → CertificationLogic.Verifier Instance
 
 /-- Evaluate protocol to a verifier. -/
-def eval (P : Prot n) (R : RoleAssign) : CertificationLogic.Verifier Instance :=
+def eval (P : Prot n) (R : Role n → CertificationLogic.Verifier Instance) :
+    CertificationLogic.Verifier Instance :=
   match P with
   | Prot.atom r => R r
   | Prot.union P Q =>
@@ -61,11 +60,12 @@ def eval (P : Prot n) (R : RoleAssign) : CertificationLogic.Verifier Instance :=
       | (CertificationLogic.Verdict.abstain, v) => v
 
 /-- Coverage of evaluated protocol. -/
-def protocolCoverage (R : RoleAssign) (P : Prot n) : Finset Instance :=
+def protocolCoverage (R : Role n → CertificationLogic.Verifier Instance) (P : Prot n) :
+    Finset Instance :=
   CertificationLogic.coverage (eval P R)
 
 /-- Atomic protocol coverage equals the verifier's non-abstain set. -/
-theorem coverage_atom (R : RoleAssign) (r : Role n) :
+theorem coverage_atom (R : Role n → CertificationLogic.Verifier Instance) (r : Role n) :
     protocolCoverage R (Prot.atom r) = CertificationLogic.coverage (R r) := rfl
 
 /-- Union coverage: instances where either branch is non-abstain. -/
@@ -107,7 +107,9 @@ theorem coverage_union_right (R : RoleAssign) (P Q : Prot n) :
   rw [coverage_union]; exact Finset.subset_union_right _ (protocolCoverage R Q)
 
 /-- When R and R' have the same coverage per role, protocol coverage is equal. -/
-theorem protocolCoverage_eq_of_same_coverage (R R' : RoleAssign)
+theorem protocolCoverage_eq_of_same_coverage
+    (R : Role n → CertificationLogic.Verifier Instance)
+    (R' : Role n → CertificationLogic.Verifier Instance)
     (h : ∀ r, CertificationLogic.coverage (R r) = CertificationLogic.coverage (R' r))
     (P : Prot n) :
     protocolCoverage R P = protocolCoverage R' P := by
