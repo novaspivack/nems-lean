@@ -41,9 +41,9 @@ def ExtensionDichotomy (S : TheorySpace) : Prop :=
   ∀ T' T, S.Extends T' T → S.RecordEquivalent T' T ∨ S.FailsPSC T'
 
 /-- **Premise 2:** Adding micro-parameters that do not change the record facts
-strictly increases the descriptional complexity of the theory. -/
+does not decrease the descriptional complexity of the theory. -/
 def ExtensionComplexity (S : TheorySpace) : Prop :=
-  ∀ T' T, S.Extends T' T → S.RecordEquivalent T' T → S.K T < S.K T'
+  ∀ T' T, S.Extends T' T → S.RecordEquivalent T' T → S.K T ≤ S.K T'
 
 /-- **Definition:** A theory `T` is PSC-Optimal if it minimizes complexity
 among all record-equivalent theories. -/
@@ -51,9 +51,10 @@ def PSCOptimal (S : TheorySpace) (T : S.Theory) : Prop :=
   ∀ T', S.RecordEquivalent T' T → S.K T ≤ S.K T'
 
 /-- **Definition:** A theory `T'` is physically redundant relative to `T` if it
-predicts the same records but is strictly more complex. -/
+predicts the same records but is at least as complex (no genuine gain in
+description power). -/
 def Redundant (S : TheorySpace) (T' T : S.Theory) : Prop :=
-  S.RecordEquivalent T' T ∧ S.K T < S.K T'
+  S.RecordEquivalent T' T ∧ S.K T ≤ S.K T'
 
 /-- **Theorem 18.1: Semantic Terminality.**
 

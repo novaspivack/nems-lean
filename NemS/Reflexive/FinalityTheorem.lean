@@ -87,8 +87,8 @@ theorem foundational_finality (S : ReflexiveTheorySpace)
     have h_opt_T : S.PSCOptimal T := h_loop.1
     have h_le : S.K T ≤ S.K T' := h_opt_T T' h_req
     rcases lt_or_eq_of_le h_le with h_lt | h_eq
-    · -- Subcase 2a: T' is strictly more complex; it is therefore redundant.
-      exact Or.inr (Or.inl ⟨h_req, h_lt⟩)
+    · -- Subcase 2a: T' is at least as complex (strictly so here); it is therefore redundant.
+      exact Or.inr (Or.inl ⟨h_req, Nat.le_of_lt h_lt⟩)
     · -- Subcase 2b: T' has the same complexity as T.
       -- Since T' is record-equivalent to T and K T' = K T, T' is also PSC-Optimal:
       -- for any T'' record-equivalent to T', transitivity gives T'' record-equivalent to T,
