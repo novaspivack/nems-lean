@@ -54,6 +54,11 @@ structure PSCCompatibleSpace extends TheorySpace where
   /-- Record equivalence is transitive. -/
   req_trans : ∀ T1 T2 T3, RecordEquivalent T1 T2 → RecordEquivalent T2 T3 →
               RecordEquivalent T1 T3
+  /-- Orbit-admissibility predicate: encodes the physical orbit constraints that
+      any valid theory in this compatible space must satisfy.
+      Concrete instances (e.g. GTECompatibleSpace) define this to be the
+      fixed-neighborhood agreement constraint: `∀ l c r, isFixed l c r → f l c r = fmdl l c r`. -/
+  orbit_admissible : Theory → Prop
 
 /-- A PSC-consistent arithmetic substrate: a PSC-compatible theory space with a
     PSC-optimal theory in that space. These are the **objects** of PSCSys. -/
@@ -63,6 +68,10 @@ structure PSCSubstrate (S : PSCCompatibleSpace) where
   /-- PSC-optimality: `T` minimizes descriptional complexity among all
       record-equivalent theories. -/
   optimal : TheorySpace.PSCOptimal S.toTheorySpace T
+  /-- Orbit-admissibility: `T` satisfies the physical orbit constraints of this
+      compatible space.  For GTECompatibleSpace this is `z7CARecordEq T fmdl`
+      (agreement with fmdl on all fixed neighborhoods). -/
+  oa_proof : S.orbit_admissible T
 
 namespace PSCSubstrate
 
