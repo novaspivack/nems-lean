@@ -63,6 +63,8 @@ import NemS.Physics.Rigidity
 import NemS.Terminality.ExistentialRigidity
 import NemS.Adjudication.IrreducibleAgency
 import NemS.Reflexive.FinalityTheorem
+import NemS.Category.PSCSys
+import NemS.Category.FPSC
 import NemS.Cosmology.SemanticFloor
 import NemS.Cosmology.CosmologicalClosureUnification
 import NemS.Cosmology.FoundationalAdmissibility
