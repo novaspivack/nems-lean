@@ -3,7 +3,7 @@
 **Version:** v2.7.0  
 **Lean:** leanprover/lean4:v4.29.1  
 **Mathlib:** v4.29.1  
-**Build:** 1713 jobs, 0 errors, 2 sorrys (BuschGleason existence: `delta_eq_zero_core`, `rhoCandidate_psd`; down from 8; see MANIFEST.md), **1 explicit axiom** (`re_trace_psd_mul_psd_nonneg`)
+**Build:** 1723 jobs, 0 errors, 2 sorrys (BuschGleason existence: `delta_eq_zero_core`, `rhoCandidate_psd`; down from 8; see MANIFEST.md), **1 explicit axiom** (`re_trace_psd_mul_psd_nonneg`)
 
 **Lean 4.29 compatibility:** See `LEAN_4.29_UPGRADE_DISCLOSURE.md` for tactic/API fixes in BuschGleason.lean (no theorem changes).
 
@@ -33,6 +33,11 @@ This Lean 4 library formalizes the core logical spine of the NEMS (No External M
 **Diagonal Barrier:**
 - `asr_rt_not_computable`: ASR ⇒ record-truth not computable (reduces to Mathlib's `ComputablePred.halting_problem`)
 - `no_total_effective_rt_decider`: Diagonal-capable ⇒ no total computable RT decider
+
+**Diagonal Classification (0 sorry, 0 custom axioms):**
+- `rt_sigma1_complete_on_diagonal` (`NemS/Diagonal/Sigma1Completeness.lean`): under ASR + the finite-witness premise `Sigma1RecordTruth` (named structure: record-truth is Σ₁⁰), `RT` is many-one equivalent to the halting predicate — Σ₁⁰-complete, Turing degree exactly 0′. Hardness direction `halting_manyOne_reducible_to_RT` packages the certified `halts_iff_RT` + `encode_computable` bridge as a many-one reduction; membership direction `rt_manyOne_reducible_to_halting_zero` uses computable witness search and code currying.
+- `no_computable_convergence_modulus` (`NemS/Diagonal/NoConvergenceModulus.lean`): no total computable stage approximation of record-truth has a total computable convergence modulus — a modulus would yield a computable decider, contradicting `asr_rt_not_computable`. Operational consequence: no internal certification of "the limit has been reached."
+- `RecordReadout` (`NemS/Diagonal/Premises.lean`): record-readout premise (computable truth-bit label tracking `RT` on the encode-image), consumed by transputation-lean's diagonal degree theorems.
 
 **MFRR Bridge:**
 - `PSC_and_choice_force_PT`: PSC bundle + record-divergent choice ⇒ PT exists
@@ -124,7 +129,7 @@ lake update    # fetches Mathlib (cached oleans downloaded automatically)
 lake build     # compiles the full library
 ```
 
-Expected output: `Build completed successfully (1713 jobs).`
+Expected output: `Build completed successfully (1723 jobs).`
 
 ## Axiom Audit
 
@@ -219,6 +224,6 @@ If you use this artifact, please cite:
   title        = {nems-lean: Lean 4 Formalization of the NEMS Core Spine and MFRR Bridge},
   howpublished = {Software artifact, Lean 4.29.0-rc6 / Mathlib 4.29.0-rc6},
   year         = {2026},
-  note         = {v2.7.0: 1713 jobs; 2 sorrys (BuschGleason existence only, down from 8; see MANIFEST); Papers 00–92 NEMS suite; 1 explicit axiom re_trace_psd_mul_psd_nonneg.}
+  note         = {v2.7.0: 1723 jobs; 2 sorrys (BuschGleason existence only, down from 8; see MANIFEST); Papers 00–92 NEMS suite; 1 explicit axiom re_trace_psd_mul_psd_nonneg.}
 }
 ```

@@ -43,14 +43,14 @@ modal logic (Löb 1955, Boolos 1993).
 
 ---
 
-### Sorry status (updated SS2 — 2026-04-14)
+### Sorry status
 
 **2 `sorry` statements remain** (down from 8), all in `BuschGleason.lean` (the hard Busch/Gleason
-existence direction). See SS2 SPEC_016 for full closure plan.
+existence direction). See Future Work in ARTIFACT.md for the closure plan.
 
-**SS2 changes (2026-04-14):**
+**Closure summary:**
 - `NemS/ReverseBICS/BICS.lean` sorrys 1–2: **CLOSED** — via `re_trace_psd_mul_psd_nonneg` axiom
-  (declared in `MatrixBasics.lean`; mathematically sound; Lean bridge pending per SPEC_016).
+  (declared in `MatrixBasics.lean`; mathematically sound; Lean bridge to `Mathlib.Matrix.PosSemidef` pending).
 - `GPTClosure/Instances/QuantumFinite.lean` sorrys 3–5: **CLOSED** — cone pointedness via
   Tr(A²)=0→A=0 argument, nonneg via same axiom, uniqueness wired to `busch_gleason_unique`.
 - `InstitutionalEpistemics/Theorems/LowerBounds.lean` sorry 6: **CLOSED** — pigeonhole/counting proof.
@@ -58,7 +58,7 @@ existence direction). See SS2 SPEC_016 for full closure plan.
 
 **New explicit axiom:** `re_trace_psd_mul_psd_nonneg` in `MatrixBasics.lean` — Re(Tr(AB)) ≥ 0
 for PSD Hermitian A, B. Mathematical proof: spectral factorization A = CᴴC, cyclic trace,
-PSD of B. Lean proof pending Mathlib.Matrix.PosSemidef bridge (SPEC_016_SS2). This axiom is
+PSD of B. Lean proof pending Mathlib.Matrix.PosSemidef bridge. This axiom is
 explicitly disclosed and tracked in the assumption ledger.
 
 **Remaining sorrys (2):**
@@ -82,7 +82,7 @@ All other theorems remain fully proved without `sorry`:
 - `busch_gleason_unique` — 0 sorrys (fully proved)
 - Full diagonal barrier, physical incompleteness, determinism no-go chains — 0 sorrys
 - Complete NEMS core, MFRR bridge, PT non-effectiveness — 0 sorrys
-- SPEC_69 QuotientSectionStrength — 0 sorrys
+- QuotientSectionStrength — 0 sorrys
 
 ## Verified theorems
 
@@ -123,7 +123,24 @@ All other theorems remain fully proved without `sorry`:
 | `NemS/Diagonal/Barrier.lean` | `no_total_effective_rt_decider` | ASR ⇒ ¬ ComputablePred RT |
 | `NemS/Diagonal/Instantiation.lean` | `halting_framework_rt_not_computable` | Concrete instantiation recovers halting undecidability |
 
-### Quotient Section / SPEC_68_IRS, SPEC_69_DSL (v2.7.0)
+### Diagonal Classification (Σ₁⁰-completeness and no-modulus)
+
+| File | Definition/Theorem | Statement |
+|------|--------------------|-----------|
+| `NemS/Diagonal/Premises.lean` | `Sigma1RecordTruth` | Finite-witness premise: computable witness flag with `RT n ↔ ∃ t, witness n t` (record-truth is Σ₁⁰); named structure, not an axiom |
+| `NemS/Diagonal/Premises.lean` | `Sigma1RecordTruth.rePred` | The premise yields Mathlib's `REPred RT` (Σ₁ membership) via computable witness search |
+| `NemS/Diagonal/Premises.lean` | `RecordReadout` | Record-readout premise: computable truth-bit label agreeing with `RT` on the ASR encode-image |
+| `NemS/Diagonal/Sigma1Completeness.lean` | `halting_manyOne_reducible_to_RT` | HALT ≤₀ RT via `c ↦ encode c n` (the certified halting bridge **is** a many-one reduction; needs only ASR) |
+| `NemS/Diagonal/Sigma1Completeness.lean` | `rt_manyOne_reducible_to_halting_zero` | RT ≤₀ halting-at-0 via witness-search code + currying (needs `Sigma1RecordTruth`) |
+| `NemS/Diagonal/Sigma1Completeness.lean` | `rt_sigma1_complete_on_diagonal` | **ManyOneEquiv RT (halting at 0): record-truth is Σ₁⁰-complete — Turing degree exactly 0′** |
+| `NemS/Diagonal/Sigma1Completeness.lean` | `rt_sigma1_complete_not_delta1` | RT not computable ∧ `REPred RT` (Σ₁⁰ \ Δ₁⁰ membership packaged) |
+| `NemS/Diagonal/NoConvergenceModulus.lean` | `ComputableConvergenceModulus` | Total computable stage function + total computable modulus stabilizing at the truth value |
+| `NemS/Diagonal/NoConvergenceModulus.lean` | `computableConvergenceModulus_implies_computablePred` | A computable convergence modulus yields a computable decider |
+| `NemS/Diagonal/NoConvergenceModulus.lean` | `no_computable_convergence_modulus` (+ `_RT`) | **No computable convergence modulus for record-truth** (operational no-hypercomputation; wraps `asr_rt_not_computable`) |
+
+Diagonal classification modules: **0 sorry, 0 custom axioms.** Premises (`Sigma1RecordTruth`, `RecordReadout`) enter as structure hypotheses, never as axioms. Used by the companion repo transputation-lean for the transputation classification (limit-computable adjudication at degree 0′).
+
+### Quotient Section and Selector Strength (v2.7.0)
 
 | File | Theorem/Def | Statement |
 |------|-------------|-----------|
@@ -139,7 +156,7 @@ All other theorems remain fully proved without `sorry`:
 | `NemS/Diagonal/QuotientSectionBridge.lean` | `partrec_singleton_halting` | Singleton halting function χₖ is partial recursive |
 | `NemS/Diagonal/QuotientSectionBridge.lean` | `halting_framework_unbounded_world_types` | Halting framework has unboundedly many world-types |
 | `NemS/Diagonal/QuotientSectionBridge.lean` | `halting_framework_no_computable_section` | Halting framework: no computably realizable quotient section |
-| `NemS/Diagonal/QuotientSectionStrength.lean` | `halting_framework_no_decider_at_computable` | **SPEC_69:** Halting framework: no computable δ deciding nontrivial extensional T |
+| `NemS/Diagonal/QuotientSectionStrength.lean` | `halting_framework_no_decider_at_computable` | Halting framework: no computable δ deciding nontrivial extensional T |
 | `NemS/Diagonal/QuotientSectionStrength.lean` | `halting_framework_no_total_computable_decider` | General form: no computable decider for any extensional nontrivial T |
 
 ### MFRR Bridge (v2.0.0)
@@ -204,13 +221,13 @@ All other theorems remain fully proved without `sorry`:
 | `NemS/Cosmology/Bridges/ToFinality.lean` | `closure_schema_implies_internal_realized_history` | Schema ⇒ no external selection |
 | `NemS/Cosmology/Bridges/ToFoundationalFinality.lean` | `closure_schema_implies_outside_dependence_exhaustion` | Schema ⇒ outside-dependence exhaustion |
 | `NemS/Cosmology/Bridges/ToFoundationalFinality.lean` | `cosmological_closure_unification_plus_finality` | Summit + fuller Finality |
-| `NemS/Cosmology/Bridges/ToRecordResolution.lean` | `ucf_record_resolution_monotone` | UCF ⇒ record resolution H(t+1) ≥ H(t) (EPIC_66_SL2 Track 1) |
-| `NemS/Cosmology/Bridges/ToHiddenHistoryEntropy.lean` | `ucf_fiberSize_le_under_forget`, `ucf_fiberSize_lt_under_strict_refinement` | EPIC_66_SL2 Track 2: fiber entropy decreases under refinement |
+| `NemS/Cosmology/Bridges/ToRecordResolution.lean` | `ucf_record_resolution_monotone` | UCF ⇒ record resolution H(t+1) ≥ H(t) |
+| `NemS/Cosmology/Bridges/ToHiddenHistoryEntropy.lean` | `ucf_fiberSize_le_under_forget`, `ucf_fiberSize_lt_under_strict_refinement` | Fiber entropy decreases under refinement |
 | `NemS/Cosmology/Bridges/ToGPTClosure.lean` | `GPTClosureStructureExists`, `gpt_closure_structure_exists` | Post-67 Phase 2: bridge to GPTClosure (Paper 39) |
 | `NemS/Cosmology/Bridges/ToLawCalibration.lean` | `LawCalibrationStructureExists`, `law_calibration_structure_exists` | Post-67 Phase 3: bridge to LawCalibration (Paper 44) |
 | `NemS/Cosmology/Bridges/ToAdjudicators.lean` | `strong_closure_schema_implies_adjudicator_infrastructure` | Strong schema + witness ⇒ adjudicator network |
 | `NemS/Cosmology/CosmologicalClosureUnification.lean` | `cosmological_closure_unification` | **Grand unification:** Schema ⇒ admissible ∧ irreversible ∧ internal realized |
-| `NemS/Cosmology/FoundationalAdmissibility.lean` | `FoundationallyViable`, `ClosureCompatible` | EPIC_67_FA: viability classification predicates |
+| `NemS/Cosmology/FoundationalAdmissibility.lean` | `FoundationallyViable`, `ClosureCompatible` | Viability classification predicates (Paper 79) |
 | `NemS/Cosmology/FoundationalAdmissibility.lean` | `foundational_admissibility` | ClosureCompatible ⇒ FoundationallyViable |
 | `NemS/Cosmology/FoundationalAdmissibility.lean` | `foundationally_viable_implies_closure_compatible` | **Converse:** FoundationallyViable ⇒ ClosureCompatible |
 | `NemS/Cosmology/FoundationalAdmissibility.lean` | `viability_failure_implies_not_closure_compatible` | ¬FoundationallyViable ⇒ ¬ClosureCompatible |
@@ -231,7 +248,7 @@ All other theorems remain fully proved without `sorry`:
 | `NemS/Cosmology/UnifiedClosureFramework/Examples/Toy.lean` | `toyUnified`, `unified_framework_inhabited` | Structural nonvacuity witness |
 | `NemS/Cosmology/StrongCosmologicalClosureSchema.lean` | `StrongCosmologicalClosureSchema` | Base schema + GRS + NCC (Paper 17) |
 
-CosmologicalClosureUnification: **0 sorry**. Full grand theorem discharged. Extension A: stronger finality corollary (`cosmological_closure_unification_plus_finality`). Extension B: strong schema and adjudicator bridge under witness. EPIC_66_SL2: record resolution monotonicity bridge (`ucf_record_resolution_monotone`). EPIC_67_FA: FoundationalAdmissibility — **equivalence proved**: FoundationallyViable ↔ ClosureCompatible (foundational_admissibility, foundationally_viable_implies_closure_compatible, viability_failure_implies_not_closure_compatible). Paper 80: ClassificationCascade with structure-tied predicates (ClosureForcedProbabilityStructure, ClosureCalibratedLawStructure), NarrowSurvivorClass, survivor_filter_narrows_class.
+CosmologicalClosureUnification: **0 sorry**. Full grand theorem discharged. Extension A: stronger finality corollary (`cosmological_closure_unification_plus_finality`). Extension B: strong schema and adjudicator bridge under witness. Record resolution monotonicity bridge (`ucf_record_resolution_monotone`). FoundationalAdmissibility (Paper 79) — **equivalence proved**: FoundationallyViable ↔ ClosureCompatible (foundational_admissibility, foundationally_viable_implies_closure_compatible, viability_failure_implies_not_closure_compatible). Paper 80: ClassificationCascade with structure-tied predicates (ClosureForcedProbabilityStructure, ClosureCalibratedLawStructure), NarrowSurvivorClass, survivor_filter_narrows_class.
 
 ### Reverse Direction: BICS ⇒ NEMS ⇒ PSC (v2.1.0, Paper 14)
 
@@ -634,7 +651,7 @@ NemS/Cosmology/Bridges/ToLawCalibration.lean
 NemS/Cosmology/Bridges/ToAdjudicators.lean
 NemS/Cosmology/StrongCosmologicalClosureSchema.lean
 NemS/Cosmology/CosmologicalClosureUnification.lean  # Paper 78: Grand Unification
-NemS/Cosmology/FoundationalAdmissibility.lean       # Paper 79: EPIC_67_FA
+NemS/Cosmology/FoundationalAdmissibility.lean       # Paper 79: Foundational Admissibility
 NemS/Cosmology/ClassificationCascade.lean           # Paper 80: Survivor selection cascade
 NemS/Cosmology/UnifiedClosureFramework/Examples/Toy.lean
 NemS/Bridge/UnifiedRigidity.lean        # Paper 25: The Unified Rigidity Theorem
