@@ -32,6 +32,9 @@ import NemS.Visibility.SemanticExternality
 import NemS.Diagonal.ASR
 import NemS.Diagonal.HaltingReduction
 import NemS.Diagonal.Barrier
+import NemS.Diagonal.Premises
+import NemS.Diagonal.Sigma1Completeness
+import NemS.Diagonal.NoConvergenceModulus
 import NemS.Diagonal.Instantiation
 import NemS.Physical.UniversalComputation
 import NemS.Physical.ASRFromUCT
